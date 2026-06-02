@@ -409,3 +409,392 @@ body {
   }
 }
  
+
+
+// ─── Variables ───────────────────────────────────────────────────────────────
+:root {
+  --bg: #f0f2f5;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555e7a;
+  --text-label: #888fa8;
+  --accent: #2196f3;
+  --accent-hover: #1976d2;
+  --border: #e2e6ef;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  --shadow-hover: 0 6px 24px rgba(33, 150, 243, 0.15);
+  --radius: 14px;
+  --input-bg: #f8f9fc;
+  --input-border: #dde1ed;
+  --transition: 0.22s ease;
+}
+
+[data-theme="dark"] {
+  --bg: #0f1117;
+  --bg-card: #1a1d2e;
+  --text-primary: #e8ecf4;
+  --text-secondary: #9aa3bf;
+  --text-label: #6b7494;
+  --accent: #2196f3;
+  --accent-hover: #42a5f5;
+  --border: #2a2f45;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 6px 24px rgba(33, 150, 243, 0.2);
+  --input-bg: #12151f;
+  --input-border: #2a2f45;
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background var(--transition), color var(--transition);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: background var(--transition), border-color var(--transition);
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  &__logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  &__links {
+    display: flex;
+    gap: 32px;
+
+    a {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__lang,
+  &__theme {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background var(--transition), color var(--transition);
+
+    &:hover {
+      background: var(--input-bg);
+      color: var(--accent);
+    }
+  }
+}
+
+// ─── Contact Section ──────────────────────────────────────────────────────────
+.contact {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px 80px;
+  text-align: center;
+
+  &__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    margin-bottom: 18px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    margin-bottom: 48px;
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Form Card ──
+  &__form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    text-align: left;
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  // ── Info Cards ──
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: box-shadow var(--transition), border-color var(--transition),
+      background var(--transition), transform var(--transition);
+
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(33, 150, 243, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    &-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-label);
+      text-transform: uppercase;
+    }
+
+    &-value {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+// ─── Form Styles ──────────────────────────────────────────────────────────────
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form {
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__input,
+  &__textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 9px;
+    padding: 13px 16px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition),
+      background var(--transition);
+    resize: none;
+
+    &::placeholder {
+      color: var(--text-label);
+    }
+
+    &:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.12);
+      background: var(--bg-card);
+    }
+
+    &.is-invalid {
+      border-color: #e53935;
+      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+    }
+  }
+
+  &__textarea {
+    min-height: 130px;
+  }
+
+  &__error {
+    font-size: 0.78rem;
+    color: #e53935;
+    min-height: 16px;
+    padding-left: 2px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition),
+      box-shadow var(--transition);
+    margin-top: 4px;
+
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    &-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__status {
+    font-size: 0.88rem;
+    text-align: center;
+    min-height: 20px;
+    padding-top: 2px;
+    border-radius: 6px;
+
+    &.success {
+      color: #2e7d32;
+    }
+
+    &.error {
+      color: #c62828;
+    }
+  }
+}
+
+// ─── Spinner ──────────────────────────────────────────────────────────────────
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
