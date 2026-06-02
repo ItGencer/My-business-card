@@ -1,3 +1,27 @@
+$color-primary:     #1a7fe8;   // синій акцент
+$color-bg-from:     #c8dff5;   // початок градієнту фону
+$color-bg-mid:      #ddeeff;
+$color-bg-to:       #eef6ff;
+$color-text:        #1a2a3a;   // темний текст
+$color-text-muted:  #4a6080;   // приглушений текст
+$color-btn-outline: #ffffff;
+$color-border:      #cbd8e8;
+
+$font-main: 'Segoe UI', Arial, sans-serif;
+$breakpoint-mobile: 768px;     // точка перелому для адаптиву
+$color-text:       #3a4a5a;
+$color-text-dark:  #1a2a3a;
+
+$color-bg:          #ddeeff;
+$color-card-bg:     #ffffff;
+$color-bar-track:   #d0e4f7;   // фон шкали (сіро-блакитний)
+
+$color-primary:     #1a7fe8;
+$color-card-bg:     #ffffff;
+$color-bar-track:   #d0e4f7;   // фон шкали (сіро-блакитний)
+$color-text-dark:   #1a2a3a;
+$color-text-muted:  #4a6080;
+
 // ─── Reset ────────────────────────────────────────────────────────────────────
 * {
   margin: 0;
@@ -12,60 +36,9 @@ img {
 }
 
 body {
-  font-family: sans-serif;
-}
-
-
-// ============================================================
-// _variables.scss — токени дизайну (Design Tokens)
-// Змінні SCSS (@) на відміну від CSS var() — існують тільки
-// під час компіляції і не потрапляють у фінальний CSS
-// ============================================================
-
-$color-primary:     #1a7fe8;   // синій акцент
-$color-bg-from:     #c8dff5;   // початок градієнту фону
-$color-bg-mid:      #ddeeff;
-$color-bg-to:       #eef6ff;
-$color-text:        #1a2a3a;   // темний текст
-$color-text-muted:  #4a6080;   // приглушений текст
-$color-btn-outline: #ffffff;
-$color-border:      #cbd8e8;
-
-$font-main: 'Segoe UI', Arial, sans-serif;
-
-$breakpoint-mobile: 768px;     // точка перелому для адаптиву
-
-
-// ============================================================
-// _reset.scss — скидання браузерних стилів
-// ============================================================
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
   font-family: $font-main;
   background: #f0f4f8;
 }
-
-
-// ============================================================
-// intro.scss — блок intro (Hero секція)
-//
-// SCSS дозволяє вкладати елементи та модифікатори БЕМ
-// прямо всередині батьківського блоку.
-// & — це посилання на батьківський селектор.
-//
-// .intro { 
-//   &__element {}   →  .intro__element {}
-//   &--modifier {}  →  .intro--modifier {}
-// }
-// ============================================================
 
 .intro {
   min-height: 100vh;
@@ -127,10 +100,7 @@ body {
     font-weight: 500;
     color: $color-text;
     line-height: 1.5;
-
-    // Модифікатор --en: англійська версія, курсив
-    // Вкладений & посилається на .intro__subtitle
-    // тобто це буде .intro__subtitle--en
+  
     &--en {
       font-size: 15px;
       font-style: italic;
@@ -233,3 +203,209 @@ body {
     display: block;
   }
 }
+
+// ── Блок: about ─────────────────────────────────────────────
+.about {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #ffffff 20%,
+    #ffffff 80%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+
+  // ── Елемент: центруюча обгортка ───────────────────────────
+  &__container {
+    max-width: 780px;       // вузька колонка — текст не розтягується
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;     // весь вміст по центру
+  }
+
+  // ── Елемент: блок заголовка + лінія ──────────────────────
+  &__header {
+    margin-bottom: 48px;
+  }
+
+  // ── Елемент: заголовок "Про мене" ────────────────────────
+  &__title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  // ── Елемент: синя декоративна лінія під заголовком ───────
+  &__line {
+    display: block;         // <span> за замовчуванням inline — треба block
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;         // центрує лінію
+  }
+
+  // ── Елемент: текст опису ──────────────────────────────────
+  &__text {
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.8;       // міжрядковий інтервал — читабельніше
+    color: $color-text;
+    max-width: 680px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-mobile) {
+      text-align: left;     // на мобільному — по лівому краю (легше читати)
+    }
+  }
+}
+
+// ============================================================
+// skills.scss — секція "Навички та технології"
+// BEM блоки: .skills, .skill-card
+// ============================================================
+ 
+ 
+// ── Блок: skills (секція) ────────────────────────────────────
+.skills {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #eef6ff 15%,
+    #eef6ff 85%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+ 
+  // ── Елемент: обгортка ───────────────────────────────────
+  &__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+ 
+  // ── Елемент: шапка секції ───────────────────────────────
+  &__header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+ 
+  &__title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 14px;
+  }
+ 
+  &__line {
+    display: block;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;
+  }
+ 
+  // ── Елемент: сітка карток ───────────────────────────────
+  // auto-fill: браузер сам вирішує скільки колонок влізе
+  // minmax(280px, 1fr): мінімум 280px, максимум — рівна частка
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+ 
+  &__item {
+    // просто контейнер для картки
+  }
+}
+ 
+ 
+// ── Блок: skill-card (окрема картка) ────────────────────────
+.skill-card {
+  background: $color-card-bg;
+  border-radius: 16px;
+  padding: 20px 24px 18px;
+ 
+  // Тонь + обводка — як на скриншоті
+  box-shadow: 0 2px 12px rgba(26, 127, 232, 0.07);
+  border: 1px solid rgba(26, 127, 232, 0.08);
+ 
+  transition: box-shadow 0.2s, transform 0.2s;
+ 
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(26, 127, 232, 0.15);
+  }
+ 
+  // ── Елемент: рядок іконка + назва + % ─────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+ 
+  // ── Елемент: іконка навички ────────────────────────────
+  &__icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+ 
+  // ── Елемент: назва навички ─────────────────────────────
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $color-text-dark;
+    flex: 1;             // займає весь вільний простір між іконкою і %
+  }
+ 
+  // ── Елемент: відсоток праворуч ─────────────────────────
+  &__percent {
+    font-size: 15px;
+    font-weight: 600;
+    color: $color-text-muted;
+    flex-shrink: 0;
+  }
+ 
+  // ── Елемент: фон шкали (сірий трек) ───────────────────
+  &__bar-wrap {
+    height: 7px;
+    border-radius: 4px;
+    background: $color-bar-track;
+    overflow: hidden;     // заповнення не вилізе за межі
+  }
+ 
+  // ── Елемент: синє заповнення шкали ────────────────────
+  // Починаємо з width: 0, JS через requestAnimationFrame
+  // виставляє цільову ширину → transition плавно анімує.
+  // Цей підхід правильний, бо transition працює з реальним
+  // значенням width, а не з inherit (який бере ширину батька).
+  &__bar {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #3ab0ff 0%, $color-primary 100%);
+ 
+    width: 0;                        // стартова ширина — 0
+    transition: width 0.8s ease-out; // JS змінить width → анімація спрацює
+  }
+}
+ 
+ 
+// ── Мобільний адаптив ────────────────────────────────────────
+@media (max-width: $breakpoint-mobile) {
+  .skills {
+    padding: 60px 0;
+ 
+    &__list {
+      grid-template-columns: 1fr;  // одна колонка на мобільному
+    }
+  }
+}
+ 
