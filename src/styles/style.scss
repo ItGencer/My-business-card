@@ -14,3 +14,222 @@ img {
 body {
   font-family: sans-serif;
 }
+
+
+// ============================================================
+// _variables.scss — токени дизайну (Design Tokens)
+// Змінні SCSS (@) на відміну від CSS var() — існують тільки
+// під час компіляції і не потрапляють у фінальний CSS
+// ============================================================
+
+$color-primary:     #1a7fe8;   // синій акцент
+$color-bg-from:     #c8dff5;   // початок градієнту фону
+$color-bg-mid:      #ddeeff;
+$color-bg-to:       #eef6ff;
+$color-text:        #1a2a3a;   // темний текст
+$color-text-muted:  #4a6080;   // приглушений текст
+$color-btn-outline: #ffffff;
+$color-border:      #cbd8e8;
+
+$font-main: 'Segoe UI', Arial, sans-serif;
+
+$breakpoint-mobile: 768px;     // точка перелому для адаптиву
+
+
+// ============================================================
+// _reset.scss — скидання браузерних стилів
+// ============================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-main;
+  background: #f0f4f8;
+}
+
+
+// ============================================================
+// intro.scss — блок intro (Hero секція)
+//
+// SCSS дозволяє вкладати елементи та модифікатори БЕМ
+// прямо всередині батьківського блоку.
+// & — це посилання на батьківський селектор.
+//
+// .intro { 
+//   &__element {}   →  .intro__element {}
+//   &--modifier {}  →  .intro--modifier {}
+// }
+// ============================================================
+
+.intro {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-bg-from 0%, $color-bg-mid 40%, $color-bg-to 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+
+  // ── Елемент: обгортка двох колонок ──────────────────────
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+
+    // Адаптив вкладено прямо сюди — не треба повторювати
+    // селектор знову в окремому @media внизу файлу
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column-reverse; // фото вгорі на мобільному
+      text-align: center;
+      padding: 40px 20px;
+    }
+  }
+
+  // ── Елемент: ліва колонка (текст) ───────────────────────
+  &__content {
+    flex: 1;
+    max-width: 560px;
+  }
+
+  // ── Елемент: ім'я над заголовком ────────────────────────
+  &__name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $color-primary;
+    margin-bottom: 16px;
+  }
+
+  // ── Елемент: головний заголовок h1 ──────────────────────
+  &__title {
+    // clamp(мін, бажаний, макс) — автоматичний fluid-розмір
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: $color-primary;
+    margin-bottom: 20px;
+  }
+
+  // ── Елемент: підзаголовок ────────────────────────────────
+  &__subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: $color-text;
+    line-height: 1.5;
+
+    // Модифікатор --en: англійська версія, курсив
+    // Вкладений & посилається на .intro__subtitle
+    // тобто це буде .intro__subtitle--en
+    &--en {
+      font-size: 15px;
+      font-style: italic;
+      color: $color-text-muted;
+      margin-top: 4px;
+      margin-bottom: 36px;
+    }
+  }
+
+  // ── Елемент: група кнопок ───────────────────────────────
+  &__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    @media (max-width: $breakpoint-mobile) {
+      justify-content: center;
+    }
+  }
+
+  // ── Елемент: базова кнопка ──────────────────────────────
+  &__btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 50px;   // "таблетка"
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+
+    // Pseudo-клас :hover вкладено сюди ж
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($color-primary, 0.25);
+      // rgba() у SCSS може приймати змінну $color — зручніше!
+    }
+
+    // Модифікатор --primary: синя заповнена кнопка
+    &--primary {
+      background: $color-primary;
+      color: #fff;
+      border: 2px solid $color-primary;
+    }
+
+    // Модифікатор --secondary: кнопка з обводкою
+    &--secondary {
+      background: $color-btn-outline;
+      color: $color-text;
+      border: 2px solid $color-border;
+    }
+  }
+
+  // ── Елемент: права колонка (фото) ───────────────────────
+  &__photo-wrap {
+    flex-shrink: 0;
+    position: relative;
+    width: 360px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      width: 240px;
+      height: 240px;
+    }
+  }
+
+  // ── Елемент: синє свічення за фото ──────────────────────
+  &__glow {
+    position: absolute;
+    inset: -40px;   // CSS inset — shorthand для top/right/bottom/left
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($color-primary, 0.18) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  // ── Елемент: кружок з фото ──────────────────────────────
+  &__photo {
+    position: relative;
+    z-index: 1;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;   // робить квадрат кружком
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba($color-primary, 0.2);
+
+    @media (max-width: $breakpoint-mobile) {
+      width: 220px;
+      height: 220px;
+    }
+  }
+
+  // ── Елемент: саме зображення ─────────────────────────────
+  &__photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   // заповнює коло без спотворень
+    display: block;
+  }
+}
