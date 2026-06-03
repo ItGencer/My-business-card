@@ -9,10 +9,17 @@ import html5Icon from './assets/icons/html5.svg';
 import jsIcon from './assets/icons/js.svg';
 import sassIcon from './assets/icons/sass.svg';
 import tsIcon from './assets/icons/ts.svg';
+import artemPhoto from './assets/Artem-foto.png';
 
 const EMAILJS_SERVICE_ID  = "service_ega4f8t";  // з вашого сервісу
 const EMAILJS_TEMPLATE_ID = "template_fcyzwhf"; // з вашого шаблону
 const EMAILJS_PUBLIC_KEY  = "LHUHZsoWLw66wnZxQ";       // Account → API Keys
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const photo = document.querySelector('.intro__photo-img');
+  if (photo) photo.src = artemPhoto;
+});
 
 class SkillsRenderer {
   constructor(selector, iconsPath = '') {
