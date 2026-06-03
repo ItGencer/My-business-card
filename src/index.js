@@ -316,3 +316,113 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) form.addEventListener("submit", handleSubmit);
 });
  
+
+// ============================================================
+// ServicesRenderer — клас для рендеру секції "Послуги"
+// Такий самий патерн як SkillsRenderer — class ES6
+//
+// add(title, description, svgIcon) — додає послугу
+// render()                         — будує картки в DOM
+// ============================================================
+
+class ServicesRenderer {
+  constructor(selector) {
+    this._container = document.querySelector(selector);
+    this._services  = [];
+  }
+
+  // svgIcon — рядок з SVG-розміткою (inline SVG)
+  add(title, description, svgIcon) {
+    this._services.push({ title, description, svgIcon });
+    return this; // ланцюжок .add().add().render()
+  }
+
+  render() {
+    if (!this._container) {
+      console.warn('ServicesRenderer: контейнер не знайдено');
+      return;
+    }
+
+    this._container.innerHTML = '';
+
+    for (const service of this._services) {
+      const li = document.createElement('li');
+      li.className = 'services__item';
+
+      // Картка
+      const card = document.createElement('div');
+      card.className = 'service-card';
+
+      // Кружок з іконкою
+      const iconWrap = document.createElement('div');
+      iconWrap.className = 'service-card__icon-wrap';
+      iconWrap.innerHTML = service.svgIcon; // вставляємо inline SVG
+
+      // Заголовок
+      const title = document.createElement('h3');
+      title.className = 'service-card__title';
+      title.textContent = service.title;
+
+      // Опис
+      const desc = document.createElement('p');
+      desc.className = 'service-card__desc';
+      desc.textContent = service.description;
+
+      card.appendChild(iconWrap);
+      card.appendChild(title);
+      card.appendChild(desc);
+      li.appendChild(card);
+      this._container.appendChild(li);
+    }
+  }
+
+  clear() {
+    this._services = [];
+    if (this._container) this._container.innerHTML = '';
+    return this;
+  }
+}
+
+// ============================================================
+// ВСІ ДАНІ ТУТ — тільки цей блок редагуєш
+// add(назва, опис, svgРядок)
+// ============================================================
+
+const services = new ServicesRenderer('#services-list');
+
+services
+  .add(
+    'Односторінкові сайти (SPA)',
+    'Швидкі та інтерактивні SPA з плавною навігацією та сучасним UX.',
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="16 18 22 12 16 6"></polyline>
+      <polyline points="8 6 2 12 8 18"></polyline>
+    </svg>`
+  )
+  .add(
+    'Сайти-візитки',
+    'Лаконічні сайти-візитки, що підкреслюють вашу професійну ідентичність.',
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="9" y1="15" x2="15" y2="15"></line>
+    </svg>`
+  )
+  .add(
+    'Front-end розробка',
+    'Верстка та front-end розробка під стек: HTML/CSS/SCSS, JS/TS, Angular.',
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5"></polyline>
+      <line x1="12" y1="19" x2="20" y2="19"></line>
+    </svg>`
+  )
+  .add(
+    'Безкоштовний огляд портфоліо',
+    'Безкоштовно подивлюся ваше портфоліо чи досвід — відверто та по суті.',
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>`
+  )
+  .render();
