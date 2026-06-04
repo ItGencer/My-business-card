@@ -14,10 +14,45 @@ import artemPhoto from './assets/Artem-foto.png';
 import { SKILLS, SERVICES, EMAILJS_CONFIG } from './data.js';
 
 
+// ─── Burger Menu ──────────────────────────────────────────────
+// Додай виклик initBurger() всередині DOMContentLoaded в index.js
+function initBurger() {
+  const burger = document.querySelector('.header__burger');
+  const nav    = document.querySelector('.header__nav');
+  if (!burger || !nav) return;
+ 
+  // Відкрити / закрити меню
+  burger.addEventListener('click', () => {
+    const isOpen = burger.classList.toggle('is-open');
+    nav.classList.toggle('is-open', isOpen);
+    // Доступність: повідомляємо скрін-рідеру стан кнопки
+    burger.setAttribute('aria-expanded', isOpen);
+  });
+ 
+  // Закрити при кліку на посилання (SPA-навігація)
+  nav.querySelectorAll('.header__nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.classList.remove('is-open');
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+ 
+  // Закрити при кліку поза меню
+  document.addEventListener('click', (e) => {
+    if (!burger.contains(e.target) && !nav.contains(e.target)) {
+      burger.classList.remove('is-open');
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
 // ─── Фото ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   const photo = document.querySelector('.intro__photo-img');
   if (photo) photo.src = artemPhoto;
+  initBurger();
 });
 
 
