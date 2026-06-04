@@ -1,0 +1,935 @@
+$color-primary:     #1a7fe8;   // синій акцент
+$color-bg-from:     #c8dff5;   // початок градієнту фону
+$color-bg-mid:      #ddeeff;
+$color-bg-to:       #eef6ff;
+$color-text:        #1a2a3a;   // темний текст
+$color-text-muted:  #4a6080;   // приглушений текст
+$color-btn-outline: #ffffff;
+$color-border:      #cbd8e8;
+
+$font-main: 'Segoe UI', Arial, sans-serif;
+$breakpoint-mobile: 768px;     // точка перелому для адаптиву
+$color-text:       #3a4a5a;
+$color-text-dark:  #1a2a3a;
+
+$color-bg:          #ddeeff;
+$color-card-bg:     #ffffff;
+$color-bar-track:   #d0e4f7;   // фон шкали (сіро-блакитний)
+
+$color-primary:     #1a7fe8;
+$color-card-bg:     #ffffff;
+$color-bar-track:   #d0e4f7;   // фон шкали (сіро-блакитний)
+$color-text-dark:   #1a2a3a;
+$color-text-muted:  #4a6080;
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+body {
+  font-family: $font-main;
+  background: #f0f4f8;
+}
+
+.intro {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-bg-from 0%, $color-bg-mid 40%, $color-bg-to 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+
+  // ── Елемент: обгортка двох колонок ──────────────────────
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+
+    // Адаптив вкладено прямо сюди — не треба повторювати
+    // селектор знову в окремому @media внизу файлу
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column-reverse; // фото вгорі на мобільному
+      text-align: center;
+      padding: 40px 20px;
+    }
+  }
+
+  // ── Елемент: ліва колонка (текст) ───────────────────────
+  &__content {
+    flex: 1;
+    max-width: 560px;
+  }
+
+  // ── Елемент: ім'я над заголовком ────────────────────────
+  &__name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $color-primary;
+    margin-bottom: 16px;
+  }
+
+  // ── Елемент: головний заголовок h1 ──────────────────────
+  &__title {
+    // clamp(мін, бажаний, макс) — автоматичний fluid-розмір
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: $color-primary;
+    margin-bottom: 20px;
+  }
+
+  // ── Елемент: підзаголовок ────────────────────────────────
+  &__subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: $color-text;
+    line-height: 1.5;
+  
+    &--en {
+      font-size: 15px;
+      font-style: italic;
+      color: $color-text-muted;
+      margin-top: 4px;
+      margin-bottom: 36px;
+    }
+  }
+
+  // ── Елемент: група кнопок ───────────────────────────────
+  &__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    @media (max-width: $breakpoint-mobile) {
+      justify-content: center;
+    }
+  }
+
+  // ── Елемент: базова кнопка ──────────────────────────────
+  &__btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 50px;   // "таблетка"
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+
+    // Pseudo-клас :hover вкладено сюди ж
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($color-primary, 0.25);
+      // rgba() у SCSS може приймати змінну $color — зручніше!
+    }
+
+    // Модифікатор --primary: синя заповнена кнопка
+    &--primary {
+      background: $color-primary;
+      color: #fff;
+      border: 2px solid $color-primary;
+    }
+
+    // Модифікатор --secondary: кнопка з обводкою
+    &--secondary {
+      background: $color-btn-outline;
+      color: $color-text;
+      border: 2px solid $color-border;
+    }
+  }
+
+  // ── Елемент: права колонка (фото) ───────────────────────
+  &__photo-wrap {
+    flex-shrink: 0;
+    position: relative;
+    width: 360px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: $breakpoint-mobile) {
+      width: 240px;
+      height: 240px;
+    }
+  }
+
+  // ── Елемент: синє свічення за фото ──────────────────────
+  &__glow {
+    position: absolute;
+    inset: -40px;   // CSS inset — shorthand для top/right/bottom/left
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($color-primary, 0.18) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  // ── Елемент: кружок з фото ──────────────────────────────
+  &__photo {
+    position: relative;
+    z-index: 1;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;   // робить квадрат кружком
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba($color-primary, 0.2);
+
+    @media (max-width: $breakpoint-mobile) {
+      width: 220px;
+      height: 220px;
+    }
+  }
+
+  // ── Елемент: саме зображення ─────────────────────────────
+  &__photo-img {
+    height: 100%;
+    object-fit: cover;   // заповнює коло без спотворень
+    display: block;
+  }
+}
+
+// ── Блок: about ─────────────────────────────────────────────
+.about {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #ffffff 20%,
+    #ffffff 80%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+
+  // ── Елемент: центруюча обгортка ───────────────────────────
+  &__container {
+    max-width: 780px;       // вузька колонка — текст не розтягується
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;     // весь вміст по центру
+  }
+
+  // ── Елемент: блок заголовка + лінія ──────────────────────
+  &__header {
+    margin-bottom: 48px;
+  }
+
+  // ── Елемент: заголовок "Про мене" ────────────────────────
+  &__title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  // ── Елемент: синя декоративна лінія під заголовком ───────
+  &__line {
+    display: block;         // <span> за замовчуванням inline — треба block
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;         // центрує лінію
+  }
+
+  // ── Елемент: текст опису ──────────────────────────────────
+  &__text {
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.8;       // міжрядковий інтервал — читабельніше
+    color: $color-text;
+    max-width: 680px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-mobile) {
+      text-align: left;     // на мобільному — по лівому краю (легше читати)
+    }
+  }
+}
+
+// ============================================================
+// skills.scss — секція "Навички та технології"
+// BEM блоки: .skills, .skill-card
+// ============================================================
+ 
+ 
+// ── Блок: skills (секція) ────────────────────────────────────
+.skills {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #eef6ff 15%,
+    #eef6ff 85%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+ 
+  // ── Елемент: обгортка ───────────────────────────────────
+  &__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+ 
+  // ── Елемент: шапка секції ───────────────────────────────
+  &__header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+ 
+  &__title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 14px;
+  }
+ 
+  &__line {
+    display: block;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;
+  }
+ 
+  // ── Елемент: сітка карток ───────────────────────────────
+  // auto-fill: браузер сам вирішує скільки колонок влізе
+  // minmax(280px, 1fr): мінімум 280px, максимум — рівна частка
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+ 
+  &__item {
+    // просто контейнер для картки
+  }
+}
+ 
+ 
+// ── Блок: skill-card (окрема картка) ────────────────────────
+.skill-card {
+  background: $color-card-bg;
+  border-radius: 16px;
+  padding: 20px 24px 18px;
+ 
+  // Тонь + обводка — як на скриншоті
+  box-shadow: 0 2px 12px rgba(26, 127, 232, 0.07);
+  border: 1px solid rgba(26, 127, 232, 0.08);
+ 
+  transition: box-shadow 0.2s, transform 0.2s;
+ 
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(26, 127, 232, 0.15);
+  }
+ 
+  // ── Елемент: рядок іконка + назва + % ─────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+ 
+  // ── Елемент: іконка навички ────────────────────────────
+  &__icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+ 
+  // ── Елемент: назва навички ─────────────────────────────
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $color-text-dark;
+    flex: 1;             // займає весь вільний простір між іконкою і %
+  }
+ 
+  // ── Елемент: відсоток праворуч ─────────────────────────
+  &__percent {
+    font-size: 15px;
+    font-weight: 600;
+    color: $color-text-muted;
+    flex-shrink: 0;
+  }
+ 
+  // ── Елемент: фон шкали (сірий трек) ───────────────────
+  &__bar-wrap {
+    height: 7px;
+    border-radius: 4px;
+    background: $color-bar-track;
+    overflow: hidden;     // заповнення не вилізе за межі
+  }
+ 
+  // ── Елемент: синє заповнення шкали ────────────────────
+  // Починаємо з width: 0, JS через requestAnimationFrame
+  // виставляє цільову ширину → transition плавно анімує.
+  // Цей підхід правильний, бо transition працює з реальним
+  // значенням width, а не з inherit (який бере ширину батька).
+  &__bar {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #3ab0ff 0%, $color-primary 100%);
+ 
+    width: 0;                        // стартова ширина — 0
+    transition: width 0.8s ease-out; // JS змінить width → анімація спрацює
+  }
+}
+ 
+ 
+// ── Мобільний адаптив ────────────────────────────────────────
+@media (max-width: $breakpoint-mobile) {
+  .skills {
+    padding: 60px 0;
+ 
+    &__list {
+      grid-template-columns: 1fr;  // одна колонка на мобільному
+    }
+  }
+}
+ 
+
+
+// ─── Variables ───────────────────────────────────────────────────────────────
+:root {
+  --bg: #f0f2f5;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555e7a;
+  --text-label: #888fa8;
+  --accent: #2196f3;
+  --accent-hover: #1976d2;
+  --border: #e2e6ef;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  --shadow-hover: 0 6px 24px rgba(33, 150, 243, 0.15);
+  --radius: 14px;
+  --input-bg: #f8f9fc;
+  --input-border: #dde1ed;
+  --transition: 0.22s ease;
+}
+
+[data-theme="dark"] {
+  --bg: #0f1117;
+  --bg-card: #1a1d2e;
+  --text-primary: #e8ecf4;
+  --text-secondary: #9aa3bf;
+  --text-label: #6b7494;
+  --accent: #2196f3;
+  --accent-hover: #42a5f5;
+  --border: #2a2f45;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 6px 24px rgba(33, 150, 243, 0.2);
+  --input-bg: #12151f;
+  --input-border: #2a2f45;
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background var(--transition), color var(--transition);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: background var(--transition), border-color var(--transition);
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  &__logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  &__links {
+    display: flex;
+    gap: 32px;
+
+    a {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__lang,
+  &__theme {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background var(--transition), color var(--transition);
+
+    &:hover {
+      background: var(--input-bg);
+      color: var(--accent);
+    }
+  }
+}
+
+// ─── Contact Section ──────────────────────────────────────────────────────────
+.contact {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px 80px;
+  text-align: center;
+
+  &__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    margin-bottom: 18px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    margin-bottom: 48px;
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Form Card ──
+  &__form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    text-align: left;
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  // ── Info Cards ──
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: box-shadow var(--transition), border-color var(--transition),
+      background var(--transition), transform var(--transition);
+
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(33, 150, 243, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    &-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-label);
+      text-transform: uppercase;
+    }
+
+    &-value {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+
+// ============================================================
+// services.scss — секція "Послуги"
+// BEM блоки: .services, .service-card
+// ============================================================
+
+$color-primary:     #1a7fe8;
+$color-text-dark:   #1a2a3a;
+$color-text:        #3a4a5a;
+$color-card-bg:     #ffffff;
+$breakpoint-tablet: 900px;
+$breakpoint-mobile: 600px;
+
+
+// ── Блок: services (секція) ──────────────────────────────────
+.services {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #f0f6ff 15%,
+    #f0f6ff 85%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+
+  // ── Елемент: обгортка ─────────────────────────────────
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  // ── Елемент: шапка секції ─────────────────────────────
+  &__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  &__title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 14px;
+  }
+
+  &__line {
+    display: block;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;
+  }
+
+  // ── Елемент: сітка карток ─────────────────────────────
+  // 4 рівні колонки на десктопі, менше — на планшеті/мобільному
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    @media (max-width: $breakpoint-tablet) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+
+// ── Блок: service-card (картка послуги) ─────────────────────
+.service-card {
+  background: $color-card-bg;
+  border-radius: 20px;
+  padding: 32px 24px 28px;
+  border: 1px solid rgba(26, 127, 232, 0.08);
+  box-shadow: 0 2px 16px rgba(26, 127, 232, 0.06);
+  transition: transform 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26, 127, 232, 0.14);
+  }
+
+  // ── Елемент: кружок з іконкою ─────────────────────────
+  // Синій круг — фіксований розмір, SVG всередині
+  &__icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;          // заокруглений квадрат як на скриншоті
+    background: $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    // SVG всередині — білий, підгоняємо розмір
+    svg {
+      width: 26px;
+      height: 26px;
+      stroke: #ffffff;            // колір обводки іконки
+      fill: none;
+    }
+  }
+
+  // ── Елемент: назва послуги ────────────────────────────
+  &__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  // ── Елемент: опис послуги ─────────────────────────────
+  &__desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: $color-text;
+  }
+}
+
+
+// ─── Form Styles ──────────────────────────────────────────────────────────────
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form {
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__input,
+  &__textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 9px;
+    padding: 13px 16px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition),
+      background var(--transition);
+    resize: none;
+
+    &::placeholder {
+      color: var(--text-label);
+    }
+
+    &:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.12);
+      background: var(--bg-card);
+    }
+
+    &.is-invalid {
+      border-color: #e53935;
+      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+    }
+  }
+
+  &__textarea {
+    min-height: 130px;
+  }
+
+  &__error {
+    font-size: 0.78rem;
+    color: #e53935;
+    min-height: 16px;
+    padding-left: 2px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition),
+      box-shadow var(--transition);
+    margin-top: 4px;
+
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    &-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__status {
+    font-size: 0.88rem;
+    text-align: center;
+    min-height: 20px;
+    padding-top: 2px;
+    border-radius: 6px;
+
+    &.success {
+      color: #2e7d32;
+    }
+
+    &.error {
+      color: #c62828;
+    }
+  }
+}
+
+// ─── Spinner ──────────────────────────────────────────────────────────────────
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+
+footer{
+  border-top: 1px solid $color-text-muted;
+  color: $color-text-muted;
+  padding: 32px 0;
+  text-align: center;
+}

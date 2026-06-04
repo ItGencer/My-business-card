@@ -1,4 +1,3 @@
-// webpack.config.js
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -7,7 +6,7 @@ module.exports = {
   entry: "./src/index.js",
 
   output: {
-    path: path.resolve(__dirname, "public"), // ← змінили dist на public
+    path: path.resolve(__dirname, "public"),
     filename: "bundle.[contenthash].js",
     clean: true,
     assetModuleFilename: "assets/[name][ext]",
@@ -18,9 +17,9 @@ module.exports = {
       {
         test: /\.(scss|sass)$/,
         use: [
-          MiniCssExtractPlugin.loader, // 3. виносить у окремий .css файл
-          "css-loader", // 2. розуміє @import, url()
-          "sass-loader", // 1. компілює scss → css (виконується першим)
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
         ],
       },
       {
@@ -40,7 +39,7 @@ module.exports = {
   ],
 
   devServer: {
-    static: "./public", // ← і тут теж
+    static: "./public",
     port: 3000,
     open: true,
     hot: true,

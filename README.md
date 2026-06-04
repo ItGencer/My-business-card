@@ -13,47 +13,7 @@
 
 ---
 
-## 🛠️ Технологічний стек
-
-| Технологія | Рівень |
-|---|---|
-| HTML5 / CSS3 | 95% |
-| SASS / SCSS | 90% |
-| JavaScript / TypeScript | 88% |
-| Angular | 85% |
-| BEM | 90% |
-| Responsive Design | 92% |
-| Git | 85% |
-
----
-
-## 📁 Структура проєкту
-
-```
-portfolio/
-├── src/
-│   ├── app/
-│   │   ├── components/       # Компоненти (hero, about, skills, services, contact)
-│   │   ├── shared/           # Спільні елементи (navbar, footer)
-│   │   └── app.component.*   # Кореневий компонент
-│   ├── assets/
-│   │   ├── images/           # Фото та зображення
-│   │   └── icons/            # Іконки
-│   ├── styles/               # Глобальні SCSS стилі
-│   └── environments/         # Налаштування середовища
-├── angular.json
-├── package.json
-└── README.md
-```
-
----
-
 ## ⚙️ Встановлення та запуск
-
-### Вимоги
-- Node.js `>= 18.x`
-- npm `>= 9.x`
-- Angular CLI `>= 17.x`
 
 ### Кроки
 
@@ -62,13 +22,13 @@ portfolio/
 git clone https://github.com/your-username/portfolio.git
 
 # 2. Перейти в папку проєкту
-cd portfolio
+cd my business card
 
 # 3. Встановити залежності
 npm install
 
 # 4. Запустити локальний сервер розробки
-ng serve
+npm start
 
 # 5. Відкрити в браузері
 # http://localhost:4200
