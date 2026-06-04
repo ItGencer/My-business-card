@@ -1,0 +1,114 @@
+@use 'variables' as *;   // ← замість блоку з 6 змінних вгорі
+
+// ── Блок: services (секція) ──────────────────────────────────
+.services {
+  background: linear-gradient(
+    to bottom,
+    #ddeeff 0%,
+    #f0f6ff 15%,
+    #f0f6ff 85%,
+    #ddeeff 100%
+  );
+  padding: 100px 0;
+
+  // ── Елемент: обгортка ─────────────────────────────────
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  // ── Елемент: шапка секції ─────────────────────────────
+  &__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  &__title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 14px;
+  }
+
+  &__line {
+    display: block;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;
+  }
+
+  // ── Елемент: сітка карток ─────────────────────────────
+  // 4 рівні колонки на десктопі, менше — на планшеті/мобільному
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    @media (max-width: $breakpoint-tablet) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+
+// ── Блок: service-card (картка послуги) ─────────────────────
+.service-card {
+  background: $color-card-bg;
+  border-radius: 20px;
+  padding: 32px 24px 28px;
+  border: 1px solid rgba(26, 127, 232, 0.08);
+  box-shadow: 0 2px 16px rgba(26, 127, 232, 0.06);
+  transition: transform 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26, 127, 232, 0.14);
+  }
+
+  // ── Елемент: кружок з іконкою ─────────────────────────
+  // Синій круг — фіксований розмір, SVG всередині
+  &__icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;          // заокруглений квадрат як на скриншоті
+    background: $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    // SVG всередині — білий, підгоняємо розмір
+    svg {
+      width: 26px;
+      height: 26px;
+      stroke: #ffffff;            // колір обводки іконки
+      fill: none;
+    }
+  }
+
+  // ── Елемент: назва послуги ────────────────────────────
+  &__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  // ── Елемент: опис послуги ─────────────────────────────
+  &__desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: $color-text;
+  }
+}
