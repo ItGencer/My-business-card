@@ -15,7 +15,9 @@ img {
 
 body {
   font-family: $font-main;
-  background: #f0f4f8;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 // ── Блок: intro ─────────────────────────────────────────────
@@ -27,7 +29,10 @@ body {
   overflow: hidden;
   position: relative;
 
-  // ── Елемент: обгортка двох колонок ──────────────────────
+  [data-theme="dark"] & {
+    background: linear-gradient(135deg, #0a1628 0%, #0f1e35 40%, #152840 100%);
+  }
+
   &__container {
     width: 100%;
     max-width: 1200px;
@@ -38,22 +43,18 @@ body {
     justify-content: space-between;
     gap: 40px;
 
-    // Адаптив вкладено прямо сюди — не треба повторювати
-    // селектор знову в окремому @media внизу файлу
     @media (max-width: $breakpoint-mobile) {
-      flex-direction: column-reverse; // фото вгорі на мобільному
+      flex-direction: column-reverse;
       text-align: center;
       padding: 40px 20px;
     }
   }
 
-  // ── Елемент: ліва колонка (текст) ───────────────────────
   &__content {
     flex: 1;
     max-width: 560px;
   }
 
-  // ── Елемент: ім'я над заголовком ────────────────────────
   &__name {
     font-size: 13px;
     font-weight: 700;
@@ -63,9 +64,7 @@ body {
     margin-bottom: 16px;
   }
 
-  // ── Елемент: головний заголовок h1 ──────────────────────
   &__title {
-    // clamp(мін, бажаний, макс) — автоматичний fluid-розмір
     font-size: clamp(48px, 7vw, 80px);
     font-weight: 800;
     line-height: 1.1;
@@ -73,23 +72,21 @@ body {
     margin-bottom: 20px;
   }
 
-  // ── Елемент: підзаголовок ────────────────────────────────
   &__subtitle {
     font-size: 18px;
     font-weight: 500;
-    color: $color-text;
+    color: var(--color-text);
     line-height: 1.5;
-  
+
     &--en {
       font-size: 15px;
       font-style: italic;
-      color: $color-text-muted;
+      color: var(--color-text-muted);
       margin-top: 4px;
       margin-bottom: 36px;
     }
   }
 
-  // ── Елемент: група кнопок ───────────────────────────────
   &__actions {
     display: flex;
     gap: 16px;
@@ -100,40 +97,34 @@ body {
     }
   }
 
-  // ── Елемент: базова кнопка ──────────────────────────────
   &__btn {
     display: inline-block;
     padding: 14px 28px;
-    border-radius: 50px;   // "таблетка"
+    border-radius: 50px;
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
 
-    // Pseudo-клас :hover вкладено сюди ж
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba($color-primary, 0.25);
-      // rgba() у SCSS може приймати змінну $color — зручніше!
     }
 
-    // Модифікатор --primary: синя заповнена кнопка
     &--primary {
       background: $color-primary;
       color: #fff;
       border: 2px solid $color-primary;
     }
 
-    // Модифікатор --secondary: кнопка з обводкою
     &--secondary {
-      background: $color-btn-outline;
-      color: $color-text;
-      border: 2px solid $color-border;
+      background: var(--color-card-bg);
+      color: var(--color-text);
+      border: 2px solid var(--color-border);
     }
   }
 
-  // ── Елемент: права колонка (фото) ───────────────────────
   &__photo-wrap {
     flex-shrink: 0;
     position: relative;
@@ -149,22 +140,20 @@ body {
     }
   }
 
-  // ── Елемент: синє свічення за фото ──────────────────────
   &__glow {
     position: absolute;
-    inset: -40px;   // CSS inset — shorthand для top/right/bottom/left
+    inset: -40px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba($color-primary, 0.18) 0%, transparent 70%);
     z-index: 0;
   }
 
-  // ── Елемент: кружок з фото ──────────────────────────────
   &__photo {
     position: relative;
     z-index: 1;
     width: 320px;
     height: 320px;
-    border-radius: 50%;   // робить квадрат кружком
+    border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba($color-primary, 0.2);
 
@@ -174,102 +163,38 @@ body {
     }
   }
 
-  // ── Елемент: саме зображення ─────────────────────────────
   &__photo-img {
     height: 100%;
-    object-fit: cover;   // заповнює коло без спотворень
+    object-fit: cover;
     display: block;
   }
 }
 
 // ── Блок: about ─────────────────────────────────────────────
 .about {
-  background: linear-gradient(
-    to bottom,
-    #ddeeff 0%,
-    #ffffff 20%,
-    #ffffff 80%,
-    #ddeeff 100%
-  );
+  background: var(--about-bg, linear-gradient(to bottom, #ddeeff 0%, #ffffff 20%, #ffffff 80%, #ddeeff 100%));
   padding: 100px 0;
+  transition: background 0.3s ease;
 
-  // ── Елемент: центруюча обгортка ───────────────────────────
   &__container {
-    max-width: 780px;       // вузька колонка — текст не розтягується
+    max-width: 780px;
     margin: 0 auto;
     padding: 0 24px;
-    text-align: center;     // весь вміст по центру
+    text-align: center;
   }
 
-  // ── Елемент: блок заголовка + лінія ──────────────────────
   &__header {
     margin-bottom: 48px;
   }
 
-  // ── Елемент: заголовок "Про мене" ────────────────────────
   &__title {
     font-size: clamp(32px, 5vw, 48px);
     font-weight: 700;
-    color: $color-text-dark;
+    color: var(--color-text-dark);
     margin-bottom: 16px;
     line-height: 1.2;
   }
 
-  // ── Елемент: синя декоративна лінія під заголовком ───────
-  &__line {
-    display: block;         // <span> за замовчуванням inline — треба block
-    width: 48px;
-    height: 3px;
-    border-radius: 2px;
-    background: $color-primary;
-    margin: 0 auto;         // центрує лінію
-  }
-
-  // ── Елемент: текст опису ──────────────────────────────────
-  &__text {
-    font-size: clamp(16px, 2vw, 18px);
-    line-height: 1.8;       // міжрядковий інтервал — читабельніше
-    color: $color-text;
-    max-width: 680px;
-    margin: 0 auto;
-
-    @media (max-width: $breakpoint-mobile) {
-      text-align: left;     // на мобільному — по лівому краю (легше читати)
-    }
-  }
-}
-
-// ── Блок: skills (секція) ────────────────────────────────────
-.skills {
-  background: linear-gradient(
-    to bottom,
-    #ddeeff 0%,
-    #eef6ff 15%,
-    #eef6ff 85%,
-    #ddeeff 100%
-  );
-  padding: 100px 0;
- 
-  // ── Елемент: обгортка ───────────────────────────────────
-  &__container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
- 
-  // ── Елемент: шапка секції ───────────────────────────────
-  &__header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
- 
-  &__title {
-    font-size: clamp(28px, 4vw, 44px);
-    font-weight: 700;
-    color: $color-text-dark;
-    margin-bottom: 14px;
-  }
- 
   &__line {
     display: block;
     width: 48px;
@@ -278,10 +203,53 @@ body {
     background: $color-primary;
     margin: 0 auto;
   }
- 
-  // ── Елемент: сітка карток ───────────────────────────────
-  // auto-fill: браузер сам вирішує скільки колонок влізе
-  // minmax(280px, 1fr): мінімум 280px, максимум — рівна частка
+
+  &__text {
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.8;
+    color: var(--color-text);
+    max-width: 680px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-mobile) {
+      text-align: left;
+    }
+  }
+}
+
+// ── Блок: skills ────────────────────────────────────────────
+.skills {
+  background: var(--skills-bg, linear-gradient(to bottom, #ddeeff 0%, #eef6ff 15%, #eef6ff 85%, #ddeeff 100%));
+  padding: 100px 0;
+  transition: background 0.3s ease;
+
+  &__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  &__title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-bottom: 14px;
+  }
+
+  &__line {
+    display: block;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: $color-primary;
+    margin: 0 auto;
+  }
+
   &__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -292,293 +260,79 @@ body {
   }
 }
 
-// ── Блок: skill-card (окрема картка) ────────────────────────
+// ── Блок: skill-card ────────────────────────────────────────
 .skill-card {
-  background: $color-card-bg;
+  background: var(--color-card-bg);
   border-radius: 16px;
   padding: 20px 24px 18px;
   box-shadow: 0 2px 12px rgba(26, 127, 232, 0.07);
-  border: 1px solid rgba(26, 127, 232, 0.08);
-  transition: box-shadow 0.2s, transform 0.2s;
- 
+  border: 1px solid var(--color-border);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.3s ease;
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 28px rgba(26, 127, 232, 0.15);
   }
- 
-  // ── Елемент: рядок іконка + назва + % ─────────────────
+
   &__header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 14px;
   }
- 
-  // ── Елемент: іконка навички ────────────────────────────
+
   &__icon {
     width: 28px;
     height: 28px;
     object-fit: contain;
     flex-shrink: 0;
   }
- 
-  // ── Елемент: назва навички ─────────────────────────────
+
   &__title {
     font-size: 16px;
     font-weight: 700;
-    color: $color-text-dark;
-    flex: 1;             // займає весь вільний простір між іконкою і %
+    color: var(--color-text-dark);
+    flex: 1;
   }
- 
-  // ── Елемент: відсоток праворуч ─────────────────────────
+
   &__percent {
     font-size: 15px;
     font-weight: 600;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     flex-shrink: 0;
   }
- 
-  // ── Елемент: фон шкали (сірий трек) ───────────────────
+
   &__bar-wrap {
     height: 7px;
     border-radius: 4px;
-    background: $color-bar-track;
-    overflow: hidden;     // заповнення не вилізе за межі
+    background: var(--color-bar-track);
+    overflow: hidden;
   }
- 
-  // ── Елемент: синє заповнення шкали ────────────────────
-  // Починаємо з width: 0, JS через requestAnimationFrame
-  // виставляє цільову ширину → transition плавно анімує.
-  // Цей підхід правильний, бо transition працює з реальним
-  // значенням width, а не з inherit (який бере ширину батька).
+
   &__bar {
     height: 100%;
     border-radius: 4px;
     background: linear-gradient(90deg, #3ab0ff 0%, $color-primary 100%);
- 
-    width: 0;                        // стартова ширина — 0
-    transition: width 0.8s ease-out; // JS змінить width → анімація спрацює
+    width: 0;
+    transition: width 0.8s ease-out;
   }
 }
- 
- 
-// ── Мобільний адаптив ────────────────────────────────────────
+
 @media (max-width: $breakpoint-mobile) {
   .skills {
     padding: 60px 0;
- 
+
     &__list {
-      grid-template-columns: 1fr;  // одна колонка на мобільному
-    }
-  }
-}
-
-
-
-// ─── Navbar ───────────────────────────────────────────────────────────────────
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  height: 64px;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  transition: background var(--transition), border-color var(--transition);
-
-  &__logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--text-primary);
-  }
-
-  &__logo-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
-  &__links {
-    display: flex;
-    gap: 32px;
-
-    a {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      transition: color var(--transition);
-
-      &:hover {
-        color: var(--accent);
-      }
-    }
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  &__lang,
-  &__theme {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    padding: 6px 10px;
-    border-radius: 8px;
-    transition: background var(--transition), color var(--transition);
-
-    &:hover {
-      background: var(--input-bg);
-      color: var(--accent);
-    }
-  }
-}
-
-// ─── Contact Section ──────────────────────────────────────────────────────────
-.contact {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 72px 24px 80px;
-  text-align: center;
-
-  &__title {
-    font-size: clamp(1.8rem, 4vw, 2.4rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    position: relative;
-    display: inline-block;
-    margin-bottom: 18px;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 52px;
-      height: 3px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-  }
-
-  &__subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-top: 10px;
-    margin-bottom: 48px;
-  }
-
-  &__wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    align-items: start;
-
-    @media (max-width: 768px) {
       grid-template-columns: 1fr;
     }
   }
-
-  // ── Form Card ──
-  &__form-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px 28px;
-    box-shadow: var(--shadow);
-    text-align: left;
-    transition: background var(--transition), border-color var(--transition);
-  }
-
-  // ── Info Cards ──
-  &__info {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  &__card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: box-shadow var(--transition), border-color var(--transition),
-      background var(--transition), transform var(--transition);
-
-    &:hover {
-      box-shadow: var(--shadow-hover);
-      border-color: rgba(33, 150, 243, 0.3);
-      transform: translateY(-1px);
-    }
-
-    &-icon {
-      flex-shrink: 0;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      svg {
-        width: 20px;
-        height: 20px;
-        fill: #fff;
-      }
-    }
-
-    &-text {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    &-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--text-label);
-      text-transform: uppercase;
-    }
-
-    &-value {
-      font-size: 0.97rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-  }
 }
 
-
-
-footer{
-  border-top: 1px solid $color-text-muted;
-  color: $color-text-muted;
+footer {
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   padding: 32px 0;
   text-align: center;
+  background: var(--color-bg);
+  transition: background 0.3s ease;
 }

@@ -1,30 +1,22 @@
-// ============================================================
-// header.scss — адаптивна шапка з бургер-меню
-// Breakpoints: 320px / 375px / 768px / 1024px+
-// ============================================================
 @use 'variables' as *;
 
-// ── Локальні токени ───────────────────────────────────────────
 $color-blue-light:    #29b6f6;
 $color-blue-hover-bg: #e8f4fd;
 $color-white:         #fff;
 $color-blue-border:   #0079b1;
 $font-weight-md:      500;
 $font-weight-semi:    600;
+$breakpoint-burger:   860px;
 
-// Бургер показуємо до 860px — nav не вміщується
-$breakpoint-burger: 860px;
-
-// ─── Header ──────────────────────────────────────────────────
 .header {
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
-  background: $color-white;
-  border-bottom: 1px solid $color-blue-border;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 
-  // Внутрішній контейнер: лого · · · nav · · · actions
   &__inner {
     display: flex;
     align-items: center;
@@ -38,13 +30,12 @@ $breakpoint-burger: 860px;
     @media (max-width: 375px)              { padding: 0 0.75rem; }
   }
 
-  // ── Logo ──────────────────────────────────────────────────
   &__logo {
     display: flex;
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    flex-shrink: 0;          // лого ніколи не стискається
+    flex-shrink: 0;
   }
 
   &__logo-avatar {
@@ -61,7 +52,6 @@ $breakpoint-burger: 860px;
     letter-spacing: 0.5px;
     flex-shrink: 0;
 
-    // На дуже малих — трохи менший
     @media (max-width: 375px) {
       width: 34px;
       height: 34px;
@@ -72,22 +62,17 @@ $breakpoint-burger: 860px;
   &__logo-name {
     font-size: $font-size-base;
     font-weight: $font-weight-semi;
-    color: $color-text-primary;
+    color: var(--color-text-dark);
 
-    // Сховати текст імені нижче 400px — залишається тільки аватар
     @media (max-width: 400px) { display: none; }
   }
 
-  // ── Nav ───────────────────────────────────────────────────
-  // Десктоп: горизонтальний рядок між лого і кнопками
-  // Мобільний: випадає вниз під хедером
   &__nav {
     display: flex;
     align-items: center;
     gap: 4px;
 
     @media (max-width: $breakpoint-burger) {
-      // Виїжджаючий блок під хедером
       position: fixed;
       top: $header-height;
       left: 0;
@@ -95,18 +80,15 @@ $breakpoint-burger: 860px;
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      background: $color-white;
-      border-bottom: 2px solid $color-blue-border;
+      background: var(--nav-bg);
+      border-bottom: 2px solid var(--header-border);
       box-shadow: 0 8px 24px rgba(0, 121, 177, 0.12);
       padding: 8px 0 12px;
-
-      // Стартовий стан — схований за верхній край
       transform: translateY(-110%);
       opacity: 0;
       pointer-events: none;
-      transition: transform 0.28s ease, opacity 0.22s ease;
+      transition: transform 0.28s ease, opacity 0.22s ease, background 0.3s ease;
 
-      // JS додає .is-open → меню виїжджає
       &.is-open {
         transform: translateY(0);
         opacity: 1;
@@ -120,37 +102,33 @@ $breakpoint-burger: 860px;
     padding: 7px 16px;
     border-radius: $radius-sm;
     font-size: 14px;
-    color: $color-text-secondary;
+    color: var(--color-text-muted);
     text-decoration: none;
     white-space: nowrap;
     transition: background 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background: $color-blue-hover-bg;
-      color: $color-blue-primary;
+      background: rgba($color-primary, 0.08);
+      color: $color-primary;
     }
 
     &--active {
-      color: $color-blue-primary;
+      color: $color-primary;
       font-weight: $font-weight-md;
     }
 
-    // Мобільний — посилання на всю ширину
     @media (max-width: $breakpoint-burger) {
       display: block;
       padding: 15px 24px;
       border-radius: 0;
       font-size: 15px;
-      border-bottom: 1px solid rgba(0, 121, 177, 0.08);
+      border-bottom: 1px solid var(--color-border);
 
       &:last-child { border-bottom: none; }
       &:hover      { border-radius: 0; }
     }
   }
 
-  // ── Actions — UA + тема + бургер (справа) ─────────────────
-  // Порядок у HTML: бургер → UA → тема
-  // display: flex → природний порядок з HTML
   &__actions {
     display: flex;
     align-items: center;
@@ -158,7 +136,6 @@ $breakpoint-burger: 860px;
     flex-shrink: 0;
   }
 
-  // ── Кнопки UA і тема ──────────────────────────────────────
   &__btn {
     display: inline-flex;
     align-items: center;
@@ -166,30 +143,42 @@ $breakpoint-burger: 860px;
     height: 36px;
     padding: 0 12px;
     gap: 6px;
-    border: 1.5px solid $color-blue-border;
+    border: 1.5px solid var(--header-border);
     border-radius: $radius-sm;
     background: transparent;
-    color: $color-text-secondary;
+    color: var(--color-text-muted);
     font-size: 13px;
     font-weight: $font-weight-md;
     cursor: pointer;
     white-space: nowrap;
-    transition:
-      background 0.15s ease,
-      border-color 0.15s ease,
-      color 0.15s ease;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 
     svg { flex-shrink: 0; }
 
     &:hover {
-      background: $color-blue-hover-bg;
+      background: rgba($color-primary, 0.08);
       border-color: $color-blue-light;
-      color: $color-blue-primary;
+      color: $color-primary;
     }
 
-    &--theme { padding: 0 10px; }
+    // Кнопка теми — без рамки, тільки іконка
+    &--theme {
+      border: none;
+      padding: 0 6px;
 
-    // На 320px — трохи менший падінг
+      svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        fill: none;
+      }
+
+      &:hover {
+        background: rgba($color-primary, 0.08);
+        border-color: transparent;
+      }
+    }
+
     @media (max-width: 375px) {
       height: 32px;
       padding: 0 8px;
@@ -197,9 +186,8 @@ $breakpoint-burger: 860px;
     }
   }
 
-  // ── Бургер — показується тільки на мобільному ─────────────
   &__burger {
-    display: none;   // десктоп — прихований
+    display: none;
 
     @media (max-width: $breakpoint-burger) {
       display: inline-flex;
@@ -210,7 +198,7 @@ $breakpoint-burger: 860px;
       width: 36px;
       height: 36px;
       padding: 0;
-      border: 1.5px solid $color-blue-border;
+      border: 1.5px solid var(--header-border);
       border-radius: $radius-sm;
       background: transparent;
       cursor: pointer;
@@ -218,7 +206,7 @@ $breakpoint-burger: 860px;
       transition: background 0.15s ease, border-color 0.15s ease;
 
       &:hover {
-        background: $color-blue-hover-bg;
+        background: rgba($color-primary, 0.08);
         border-color: $color-blue-light;
       }
 
@@ -228,18 +216,16 @@ $breakpoint-burger: 860px;
       }
     }
 
-    // Три лінії
     &-line {
       display: block;
       width: 16px;
       height: 2px;
-      background: $color-text-secondary;
+      background: var(--color-text-muted);
       border-radius: 2px;
       transition: transform 0.25s ease, opacity 0.2s ease;
       transform-origin: center;
     }
 
-    // Анімація → хрестик при відкритті
     &.is-open {
       .header__burger-line:nth-child(1) { transform: translateY(7px)  rotate(45deg); }
       .header__burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }

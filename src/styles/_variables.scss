@@ -1,3 +1,39 @@
+// ── Світла тема (за замовчуванням) ──
+:root {
+  --color-bg:        #f0f4f8;
+  --color-card-bg:   #ffffff;
+  --color-text:      #2c3e50;
+  --color-text-dark: #1a2332;
+  --color-text-muted:#6b7c93;
+  --color-border:    rgba(26, 127, 232, 0.12);
+  --color-bar-track: #e3eaf5;
+  --header-bg:       #ffffff;
+  --header-border:   #0079b1;
+  --nav-bg:          #ffffff;
+  --input-bg:        #f8f9fc;
+  --input-border:    #dde1ed;
+}
+
+// ── Темна тема ──
+[data-theme="dark"] {
+  --color-bg:        #0f1624;
+  --color-card-bg:   #1a2235;
+  --color-text:      #c8d6e5;
+  --color-text-dark: #e8f0fa;
+  --color-text-muted:#7a8ba0;
+  --color-border:    rgba(100, 160, 230, 0.15);
+  --color-bar-track: #1e2d42;
+  --header-bg:       #111827;
+  --header-border:   #1e3a5f;
+  --nav-bg:          #111827;
+  --input-bg:        #1e2d42;
+  --input-border:    #2a3f5f;
+  --about-bg:    linear-gradient(to bottom, #0a1628 0%, #0f1e35 20%, #0f1e35 80%, #0a1628 100%);
+  --skills-bg:   linear-gradient(to bottom, #0a1628 0%, #111d30 15%, #111d30 85%, #0a1628 100%);
+  --services-bg: linear-gradient(to bottom, #0a1628 0%, #0d1a2e 15%, #0d1a2e 85%, #0a1628 100%);
+
+}
+
 // ── Кольори ──────────────────────────────────────────────────
 $color-primary:     #1a7fe8;
 $color-bg-from:     #c8dff5;

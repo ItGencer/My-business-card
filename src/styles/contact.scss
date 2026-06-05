@@ -1,35 +1,25 @@
 @use 'sass:color';
 @use 'variables' as *;
 
-// ── Локальні токени (специфічні лише для цього файлу) ────────
-$contact-radius:     14px;
-$contact-input-bg:   #f8f9fc;
-$contact-input-border: #dde1ed;
-$contact-shadow:     0 2px 12px rgba(0, 0, 0, 0.07);
-$contact-shadow-hover: 0 6px 24px rgba($color-primary, 0.15);
-$contact-transition: 0.22s ease;
+$contact-radius:      14px;
+$contact-transition:  0.22s ease;
+$color-error:         #e53935;
+$color-success:       #2e7d32;
 
-$color-error:        #e53935;
-$color-success:      #2e7d32;
-$color-text-label:   #888fa8;   // дрібні підписи типу "PHONE", "EMAIL"
-
-// ─── Секція: contact ─────────────────────────────────────────
 .contact {
   max-width: 1100px;
   margin: 0 auto;
   padding: 72px 24px 80px;
   text-align: center;
 
-  // ── Заголовок з лінією знизу через ::after ────────────
   &__title {
     font-size: clamp(1.8rem, 4vw, 2.4rem);
     font-weight: 700;
-    color: $color-text-dark;
+    color: var(--color-text-dark);
     position: relative;
     display: inline-block;
     margin-bottom: 18px;
 
-    // Синя декоративна лінія — як в about і skills
     &::after {
       content: '';
       position: absolute;
@@ -45,12 +35,11 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
 
   &__subtitle {
     font-size: 1rem;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     margin-top: 10px;
     margin-bottom: 48px;
   }
 
-  // ── Сітка: форма ліворуч, контакти праворуч ───────────
   &__wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -62,47 +51,45 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
     }
   }
 
-  // ── Картка з формою ───────────────────────────────────
   &__form-card {
-    background: $color-card-bg;
-    border: 1px solid $color-border;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
     border-radius: $contact-radius;
     padding: 32px 28px;
-    box-shadow: $contact-shadow;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     text-align: left;
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
-  // ── Колонка контактних карток ─────────────────────────
   &__info {
     display: flex;
     flex-direction: column;
     gap: 16px;
   }
 
-  // ── Одна контактна картка (телефон / telegram / email) ─
   &__card {
     display: flex;
     align-items: center;
     gap: 16px;
-    background: $color-card-bg;
-    border: 1px solid $color-border;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
     border-radius: $contact-radius;
     padding: 20px 22px;
-    box-shadow: $contact-shadow;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     cursor: pointer;
-    text-decoration: none;   // тег <a> — прибираємо підкреслення
+    text-decoration: none;
     transition:
       box-shadow $contact-transition,
       border-color $contact-transition,
+      background 0.3s ease,
       transform $contact-transition;
 
     &:hover {
-      box-shadow: $contact-shadow-hover;
+      box-shadow: 0 6px 24px rgba($color-primary, 0.15);
       border-color: rgba($color-primary, 0.3);
       transform: translateY(-1px);
     }
 
-    // Синє коло з іконкою
     &-icon {
       flex-shrink: 0;
       width: 46px;
@@ -126,25 +113,22 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
       gap: 3px;
     }
 
-    // Дрібний підпис "PHONE / TELEGRAM / EMAIL"
     &-label {
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.08em;
-      color: $color-text-label;
+      color: var(--color-text-muted);
       text-transform: uppercase;
     }
 
-    // Значення — номер, нік, адреса
     &-value {
       font-size: 0.97rem;
       font-weight: 600;
-      color: $color-text-dark;
+      color: var(--color-text-dark);
     }
   }
 }
 
-// ─── Форма ───────────────────────────────────────────────────
 .contact__form {
   display: flex;
   flex-direction: column;
@@ -152,42 +136,39 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
 }
 
 .form {
-  // Обгортка поля + повідомлення про помилку
   &__group {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  // Поля вводу і textarea — спільні стилі
   &__input,
   &__textarea {
     width: 100%;
-    background: $contact-input-bg;
-    border: 1px solid $contact-input-border;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
     border-radius: 9px;
     padding: 13px 16px;
     font-size: 0.95rem;
     font-family: $font-main;
-    color: $color-text-dark;
+    color: var(--color-text-dark);
     outline: none;
     resize: none;
     transition:
       border-color $contact-transition,
-      box-shadow $contact-transition;
+      box-shadow $contact-transition,
+      background 0.3s ease;
 
     &::placeholder {
-      color: $color-text-label;
+      color: var(--color-text-muted);
     }
 
-    // Фокус — синя рамка + легке свічення
     &:focus {
       border-color: $color-primary;
       box-shadow: 0 0 0 3px rgba($color-primary, 0.12);
-      background: $color-card-bg;
+      background: var(--color-card-bg);
     }
 
-    // JS додає цей клас при валідації — червона рамка
     &.is-invalid {
       border-color: $color-error;
       box-shadow: 0 0 0 3px rgba($color-error, 0.1);
@@ -198,15 +179,13 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
     min-height: 130px;
   }
 
-  // Текст помилки під полем
   &__error {
     font-size: 0.78rem;
     color: $color-error;
-    min-height: 16px;   // резервує місце — форма не стрибає при появі тексту
+    min-height: 16px;
     padding-left: 2px;
   }
 
-  // Кнопка "Надіслати"
   &__btn {
     display: flex;
     align-items: center;
@@ -229,16 +208,13 @@ $color-text-label:   #888fa8;   // дрібні підписи типу "PHONE",
       box-shadow $contact-transition;
 
     &:hover:not(:disabled) {
-background: color.adjust(#1a7fe8, $lightness: -8%);
+      background: color.adjust(#1a7fe8, $lightness: -8%);
       box-shadow: 0 4px 16px rgba($color-primary, 0.35);
       transform: translateY(-1px);
     }
 
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
+    &:active:not(:disabled) { transform: translateY(0); }
 
-    // JS додає disabled під час відправки
     &:disabled {
       opacity: 0.65;
       cursor: not-allowed;
@@ -251,7 +227,6 @@ background: color.adjust(#1a7fe8, $lightness: -8%);
     }
   }
 
-  // Статус після відправки ("Надіслано!" або "Помилка")
   &__status {
     font-size: 0.88rem;
     text-align: center;
@@ -264,8 +239,6 @@ background: color.adjust(#1a7fe8, $lightness: -8%);
   }
 }
 
-// ─── Спінер (крутиться під час відправки) ────────────────────
-// @keyframes виноситься за межі блоків — це глобальна анімація
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
