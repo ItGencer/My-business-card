@@ -9,71 +9,30 @@ import './styles/contact.scss';
 import './styles/services.scss';
 
 import artemPhoto from './assets/Artem-foto.png';
+import { SKILLS, SERVICES, TRANSLATIONS, EMAILJS_CONFIG } from './data.js';
 
-// Всі дані — з одного місця
-import { SKILLS, SERVICES, EMAILJS_CONFIG } from './data.js';
-
-
-// ─── Burger Menu ──────────────────────────────────────────────
-// Додай виклик initBurger() всередині DOMContentLoaded в index.js
-function initBurger() {
-  const burger = document.querySelector('.header__burger');
-  const nav    = document.querySelector('.header__nav');
-  if (!burger || !nav) return;
- 
-  // Відкрити / закрити меню
-  burger.addEventListener('click', () => {
-    const isOpen = burger.classList.toggle('is-open');
-    nav.classList.toggle('is-open', isOpen);
-    // Доступність: повідомляємо скрін-рідеру стан кнопки
-    burger.setAttribute('aria-expanded', isOpen);
-  });
- 
-  // Закрити при кліку на посилання (SPA-навігація)
-  nav.querySelectorAll('.header__nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      burger.classList.remove('is-open');
-      nav.classList.remove('is-open');
-      burger.setAttribute('aria-expanded', 'false');
-    });
-  });
- 
-  // Закрити при кліку поза меню
-  document.addEventListener('click', (elem) => {
-    if (!burger.contains(elem.target) && !nav.contains(elem.target)) {
-      burger.classList.remove('is-open');
-      nav.classList.remove('is-open');
-      burger.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-// ─── Фото ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  const photo = document.querySelector('.intro__photo-img');
-  if (photo) photo.src = artemPhoto;
-  initBurger();
-});
+// Поточна мова — зберігається між сесіями через localStorage
+let currentLang = localStorage.getItem('lang') || 'ua';
 
 
 // ============================================================
-// SkillsRenderer
+// SkillsRenderer — рендерить картки навичок з прогрес-барами
 // ============================================================
 class SkillsRenderer {
-  #container;   // приватне поле — синтаксис ES2022, не треба this._
+  #container;
   #skills = [];
 
   constructor(selector) {
     this.#container = document.querySelector(selector);
   }
 
-  // Приймає масив { title, icon, percent } — не окремі аргументи
+  // Приймає масив { title, icon, percent }
   load(skillsArray) {
     this.#skills = skillsArray.map(skill => ({
       ...skill,
-      percent: Math.min(100, Math.max(0, skill.percent)),
+      percent: Math.min(100, Math.max(0, skill.percent)), // обмежуємо 0–100
     }));
-    return this;
+    return this; // повертає this для ланцюжка .load().render()
   }
 
   render() {
@@ -82,46 +41,43 @@ class SkillsRenderer {
       return;
     }
 
-    // DocumentFragment — вставляємо весь список за один раз,
-    // а не по одному елементу (менше перемальовувань DOM)
+    // DocumentFragment — один reflow замість N вставок
     const fragment = document.createDocumentFragment();
 
     for (const skill of this.#skills) {
-      const li       = document.createElement('li');
-      li.className   = 'skills__item';
+      const li = document.createElement('li');
+      li.className = 'skills__item';
 
-      const card     = document.createElement('div');
+      const card = document.createElement('div');
       card.className = 'skill-card';
 
-      // Хедер: іконка + назва + відсоток
-      const header   = document.createElement('div');
+      const header = document.createElement('div');
       header.className = 'skill-card__header';
 
-      const img      = Object.assign(document.createElement('img'), {
+      const img = Object.assign(document.createElement('img'), {
         className: 'skill-card__icon',
         src:       skill.icon,
         alt:       skill.title,
       });
 
-      const titleEl  = Object.assign(document.createElement('span'), {
+      const titleEl = Object.assign(document.createElement('span'), {
         className:   'skill-card__title',
         textContent: skill.title,
       });
 
-      const pctEl    = Object.assign(document.createElement('span'), {
+      const pctEl = Object.assign(document.createElement('span'), {
         className:   'skill-card__percent',
         textContent: `${skill.percent}%`,
       });
 
       header.append(img, titleEl, pctEl);
 
-      // Прогрес-бар
-      const barWrap  = document.createElement('div');
+      const barWrap = document.createElement('div');
       barWrap.className = 'skill-card__bar-wrap';
 
-      const bar      = document.createElement('div');
-      bar.className  = 'skill-card__bar';
-      bar.dataset.width = skill.percent;   // для анімації
+      const bar = document.createElement('div');
+      bar.className = 'skill-card__bar';
+      bar.dataset.width = skill.percent; // збережено для анімації
 
       barWrap.appendChild(bar);
       card.append(header, barWrap);
@@ -130,9 +86,10 @@ class SkillsRenderer {
     }
 
     this.#container.innerHTML = '';
-    this.#container.appendChild(fragment);   // один reflow замість N
+    this.#container.appendChild(fragment);
 
-    // Анімація — після того як браузер відмалював початковий стан (width: 0)
+    // Анімація ширини — після першого відмалювання браузером (width: 0 → percent%)
+    // width: inherit в @keyframes завжди дає 100%, тому використовуємо transition + rAF
     requestAnimationFrame(() => {
       this.#container.querySelectorAll('.skill-card__bar').forEach(bar => {
         bar.style.width = bar.dataset.width + '%';
@@ -143,7 +100,7 @@ class SkillsRenderer {
 
 
 // ============================================================
-// ServicesRenderer
+// ServicesRenderer — рендерить картки послуг
 // ============================================================
 class ServicesRenderer {
   #container;
@@ -153,6 +110,7 @@ class ServicesRenderer {
     this.#container = document.querySelector(selector);
   }
 
+  // Приймає масив { title, description, svgIcon }
   load(servicesArray) {
     this.#services = servicesArray;
     return this;
@@ -167,22 +125,22 @@ class ServicesRenderer {
     const fragment = document.createDocumentFragment();
 
     for (const service of this.#services) {
-      const li       = document.createElement('li');
-      li.className   = 'services__item';
+      const li = document.createElement('li');
+      li.className = 'services__item';
 
-      const card     = document.createElement('div');
+      const card = document.createElement('div');
       card.className = 'service-card';
 
       const iconWrap = document.createElement('div');
       iconWrap.className = 'service-card__icon-wrap';
-      iconWrap.innerHTML = service.svgIcon;   // inline SVG — тільки тут innerHTML
+      iconWrap.innerHTML = service.svgIcon; // innerHTML лише для SVG-рядка
 
-      const titleEl  = Object.assign(document.createElement('h3'), {
+      const titleEl = Object.assign(document.createElement('h3'), {
         className:   'service-card__title',
         textContent: service.title,
       });
 
-      const descEl   = Object.assign(document.createElement('p'), {
+      const descEl = Object.assign(document.createElement('p'), {
         className:   'service-card__desc',
         textContent: service.description,
       });
@@ -198,56 +156,66 @@ class ServicesRenderer {
 }
 
 
-// ─── EmailJS ──────────────────────────────────────────────────
-function loadEmailJS() {
-  return new Promise((resolve, reject) => {
-    if (window.emailjs) { resolve(); return; }
+// ============================================================
+// Burger Menu — мобільне меню
+// ============================================================
+function initBurger() {
+  const burger = document.querySelector('.header__burger');
+  const nav    = document.querySelector('.header__nav');
+  if (!burger || !nav) return;
 
-    const script  = document.createElement('script');
-    script.src    = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.onload = () => {
-      window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-      resolve();
-    };
-    script.onerror = () => reject(new Error('EmailJS не завантажився'));
-    document.head.appendChild(script);
+  burger.addEventListener('click', () => {
+    const isOpen = burger.classList.toggle('is-open');
+    nav.classList.toggle('is-open', isOpen);
+    burger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Закрити при кліку на посилання навігації
+  nav.querySelectorAll('.header__nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.classList.remove('is-open');
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Закрити при кліку поза меню
+  document.addEventListener('click', (e) => {
+    if (!burger.contains(e.target) && !nav.contains(e.target)) {
+      burger.classList.remove('is-open');
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    }
   });
 }
 
 
-// ─── Theme Toggle ─────────────────────────────────────────────
+// ============================================================
+// Theme Toggle — світла / темна тема
+// ============================================================
 function initTheme() {
   const btn = document.querySelector('.header__btn--theme');
   if (!btn) return;
 
-  // SVG окремо — не дублювати рядки в обробнику
   const ICONS = {
-  // Показується коли активна ТЕМНА тема → клік переключить на світлу
-  dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="5"/>
-    <line x1="12" y1="1" x2="12" y2="3"/>
-    <line x1="12" y1="21" x2="12" y2="23"/>
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-    <line x1="1" y1="12" x2="3" y2="12"/>
-    <line x1="21" y1="12" x2="23" y2="12"/>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-  </svg>`,
-
-  // Показується коли активна СВІТЛА тема → клік переключить на темну
-  light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-  </svg>`,
-};
+    // Показується коли темна тема активна → клік переключить на світлу
+    dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>`,
+    // Показується коли світла тема активна → клік переключить на темну
+    light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>`,
+  };
 
   const applyTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
-    // Якщо тема dark — показуємо іконку сонця (перемикнутись на light)
     btn.innerHTML = theme === 'dark' ? ICONS.dark : ICONS.light;
   };
 
@@ -261,7 +229,50 @@ function initTheme() {
 }
 
 
-// ─── Валідація форми ──────────────────────────────────────────
+// ============================================================
+// i18n — перемикач мови UA ↔ EN
+// ============================================================
+function applyLang(lang) {
+  const t = TRANSLATIONS[lang];
+  if (!t) return;
+
+  // Оновлюємо текстовий контент елементів з data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key]) el.textContent = t[key];
+  });
+
+  // Оновлюємо placeholder у полях форми з data-i18n-placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key]) el.placeholder = t[key];
+  });
+
+  // Перерендер послуг мовою що активна
+  new ServicesRenderer('#services-list').load(SERVICES[lang]).render();
+
+  // Кнопка показує наступну мову (яку буде обрано при кліку)
+  const btn = document.querySelector('.header__btn--lang');
+  if (btn) btn.textContent = lang === 'ua' ? '🌐 EN' : '🌐 UA';
+
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+}
+
+function initLang() {
+  // Застосовуємо збережену або дефолтну мову при завантаженні
+  applyLang(currentLang);
+
+  // Перемикання при кліку на кнопку
+  document.querySelector('.header__btn--lang')?.addEventListener('click', () => {
+    applyLang(currentLang === 'ua' ? 'en' : 'ua');
+  });
+}
+
+
+// ============================================================
+// Форма зворотного зв'язку — валідація + EmailJS
+// ============================================================
 const FORM_FIELDS = {
   name:    { inputId: 'userName',    errorId: 'nameError'    },
   email:   { inputId: 'userEmail',   errorId: 'emailError'   },
@@ -303,7 +314,7 @@ function setStatus(message, type) {
   el.className   = `form__status ${type}`;
 }
 
-// SVG іконки кнопки відправки
+// SVG іконка кнопки "Надіслати" — винесена окремо щоб не дублювати
 const SEND_ICON = `<svg class="form__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
   <line x1="22" y1="2" x2="11" y2="13"></line>
   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -326,6 +337,19 @@ function setLoading(isLoading) {
     iconSlot?.remove();
     if (btnText) btnText.textContent = 'Надіслати';
   }
+}
+
+// Завантажує EmailJS з CDN лише при першій відправці (lazy load)
+function loadEmailJS() {
+  return new Promise((resolve, reject) => {
+    if (window.emailjs) { resolve(); return; }
+
+    const script = document.createElement('script');
+    script.src   = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.onload  = () => { window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey }); resolve(); };
+    script.onerror = () => reject(new Error('EmailJS не завантажився'));
+    document.head.appendChild(script);
+  });
 }
 
 async function handleSubmit(e) {
@@ -367,6 +391,7 @@ async function handleSubmit(e) {
   }
 }
 
+// Знімає помилку з поля в реальному часі при введенні
 function initLiveValidation() {
   Object.values(FORM_FIELDS).forEach(({ inputId, errorId }) => {
     const input = document.getElementById(inputId);
@@ -380,19 +405,22 @@ function initLiveValidation() {
 }
 
 
-// ─── Init ─────────────────────────────────────────────────────
-// Рендерери запускаємо одразу — DOM для них не потрібен
-// (вони самі шукають контейнер через querySelector)
-new SkillsRenderer('#skills-list').load(SKILLS).render();
-new ServicesRenderer('#services-list').load(SERVICES).render();
+// ============================================================
+// Init — точка старту застосунку
+// ============================================================
 
-// Решта — після DOMContentLoaded
+// Skills рендеримо одразу — не залежить від DOM (шукає контейнер сам)
+new SkillsRenderer('#skills-list').load(SKILLS).render();
+
+// Решта — після повного завантаження DOM
 document.addEventListener('DOMContentLoaded', () => {
   const photo = document.querySelector('.intro__photo-img');
   if (photo) photo.src = artemPhoto;
 
-  initTheme();
-  initLiveValidation();
+  initBurger();         // мобільне меню
+  initTheme();          // тема light/dark
+  initLang();           // мова UA/EN + рендер Services
+  initLiveValidation(); // валідація форми в реальному часі
 
   document.getElementById('contactForm')?.addEventListener('submit', handleSubmit);
 });
