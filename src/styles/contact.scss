@@ -1,0 +1,255 @@
+@use 'sass:color';
+@use 'variables' as *;
+
+$contact-radius:      14px;
+$contact-transition:  0.22s ease;
+$color-error:         #e53935;
+$color-success:       #2e7d32;
+
+.contact {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px 80px;
+  text-align: center;
+
+  &__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--color-text-dark);
+    position: relative;
+    display: inline-block;
+    margin-bottom: 18px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 3px;
+      background: $color-primary;
+      border-radius: 2px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-top: 10px;
+    margin-bottom: 48px;
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: $breakpoint-mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__form-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: $contact-radius;
+    padding: 32px 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    text-align: left;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: $contact-radius;
+    padding: 20px 22px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      box-shadow $contact-transition,
+      border-color $contact-transition,
+      background 0.3s ease,
+      transform $contact-transition;
+
+    &:hover {
+      box-shadow: 0 6px 24px rgba($color-primary, 0.15);
+      border-color: rgba($color-primary, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: $color-primary;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    &-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+    }
+
+    &-value {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+    }
+  }
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form {
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__input,
+  &__textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 9px;
+    padding: 13px 16px;
+    font-size: 0.95rem;
+    font-family: $font-main;
+    color: var(--color-text-dark);
+    outline: none;
+    resize: none;
+    transition:
+      border-color $contact-transition,
+      box-shadow $contact-transition,
+      background 0.3s ease;
+
+    &::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    &:focus {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.12);
+      background: var(--color-card-bg);
+    }
+
+    &.is-invalid {
+      border-color: $color-error;
+      box-shadow: 0 0 0 3px rgba($color-error, 0.1);
+    }
+  }
+
+  &__textarea {
+    min-height: 130px;
+  }
+
+  &__error {
+    font-size: 0.78rem;
+    color: $color-error;
+    min-height: 16px;
+    padding-left: 2px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 14px 20px;
+    background: $color-primary;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: $font-main;
+    cursor: pointer;
+    margin-top: 4px;
+    transition:
+      background $contact-transition,
+      transform $contact-transition,
+      box-shadow $contact-transition;
+
+    &:hover:not(:disabled) {
+      background: color.adjust(#1a7fe8, $lightness: -8%);
+      box-shadow: 0 4px 16px rgba($color-primary, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) { transform: translateY(0); }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    &-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__status {
+    font-size: 0.88rem;
+    text-align: center;
+    min-height: 20px;
+    padding-top: 2px;
+    border-radius: 6px;
+
+    &.success { color: $color-success; }
+    &.error   { color: $color-error; }
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(#fff, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}

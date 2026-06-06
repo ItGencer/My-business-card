@@ -14,51 +14,36 @@
         </a>
 
         <nav class="header__nav">
-          <a href="#about" class="header__nav-link">Про мене</a>
-          <a href="#skills" class="header__nav-link">Навички</a>
-          <!-- <a href="#services" class="header__nav-link">Послуги</a> -->
-          <a href="#portfolio" class="header__nav-link">Портфоліо</a>
-          <a href="#contact" class="header__nav-link">Контакти</a>
+          <a href="#about" class="header__nav-link" data-i18n="nav.about"
+            >Про мене</a
+          >
+          <a href="#skills" class="header__nav-link" data-i18n="nav.skills"
+            >Навички</a
+          >
+          <a href="#services" class="header__nav-link" data-i18n="nav.services"
+            >Послуги</a
+          >
+          <!-- <a href="#portfolio" class="header__nav-link" data-i18n="nav.portfolio">Портфоліо</a> -->
+          <a href="#contact" class="header__nav-link" data-i18n="nav.contact"
+            >Контакти</a
+          >
         </nav>
 
         <div class="header__actions">
-          <button class="header__btn header__btn--lang">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="2" y1="12" x2="22" y2="12" />
-              <path
-                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
-                       15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-              />
-            </svg>
-            UA
+          <button
+            class="header__burger"
+            aria-label="Меню"
+            aria-expanded="false"
+          >
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
           </button>
+          <button class="header__btn header__btn--lang">🌐 UA</button>
           <button
             class="header__btn header__btn--theme"
             aria-label="Змінити тему"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          </button>
+          ></button>
         </div>
       </div>
     </header>
@@ -66,28 +51,36 @@
     <main>
       <section class="intro">
         <div class="intro__container">
-          <!-- Ліва частина: текст -->
           <div class="intro__content">
-            <p class="intro__name">Artem Hrishyn · Артем Гришин</p>
-            <h1 class="intro__title">Front-end<br />Розробник</h1>
-            <p class="intro__subtitle">
+            <!-- НЕ перекладаємо: ім'я, посада -->
+            <p class="intro__name">Artem Hrishyn · Артем Грішин</p>
+            <h1 class="intro__title">Front-end<br />Developer</h1>
+
+            <p class="intro__subtitle" data-i18n="intro.subtitle">
               Відповідальний підхід — якісний результат
             </p>
-            <p class="intro__subtitle intro__subtitle--en">
-              Responsible approach — quality result
-            </p>
+
+            <!-- Цей параграф більше не потрібен — переклад робить JS -->
+            <!-- <p class="intro__subtitle intro__subtitle--en">...</p> -->
 
             <div class="intro__actions">
-              <a href="#works" class="intro__btn intro__btn--primary"
-                >Переглянути роботи</a
+              <a
+                href="#works"
+                class="intro__btn intro__btn--primary"
+                data-i18n="intro.btn.works"
               >
-              <a href="#contact" class="intro__btn intro__btn--secondary"
-                >Зв'язатися</a
+                Переглянути роботи
+              </a>
+              <a
+                href="#contact"
+                class="intro__btn intro__btn--secondary"
+                data-i18n="intro.btn.contact"
               >
+                Зв'язатися
+              </a>
             </div>
           </div>
 
-          <!-- Права частина: фото -->
           <div class="intro__photo-wrap">
             <div class="intro__glow"></div>
             <div class="intro__photo">
@@ -100,56 +93,48 @@
           </div>
         </div>
       </section>
-      <!-- Секція "Про мене" -->
+
       <section class="about" id="about">
         <div class="about__container">
           <div class="about__header">
-            <h2 class="about__title">Про мене</h2>
+            <h2 class="about__title" data-i18n="about.title">Про мене</h2>
             <span class="about__line"></span>
           </div>
-
-          <p class="about__text">
-            Привіт! Мене звати Артем Гришин. Я front-end розробник, який створює
-            сучасні, швидкі та зручні веб-продукти. Я ціную деталі, чистий код і
-            відповідальне ставлення до кожного проєкту. Моя мета — перетворити
-            вашу ідею на надійний інтерфейс, який працюватиме бездоганно на
-            будь-якому пристрої.
-          </p>
+          <p class="about__text" data-i18n="about.text"></p>
         </div>
       </section>
+
       <section class="skills" id="skills">
         <div class="skills__container">
           <div class="skills__header">
-            <h2 class="skills__title">Навички та технології</h2>
+            <h2 class="skills__title" data-i18n="skills.title">
+              Навички та технології
+            </h2>
             <span class="skills__line"></span>
           </div>
-
-          <!-- JS рендерить картки сюди -->
           <ul class="skills__list" id="skills-list"></ul>
         </div>
       </section>
 
-      <!-- Секція "Послуги" — вставити в index.html після skills -->
       <section class="services" id="services">
         <div class="services__container">
           <div class="services__header">
-            <h2 class="services__title">Послуги</h2>
+            <h2 class="services__title" data-i18n="services.title">Послуги</h2>
             <span class="services__line"></span>
           </div>
-
-          <!-- JS рендерить картки сюди -->
           <ul class="services__list" id="services-list"></ul>
         </div>
       </section>
-      <!-- CONTACT SECTION -->
+
       <section class="contact" id="contact">
-        <h2 class="contact__title">Зв'язатися зі мною</h2>
-        <p class="contact__subtitle">
+        <h2 class="contact__title" data-i18n="contact.title">
+          Зв'язатися зі мною
+        </h2>
+        <p class="contact__subtitle" data-i18n="contact.subtitle">
           Маєте проєкт або питання? Напишіть — відповім швидко.
         </p>
 
         <div class="contact__wrapper">
-          <!-- FORM -->
           <div class="contact__form-card">
             <form class="contact__form" id="contactForm" novalidate>
               <div class="form__group">
@@ -160,6 +145,7 @@
                   class="form__input"
                   placeholder="Ваше ім'я"
                   autocomplete="name"
+                  data-i18n-placeholder="form.name"
                 />
                 <span class="form__error" id="nameError"></span>
               </div>
@@ -173,8 +159,9 @@
                   placeholder="Email"
                   autocomplete="email"
                 />
-                <span class="form__error" id="emailError"></span>
+                <!-- Email не перекладаємо — однаковий в обох мовах -->
               </div>
+              <span class="form__error" id="emailError"></span>
 
               <div class="form__group">
                 <textarea
@@ -183,6 +170,7 @@
                   class="form__textarea"
                   placeholder="Повідомлення"
                   rows="5"
+                  data-i18n-placeholder="form.message"
                 ></textarea>
                 <span class="form__error" id="messageError"></span>
               </div>
@@ -198,14 +186,16 @@
                   <line x1="22" y1="2" x2="11" y2="13"></line>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
-                <span class="form__btn-text">Надіслати</span>
+                <span class="form__btn-text" data-i18n="form.submit"
+                  >Надіслати</span
+                >
               </button>
 
               <div class="form__status" id="formStatus"></div>
             </form>
           </div>
 
-          <!-- CONTACT INFO -->
+          <!-- CONTACT INFO — не перекладаємо: номери, нікнейми, email -->
           <div class="contact__info">
             <a href="tel:+380936470424" class="contact__card">
               <div class="contact__card-icon">
@@ -259,6 +249,9 @@
         </div>
       </section>
     </main>
-    <footer>&copy; 2026 Artem Hrishyn · Всі права захищені</footer>
+
+    <footer data-i18n="footer.copyright">
+      &copy; 2026 Artem Hrishyn · Всі права захищені
+    </footer>
   </body>
 </html>
