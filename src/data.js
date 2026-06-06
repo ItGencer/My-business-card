@@ -125,7 +125,7 @@ export const TRANSLATIONS = {
     // Services data (рендерер окремо)
     'service.spa.title':  'Односторінкові сайти (SPA)',
     'service.spa.desc':   'Швидкі та інтерактивні SPA...',
-    'footer.copyright': '© 2024 Артем Грішин. Всі права захищені.'
+    'footer.copyright': '© 2026 Артем Грішин. Всі права захищені.'
   },
   en: {
     'nav.about':    'About',
@@ -151,6 +151,6 @@ export const TRANSLATIONS = {
 
     'service.spa.title': 'Single Page Applications (SPA)',
     'service.spa.desc':  'Fast and interactive SPAs with smooth navigation...',
-    'footer.copyright': '© 2024 Artem Grishin. All rights reserved.'
+    'footer.copyright': '© 2026 Artem Grishin. All rights reserved.'
   },
 };
