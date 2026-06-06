@@ -287,6 +287,7 @@ body {
     height: 28px;
     object-fit: contain;
     flex-shrink: 0;
+  filter: brightness(0) invert(1); // робить будь-яку SVG білою
   }
 
   &__title {
@@ -336,4 +337,8 @@ footer {
   text-align: center;
   background: var(--color-bg);
   transition: background 0.3s ease;
+}
+
+[data-theme="light"] .skill-card__icon {
+  filter: none; // темна іконка на світлому фоні — норм
 }

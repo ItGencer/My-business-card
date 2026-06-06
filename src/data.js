@@ -52,16 +52,7 @@ export const SERVICES = {
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>
       </svg>`,
-    },
-    {
-      title: 'Безкоштовний огляд портфоліо',
-      description: 'Безкоштовно подивлюся ваше портфоліо чи досвід — відверто та по суті.',
-      svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-        <polyline points="15 3 21 3 21 9"></polyline>
-        <line x1="10" y1="14" x2="21" y2="3"></line>
-      </svg>`,
-    },
+    }
   ],
   en: [
     {
@@ -88,16 +79,7 @@ export const SERVICES = {
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>
       </svg>`,
-    },
-    {
-      title: 'Free Portfolio Review',
-      description: 'I\'ll review your portfolio or experience for free — honestly and to the point.',
-      svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-        <polyline points="15 3 21 3 21 9"></polyline>
-        <line x1="10" y1="14" x2="21" y2="3"></line>
-      </svg>`,
-    },
+    }
   ],
 };
 
