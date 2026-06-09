@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 // ─── Reset ───────────────────────────────────────────────────
 * {
@@ -17,13 +17,20 @@ body {
   font-family: $font-main;
   background: var(--color-bg);
   color: var(--color-text);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 // ── Блок: intro ─────────────────────────────────────────────
 .intro {
   min-height: 50vh;
-  background: linear-gradient(135deg, $color-bg-from 0%, $color-bg-mid 40%, $color-bg-to 100%);
+  background: linear-gradient(
+    135deg,
+    $color-bg-from 0%,
+    $color-bg-mid 40%,
+    $color-bg-to 100%
+  );
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -105,7 +112,9 @@ body {
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
     cursor: pointer;
 
     &:hover {
@@ -145,7 +154,11 @@ body {
     position: absolute;
     inset: -40px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba($color-primary, 0.18) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba($color-primary, 0.18) 0%,
+      transparent 70%
+    );
     z-index: 0;
   }
 
@@ -173,7 +186,16 @@ body {
 
 // ── Блок: about ─────────────────────────────────────────────
 .about {
-  background: var(--about-bg, linear-gradient(to bottom, #ddeeff 0%, #ffffff 20%, #ffffff 80%, #ddeeff 100%));
+  background: var(
+    --about-bg,
+    linear-gradient(
+      to bottom,
+      #ddeeff 0%,
+      #ffffff 20%,
+      #ffffff 80%,
+      #ddeeff 100%
+    )
+  );
   padding: 100px 0;
   transition: background 0.3s ease;
 
@@ -253,81 +275,69 @@ body {
 
   &__list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
     list-style: none;
     padding: 0;
     margin: 0;
   }
-}
 
-// ── Блок: skill-card ────────────────────────────────────────
-.skill-card {
-  background: var(--color-card-bg);
-  border-radius: 16px;
-  padding: 20px 24px 18px;
-  box-shadow: 0 2px 12px rgba(26, 127, 232, 0.07);
-  border: 1px solid var(--color-border);
-  transition: box-shadow 0.2s, transform 0.2s, background 0.3s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(26, 127, 232, 0.15);
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-
-  &__icon {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    flex-shrink: 0;
-  filter: brightness(0) invert(1); // робить будь-яку SVG білою
-  }
-
-  &__title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--color-text-dark);
-    flex: 1;
-  }
-
-  &__percent {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    flex-shrink: 0;
-  }
-
-  &__bar-wrap {
-    height: 7px;
-    border-radius: 4px;
-    background: var(--color-bar-track);
-    overflow: hidden;
-  }
-
-  &__bar {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #3ab0ff 0%, $color-primary 100%);
-    width: 0;
-    transition: width 0.8s ease-out;
-  }
-}
-
-@media (max-width: $breakpoint-mobile) {
-  .skills {
+  @media (max-width: $breakpoint-mobile) {
     padding: 60px 0;
 
     &__list {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
+}
+
+// ── Блок: skill-card ────────────────────────────────────────
+// Живе на <li class="skills__item skill-card">
+.skill-card {
+  background: var(--color-card-bg);
+  border-radius: 14px;
+  padding: 16px 20px;           // менший padding — картка компактніша
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: row;          // іконка і текст в один рядок
+  align-items: center;
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.3s ease;
+  box-shadow: 0 4px 16px rgba(26, 127, 232, 0.10);
+
+  [data-theme="dark"] & {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.40);
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(26, 127, 232, 0.20);
+
+    [data-theme="dark"] & {
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.60);
+    }
+  }
+
+  &__icon {
+    width: 28px;                // менша іконка
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;             // не стискається при вузькому тексті
+    filter: brightness(0) invert(1); // темна тема — біла іконка
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    line-height: 1.3;
+  }
+}
+
+// Світла тема — повертаємо оригінальні кольори іконки
+// Селектор на реальний клас з DOM, а не вигаданий skills__list__icon
+[data-theme="light"] .skill-card__icon {
+  filter: none;
 }
 
 footer {
@@ -337,8 +347,4 @@ footer {
   text-align: center;
   background: var(--color-bg);
   transition: background 0.3s ease;
-}
-
-[data-theme="light"] .skill-card__icon {
-  filter: none; // темна іконка на світлому фоні — норм
 }
