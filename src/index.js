@@ -3,20 +3,19 @@
 // Логіка відокремлена від даних: дані — в data.js
 // ============================================================
 
-import './styles/style.scss';
-import './styles/header.scss';
-import './styles/contact.scss';
-import './styles/services.scss';
+import "./styles/style.scss";
+import "./styles/header.scss";
+import "./styles/contact.scss";
+import "./styles/services.scss";
 
-import artemPhoto from './assets/Artem-foto.png';
-import { SKILLS, SERVICES, TRANSLATIONS, EMAILJS_CONFIG } from './data.js';
+import artemPhoto from "./assets/Artem-foto.png";
+import { SKILLS, SERVICES, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
 
 // Поточна мова — зберігається між сесіями через localStorage
-let currentLang = localStorage.getItem('lang') || 'ua';
-
+let currentLang = localStorage.getItem("lang") || "ua";
 
 // ============================================================
-// SkillsRenderer — рендерить картки навичок з прогрес-барами
+// SkillsRenderer — рендерить картки навичок (іконка + назва)
 // ============================================================
 class SkillsRenderer {
   #container;
@@ -26,78 +25,43 @@ class SkillsRenderer {
     this.#container = document.querySelector(selector);
   }
 
-  // Приймає масив { title, icon, percent }
+  // Приймає масив { title, icon, percent } — percent ігнорується
   load(skillsArray) {
-    this.#skills = skillsArray.map(skill => ({
-      ...skill,
-      percent: Math.min(100, Math.max(0, skill.percent)), // обмежуємо 0–100
-    }));
+    this.#skills = skillsArray;
     return this; // повертає this для ланцюжка .load().render()
   }
-
+  
   render() {
-    if (!this.#container) {
-      console.warn('SkillsRenderer: контейнер не знайдено');
-      return;
-    }
-
-    // DocumentFragment — один reflow замість N вставок
-    const fragment = document.createDocumentFragment();
-
-    for (const skill of this.#skills) {
-      const li = document.createElement('li');
-      li.className = 'skills__item';
-
-      const card = document.createElement('div');
-      card.className = 'skill-card';
-
-      const header = document.createElement('div');
-      header.className = 'skill-card__header';
-
-      const img = Object.assign(document.createElement('img'), {
-        className: 'skill-card__icon',
-        src:       skill.icon,
-        alt:       skill.title,
-      });
-
-      const titleEl = Object.assign(document.createElement('span'), {
-        className:   'skill-card__title',
-        textContent: skill.title,
-      });
-
-      const pctEl = Object.assign(document.createElement('span'), {
-        className:   'skill-card__percent',
-        textContent: `${skill.percent}%`,
-      });
-
-      header.append(img, titleEl, pctEl);
-
-      const barWrap = document.createElement('div');
-      barWrap.className = 'skill-card__bar-wrap';
-
-      const bar = document.createElement('div');
-      bar.className = 'skill-card__bar';
-      bar.dataset.width = skill.percent; // збережено для анімації
-
-      barWrap.appendChild(bar);
-      card.append(header, barWrap);
-      li.appendChild(card);
-      fragment.appendChild(li);
-    }
-
-    this.#container.innerHTML = '';
-    this.#container.appendChild(fragment);
-
-    // Анімація ширини — після першого відмалювання браузером (width: 0 → percent%)
-    // width: inherit в @keyframes завжди дає 100%, тому використовуємо transition + rAF
-    requestAnimationFrame(() => {
-      this.#container.querySelectorAll('.skill-card__bar').forEach(bar => {
-        bar.style.width = bar.dataset.width + '%';
-      });
-    });
+  if (!this.#container) {
+    console.warn('SkillsRenderer: контейнер не знайдено');
+    return;
   }
-}
 
+  const fragment = document.createDocumentFragment();
+
+  for (const skill of this.#skills) {
+    const li = document.createElement('li');
+    li.className = 'skills__item skill-card'; // skill-card — окремий BEM-блок
+
+    const img = Object.assign(document.createElement('img'), {
+      className: 'skill-card__icon', // блок skill-card, елемент icon
+      src:       skill.icon,
+      alt:       skill.title,
+    });
+
+    const titleEl = Object.assign(document.createElement('span'), {
+      className:   'skill-card__title', // блок skill-card, елемент title
+      textContent: skill.title,
+    });
+
+    li.append(img, titleEl);
+    fragment.appendChild(li);
+  }
+
+  this.#container.innerHTML = '';
+  this.#container.appendChild(fragment);
+}
+}
 
 // ============================================================
 // ServicesRenderer — рендерить картки послуг
@@ -118,30 +82,30 @@ class ServicesRenderer {
 
   render() {
     if (!this.#container) {
-      console.warn('ServicesRenderer: контейнер не знайдено');
+      console.warn("ServicesRenderer: контейнер не знайдено");
       return;
     }
 
     const fragment = document.createDocumentFragment();
 
     for (const service of this.#services) {
-      const li = document.createElement('li');
-      li.className = 'services__item';
+      const li = document.createElement("li");
+      li.className = "services__item";
 
-      const card = document.createElement('div');
-      card.className = 'service-card';
+      const card = document.createElement("div");
+      card.className = "service-card";
 
-      const iconWrap = document.createElement('div');
-      iconWrap.className = 'service-card__icon-wrap';
+      const iconWrap = document.createElement("div");
+      iconWrap.className = "service-card__icon-wrap";
       iconWrap.innerHTML = service.svgIcon; // innerHTML лише для SVG-рядка
 
-      const titleEl = Object.assign(document.createElement('h3'), {
-        className:   'service-card__title',
+      const titleEl = Object.assign(document.createElement("h3"), {
+        className: "service-card__title",
         textContent: service.title,
       });
 
-      const descEl = Object.assign(document.createElement('p'), {
-        className:   'service-card__desc',
+      const descEl = Object.assign(document.createElement("p"), {
+        className: "service-card__desc",
         textContent: service.description,
       });
 
@@ -150,51 +114,49 @@ class ServicesRenderer {
       fragment.appendChild(li);
     }
 
-    this.#container.innerHTML = '';
+    this.#container.innerHTML = "";
     this.#container.appendChild(fragment);
   }
 }
-
 
 // ============================================================
 // Burger Menu — мобільне меню
 // ============================================================
 function initBurger() {
-  const burger = document.querySelector('.header__burger');
-  const nav    = document.querySelector('.header__nav');
+  const burger = document.querySelector(".header__burger");
+  const nav = document.querySelector(".header__nav");
   if (!burger || !nav) return;
 
-  burger.addEventListener('click', () => {
-    const isOpen = burger.classList.toggle('is-open');
-    nav.classList.toggle('is-open', isOpen);
-    burger.setAttribute('aria-expanded', isOpen);
+  burger.addEventListener("click", () => {
+    const isOpen = burger.classList.toggle("is-open");
+    nav.classList.toggle("is-open", isOpen);
+    burger.setAttribute("aria-expanded", isOpen);
   });
 
   // Закрити при кліку на посилання навігації
-  nav.querySelectorAll('.header__nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      burger.classList.remove('is-open');
-      nav.classList.remove('is-open');
-      burger.setAttribute('aria-expanded', 'false');
+  nav.querySelectorAll(".header__nav-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      burger.classList.remove("is-open");
+      nav.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
     });
   });
 
   // Закрити при кліку поза меню
-  document.addEventListener('click', (e) => {
+  document.addEventListener("click", (e) => {
     if (!burger.contains(e.target) && !nav.contains(e.target)) {
-      burger.classList.remove('is-open');
-      nav.classList.remove('is-open');
-      burger.setAttribute('aria-expanded', 'false');
+      burger.classList.remove("is-open");
+      nav.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
     }
   });
 }
-
 
 // ============================================================
 // Theme Toggle — світла / темна тема
 // ============================================================
 function initTheme() {
-  const btn = document.querySelector('.header__btn--theme');
+  const btn = document.querySelector(".header__btn--theme");
   if (!btn) return;
 
   const ICONS = {
@@ -215,19 +177,21 @@ function initTheme() {
   };
 
   const applyTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    btn.innerHTML = theme === 'dark' ? ICONS.dark : ICONS.light;
+    document.documentElement.setAttribute("data-theme", theme);
+    btn.innerHTML = theme === "dark" ? ICONS.dark : ICONS.light;
   };
 
-  applyTheme(localStorage.getItem('theme') || 'light');
+  applyTheme(localStorage.getItem("theme") || "light");
 
-  btn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', next);
+  btn.addEventListener("click", () => {
+    const next =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
+    localStorage.setItem("theme", next);
     applyTheme(next);
   });
 }
-
 
 // ============================================================
 // i18n — перемикач мови UA ↔ EN
@@ -237,26 +201,26 @@ function applyLang(lang) {
   if (!t) return;
 
   // Оновлюємо текстовий контент елементів з data-i18n
-  document.querySelectorAll('[data-i18n]').forEach(el => {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.dataset.i18n;
     if (t[key]) el.textContent = t[key];
   });
 
   // Оновлюємо placeholder у полях форми з data-i18n-placeholder
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.dataset.i18nPlaceholder;
     if (t[key]) el.placeholder = t[key];
   });
 
   // Перерендер послуг мовою що активна
-  new ServicesRenderer('#services-list').load(SERVICES[lang]).render();
+  new ServicesRenderer("#services-list").load(SERVICES[lang]).render();
 
   // Кнопка показує наступну мову (яку буде обрано при кліку)
-  const btn = document.querySelector('.header__btn--lang');
-  if (btn) btn.textContent = lang === 'ua' ? '🌐 EN' : '🌐 UA';
+  const btn = document.querySelector(".header__btn--lang");
+  if (btn) btn.textContent = lang === "ua" ? "🌐 EN" : "🌐 UA";
 
   currentLang = lang;
-  localStorage.setItem('lang', lang);
+  localStorage.setItem("lang", lang);
 }
 
 function initLang() {
@@ -264,36 +228,37 @@ function initLang() {
   applyLang(currentLang);
 
   // Перемикання при кліку на кнопку
-  document.querySelector('.header__btn--lang')?.addEventListener('click', () => {
-    applyLang(currentLang === 'ua' ? 'en' : 'ua');
-  });
+  document
+    .querySelector(".header__btn--lang")
+    ?.addEventListener("click", () => {
+      applyLang(currentLang === "ua" ? "en" : "ua");
+    });
 }
-
 
 // ============================================================
 // Форма зворотного зв'язку — валідація + EmailJS
 // ============================================================
 const FORM_FIELDS = {
-  name:    { inputId: 'userName',    errorId: 'nameError'    },
-  email:   { inputId: 'userEmail',   errorId: 'emailError'   },
-  message: { inputId: 'userMessage', errorId: 'messageError' },
+  name: { inputId: "userName", errorId: "nameError" },
+  email: { inputId: "userEmail", errorId: "emailError" },
+  message: { inputId: "userMessage", errorId: "messageError" },
 };
 
 function validateForm(name, email, message) {
   const errors = {};
-  if (!name.trim())    errors.name    = "Введіть ваше ім'я";
-  if (!email.trim())   errors.email   = 'Введіть email';
+  if (!name.trim()) errors.name = "Введіть ваше ім'я";
+  if (!email.trim()) errors.email = "Введіть email";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-                       errors.email   = 'Невірний формат email';
-  if (!message.trim()) errors.message = 'Введіть повідомлення';
+    errors.email = "Невірний формат email";
+  if (!message.trim()) errors.message = "Введіть повідомлення";
   return errors;
 }
 
 function clearErrors() {
   Object.values(FORM_FIELDS).forEach(({ inputId, errorId }) => {
-    document.getElementById(inputId)?.classList.remove('is-invalid');
+    document.getElementById(inputId)?.classList.remove("is-invalid");
     const err = document.getElementById(errorId);
-    if (err) err.textContent = '';
+    if (err) err.textContent = "";
   });
 }
 
@@ -301,17 +266,17 @@ function showErrors(errors) {
   clearErrors();
   Object.entries(errors).forEach(([key, msg]) => {
     const { inputId, errorId } = FORM_FIELDS[key];
-    document.getElementById(inputId)?.classList.add('is-invalid');
+    document.getElementById(inputId)?.classList.add("is-invalid");
     const err = document.getElementById(errorId);
     if (err) err.textContent = msg;
   });
 }
 
 function setStatus(message, type) {
-  const el = document.getElementById('formStatus');
+  const el = document.getElementById("formStatus");
   if (!el) return;
   el.textContent = message;
-  el.className   = `form__status ${type}`;
+  el.className = `form__status ${type}`;
 }
 
 // SVG іконка кнопки "Надіслати" — винесена окремо щоб не дублювати
@@ -321,33 +286,40 @@ const SEND_ICON = `<svg class="form__btn-icon" viewBox="0 0 24 24" fill="none" s
 </svg>`;
 
 function setLoading(isLoading) {
-  const btn     = document.getElementById('submitBtn');
-  const btnText = btn?.querySelector('.form__btn-text');
+  const btn = document.getElementById("submitBtn");
+  const btnText = btn?.querySelector(".form__btn-text");
   if (!btn) return;
 
   btn.disabled = isLoading;
 
-  const iconSlot = btn.querySelector('.form__btn-icon, .spinner');
+  const iconSlot = btn.querySelector(".form__btn-icon, .spinner");
   if (isLoading) {
-    iconSlot?.insertAdjacentHTML('afterend', '<span class="spinner"></span>');
+    iconSlot?.insertAdjacentHTML("afterend", '<span class="spinner"></span>');
     iconSlot?.remove();
-    if (btnText) btnText.textContent = 'Надсилаємо…';
+    if (btnText) btnText.textContent = "Надсилаємо…";
   } else {
-    iconSlot?.insertAdjacentHTML('afterend', SEND_ICON);
+    iconSlot?.insertAdjacentHTML("afterend", SEND_ICON);
     iconSlot?.remove();
-    if (btnText) btnText.textContent = 'Надіслати';
+    if (btnText) btnText.textContent = "Надіслати";
   }
 }
 
 // Завантажує EmailJS з CDN лише при першій відправці (lazy load)
 function loadEmailJS() {
   return new Promise((resolve, reject) => {
-    if (window.emailjs) { resolve(); return; }
+    if (window.emailjs) {
+      resolve();
+      return;
+    }
 
-    const script = document.createElement('script');
-    script.src   = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.onload  = () => { window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey }); resolve(); };
-    script.onerror = () => reject(new Error('EmailJS не завантажився'));
+    const script = document.createElement("script");
+    script.src =
+      "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    script.onload = () => {
+      window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+      resolve();
+    };
+    script.onerror = () => reject(new Error("EmailJS не завантажився"));
     document.head.appendChild(script);
   });
 }
@@ -355,16 +327,19 @@ function loadEmailJS() {
 async function handleSubmit(e) {
   e.preventDefault();
 
-  const nameEl    = document.getElementById('userName');
-  const emailEl   = document.getElementById('userEmail');
-  const messageEl = document.getElementById('userMessage');
+  const nameEl = document.getElementById("userName");
+  const emailEl = document.getElementById("userEmail");
+  const messageEl = document.getElementById("userMessage");
   if (!nameEl || !emailEl || !messageEl) return;
 
   clearErrors();
-  setStatus('', '');
+  setStatus("", "");
 
   const errors = validateForm(nameEl.value, emailEl.value, messageEl.value);
-  if (Object.keys(errors).length) { showErrors(errors); return; }
+  if (Object.keys(errors).length) {
+    showErrors(errors);
+    return;
+  }
 
   setLoading(true);
   try {
@@ -373,19 +348,25 @@ async function handleSubmit(e) {
       EMAILJS_CONFIG.serviceId,
       EMAILJS_CONFIG.templateId,
       {
-        user_name:  nameEl.value.trim(),
+        user_name: nameEl.value.trim(),
         user_email: emailEl.value.trim(),
-        message:    messageEl.value.trim(),
-        to_email:   EMAILJS_CONFIG.toEmail,
-        reply_to:   emailEl.value.trim(),
-      }
+        message: messageEl.value.trim(),
+        to_email: EMAILJS_CONFIG.toEmail,
+        reply_to: emailEl.value.trim(),
+      },
     );
-    setStatus('✅ Повідомлення надіслано! Відповім найближчим часом.', 'success');
+    setStatus(
+      "✅ Повідомлення надіслано! Відповім найближчим часом.",
+      "success",
+    );
     e.target.reset();
     clearErrors();
   } catch (err) {
-    console.error('EmailJS error:', err);
-    setStatus(`❌ Помилка відправки. Напишіть напряму: ${EMAILJS_CONFIG.toEmail}`, 'error');
+    console.error("EmailJS error:", err);
+    setStatus(
+      `❌ Помилка відправки. Напишіть напряму: ${EMAILJS_CONFIG.toEmail}`,
+      "error",
+    );
   } finally {
     setLoading(false);
   }
@@ -397,30 +378,31 @@ function initLiveValidation() {
     const input = document.getElementById(inputId);
     const error = document.getElementById(errorId);
     if (!input || !error) return;
-    input.addEventListener('input', function () {
-      this.classList.remove('is-invalid');
-      error.textContent = '';
+    input.addEventListener("input", function () {
+      this.classList.remove("is-invalid");
+      error.textContent = "";
     });
   });
 }
-
 
 // ============================================================
 // Init — точка старту застосунку
 // ============================================================
 
 // Skills рендеримо одразу — не залежить від DOM (шукає контейнер сам)
-new SkillsRenderer('#skills-list').load(SKILLS).render();
+new SkillsRenderer("#skills-list").load(SKILLS).render();
 
 // Решта — після повного завантаження DOM
-document.addEventListener('DOMContentLoaded', () => {
-  const photo = document.querySelector('.intro__photo-img');
+document.addEventListener("DOMContentLoaded", () => {
+  const photo = document.querySelector(".intro__photo-img");
   if (photo) photo.src = artemPhoto;
 
-  initBurger();         // мобільне меню
-  initTheme();          // тема light/dark
-  initLang();           // мова UA/EN + рендер Services
+  initBurger(); // мобільне меню
+  initTheme(); // тема light/dark
+  initLang(); // мова UA/EN + рендер Services
   initLiveValidation(); // валідація форми в реальному часі
 
-  document.getElementById('contactForm')?.addEventListener('submit', handleSubmit);
+  document
+    .getElementById("contactForm")
+    ?.addEventListener("submit", handleSubmit);
 });
