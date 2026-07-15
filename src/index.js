@@ -9,7 +9,7 @@ import "./styles/contact.scss";
 import "./styles/services.scss";
 
 import artemPhoto from "./assets/Artem-foto.png";
-import { SKILLS, SERVICES, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
+import { SKILLS, SERVICES, PORTFOLIO, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
 
 // Поточна мова — зберігається між сесіями через localStorage
 let currentLang = localStorage.getItem("lang") || "ua";
@@ -393,16 +393,115 @@ function initLiveValidation() {
 new SkillsRenderer("#skills-list").load(SKILLS).render();
 
 // Решта — після повного завантаження DOM
+
 document.addEventListener("DOMContentLoaded", () => {
   const photo = document.querySelector(".intro__photo-img");
   if (photo) photo.src = artemPhoto;
 
-  initBurger(); // мобільне меню
-  initTheme(); // тема light/dark
-  initLang(); // мова UA/EN + рендер Services
-  initLiveValidation(); // валідація форми в реальному часі
-
-  document
-    .getElementById("contactForm")
-    ?.addEventListener("submit", handleSubmit);
+  initBurger();
+  initTheme();
+  initLang();
+  initLiveValidation();
+  initPortfolio(); 
+  
+  document.getElementById("contactForm")?.addEventListener("submit", handleSubmit);
 });
+
+// ============================================================
+// PortfolioRenderer — рендерить картки з живими iframe-сайтами
+// ============================================================
+class PortfolioRenderer {
+  #container;
+  #items = [];
+
+  constructor(selector) {
+    this.#container = document.querySelector(selector);
+  }
+
+  load(items) {
+    this.#items = items;
+    return this;
+  }
+
+  render() {
+    if (!this.#container) {
+      console.warn("PortfolioRenderer: контейнер не знайдено");
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    for (const item of this.#items) {
+      const card = document.createElement("div");
+      card.className = "portfolio-card";
+
+      if (item.embeddable) {
+        card.innerHTML = `
+          <div class="portfolio-card__frame-wrap">
+            <iframe src="${item.url}" loading="lazy"
+              sandbox="allow-scripts allow-same-origin"></iframe>
+            <div class="portfolio-card__shield"></div>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="portfolio-card__fallback">
+            <span>${item.name}</span>
+          </div>
+        `;
+      }
+
+      card.innerHTML += `
+        <div class="portfolio-card__caption">
+          <span>${item.name}</span>
+          <a href="${item.url}" target="_blank" rel="noopener">↗</a>
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    }
+
+    this.#container.innerHTML = "";
+    this.#container.appendChild(fragment);
+  }
+}
+
+// ============================================================
+// initPortfolio — колесо миші, кнопки, прозорість по центру
+// ============================================================
+function initPortfolio() {
+  const track = document.getElementById("portfolioTrack");
+  const prevBtn = document.getElementById("portfolioPrev");
+  const nextBtn = document.getElementById("portfolioNext");
+  if (!track) return;
+
+  new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
+
+  const updateOpacity = () => {
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    track.querySelectorAll(".portfolio-card").forEach((card) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(trackCenter - cardCenter);
+      const maxDistance = track.clientWidth / 2 + card.offsetWidth / 2;
+      const opacity = Math.max(0.25, 1 - distance / maxDistance);
+      card.style.opacity = opacity.toFixed(2);
+    });
+  };
+
+  track.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    track.scrollBy({ left: e.deltaY, behavior: "auto" });
+  });
+
+  track.addEventListener("scroll", updateOpacity);
+
+  prevBtn?.addEventListener("click", () => {
+    track.scrollBy({ left: -track.clientWidth * 0.5, behavior: "smooth" });
+  });
+  nextBtn?.addEventListener("click", () => {
+    track.scrollBy({ left: track.clientWidth * 0.5, behavior: "smooth" });
+  });
+
+  // Початкове вирівнювання опацій після рендеру
+  requestAnimationFrame(updateOpacity);
+}
