@@ -154,3 +154,10 @@ export const TRANSLATIONS = {
     'footer.copyright': '© 2026 Artem Grishin. All rights reserved.'
   },
 };
+
+export const PORTFOLIO = [
+  { name: "Awake Agency",     url: "https://awake-agency-gamma.vercel.app/",         embeddable: true },
+  { name: "Surfing Template", url: "https://surfing-template.vercel.app/",           embeddable: true },
+  { name: "Peak Fit",         url: "https://peak-fit-fitnes-template.vercel.app/",   embeddable: true },
+  { name: "Cocoon Template",  url: "https://cocoontamplate.vercel.app/",             embeddable: true },
+];

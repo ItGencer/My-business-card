@@ -23,7 +23,12 @@
           <a href="#services" class="header__nav-link" data-i18n="nav.services"
             >Послуги</a
           >
-          <!-- <a href="#portfolio" class="header__nav-link" data-i18n="nav.portfolio">Портфоліо</a> -->
+          <a
+            href="#portfolio"
+            class="header__nav-link"
+            data-i18n="nav.portfolio"
+            >Портфоліо</a
+          >
           <a href="#contact" class="header__nav-link" data-i18n="nav.contact"
             >Контакти</a
           >
@@ -123,6 +128,37 @@
             <span class="services__line"></span>
           </div>
           <ul class="services__list" id="services-list"></ul>
+        </div>
+      </section>
+
+      <section class="portfolio" id="portfolio">
+        <div class="portfolio__container">
+          <div class="portfolio__header">
+            <h2 class="portfolio__title" data-i18n="portfolio.title">
+              Портфоліо
+            </h2>
+            <span class="portfolio__line"></span>
+          </div>
+
+          <div class="portfolio__wrapper">
+            <button
+              class="portfolio__nav portfolio__nav--left"
+              id="portfolioPrev"
+              aria-label="Назад"
+            >
+              ‹
+            </button>
+
+            <div class="portfolio__track" id="portfolioTrack"></div>
+
+            <button
+              class="portfolio__nav portfolio__nav--right"
+              id="portfolioNext"
+              aria-label="Далі"
+            >
+              ›
+            </button>
+          </div>
         </div>
       </section>
 
