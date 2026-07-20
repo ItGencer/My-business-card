@@ -477,9 +477,24 @@ function initPortfolio() {
 
   new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
 
+  const cards = Array.from(track.querySelectorAll(".portfolio-card"));
+  let currentIndex = 0;
+
+  const scrollToCard = (index, behavior = "smooth") => {
+    if (!cards.length) return;
+
+    const safeIndex = (index + cards.length) % cards.length;
+    currentIndex = safeIndex;
+    cards[safeIndex].scrollIntoView({
+      behavior,
+      block: "nearest",
+      inline: "center",
+    });
+  };
+
   const updateOpacity = () => {
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    track.querySelectorAll(".portfolio-card").forEach((card) => {
+    cards.forEach((card) => {
       const cardCenter = card.offsetLeft + card.offsetWidth / 2;
       const distance = Math.abs(trackCenter - cardCenter);
       const maxDistance = track.clientWidth / 2 + card.offsetWidth / 2;
@@ -488,20 +503,29 @@ function initPortfolio() {
     });
   };
 
-  track.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    track.scrollBy({ left: e.deltaY, behavior: "auto" });
-  });
+  const handleNext = () => scrollToCard(currentIndex + 1);
+  const handlePrev = () => scrollToCard(currentIndex - 1);
 
-  track.addEventListener("scroll", updateOpacity);
+  track.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    },
+    { passive: false }
+  );
 
-  prevBtn?.addEventListener("click", () => {
-    track.scrollBy({ left: -track.clientWidth * 0.5, behavior: "smooth" });
-  });
-  nextBtn?.addEventListener("click", () => {
-    track.scrollBy({ left: track.clientWidth * 0.5, behavior: "smooth" });
-  });
+  track.addEventListener("scroll", updateOpacity, { passive: true });
 
-  // Початкове вирівнювання опацій після рендеру
-  requestAnimationFrame(updateOpacity);
+  prevBtn?.addEventListener("click", handlePrev);
+  nextBtn?.addEventListener("click", handleNext);
+
+  requestAnimationFrame(() => {
+    updateOpacity();
+    scrollToCard(0, "auto");
+  });
 }

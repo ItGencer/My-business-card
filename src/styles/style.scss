@@ -355,12 +355,8 @@ footer {
   transition: background 0.3s ease;
 
   &__container {
-    width: 75%;              // 70–80% ширини сторінки
+    width: min(92%, 1400px);
     margin: 0 auto;
-
-    @media (max-width: $breakpoint-mobile) {
-      width: 92%;
-    }
   }
 
   &__header {
@@ -387,80 +383,133 @@ footer {
   &__wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
   }
 
   &__track {
+    flex: 1;
     display: flex;
-    gap: 10px;                        // відступ між блоками
+    gap: 20px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
     scroll-behavior: smooth;
+    padding: 8px 6px 24px;
     scrollbar-width: none;
-    &::-webkit-scrollbar { display: none; }
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__nav {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--color-border);
     background: var(--color-card-bg);
     color: var(--color-text-dark);
     font-size: 20px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 24px rgba(26, 127, 232, 0.12);
 
-    &:hover { transform: scale(1.08); }
+    &:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 28px rgba(26, 127, 232, 0.2);
+    }
   }
 }
 
 .portfolio-card {
   flex: 0 0 auto;
-  width: 360px;                       // фіксована ширина картки
+  width: min(88vw, 415px);
+  max-width: 440px;
   scroll-snap-align: center;
-  transition: opacity 0.2s ease;
+  opacity: 0.72;
+  filter: saturate(0.92);
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+
+  &:hover,
+  &.is-active {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.01);
+    filter: saturate(1.04);
+  }
 
   &__frame-wrap {
     position: relative;
     width: 100%;
-    height: 220px;
-    border-radius: 14px;
+    aspect-ratio: 16 / 10;
+    border-radius: 20px;
     overflow: hidden;
     border: 1px solid var(--color-border);
-    box-shadow: 0 4px 16px rgba(26, 127, 232, 0.10);
+    background: #f4f9ff;
+    box-shadow: 0 18px 42px rgba(26, 127, 232, 0.16);
+    isolation: isolate;
   }
 
   iframe {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
+    width: 1400px;
+    height: 1000px;
     border: 0;
-    pointer-events: none;             // блокує клік/редагування всередині
+    transform: scale(0.3);
+    transform-origin: top left;
+    pointer-events: none;
+    background: #fff;
+    display: block;
   }
 
   &__shield {
     position: absolute;
     inset: 0;
-    background: transparent;          // "щит" — лише перегляд
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    z-index: 2;
+    pointer-events: none;
   }
 
   &__fallback {
-    height: 220px;
+    height: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
+    border-radius: 20px;
     border: 1px dashed var(--color-border);
     color: var(--color-text-muted);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(238, 246, 255, 0.95));
   }
 
   &__caption {
     display: flex;
     justify-content: space-between;
-    padding: 10px 4px 0;
+    align-items: center;
+    padding: 12px 4px 0;
     color: var(--color-text-dark);
+    font-weight: 600;
 
-    a { color: $color-primary; text-decoration: none; }
+    a {
+      color: $color-primary;
+      text-decoration: none;
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    width: min(84vw, 360px);
+
+    &__frame-wrap {
+      aspect-ratio: 4 / 3;
+    }
+
+    iframe {
+      width: 1200px;
+      height: 860px;
+      transform: scale(0.28);
+    }
   }
 }
