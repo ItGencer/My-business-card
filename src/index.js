@@ -214,6 +214,7 @@ function applyLang(lang) {
 
   // Перерендер послуг мовою що активна
   new ServicesRenderer("#services-list").load(SERVICES[lang]).render();
+  updatePortfolioVisitLabels(lang);
 
   // Кнопка показує наступну мову (яку буде обрано при кліку)
   const btn = document.querySelector(".header__btn--lang");
@@ -410,6 +411,34 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 // PortfolioRenderer — рендерить картки з живими iframe-сайтами
 // ============================================================
+function getPortfolioVisitCopy(lang = currentLang, siteName = "site") {
+  const isEnglish = lang === "en";
+  const safeName = siteName || (isEnglish ? "site" : "сайт");
+
+  return {
+    text: isEnglish ? "Open site" : "Відкрити сайт",
+    aria: isEnglish
+      ? `Open ${safeName} in a new tab`
+      : `Відкрити ${safeName} у новій вкладці`,
+    preview: isEnglish
+      ? `Scroll preview of ${safeName}`
+      : `Прокрутити прев'ю ${safeName}`,
+  };
+}
+
+function updatePortfolioVisitLabels(lang = currentLang) {
+  document.querySelectorAll(".portfolio-card__visit").forEach((link) => {
+    const cardName =
+      link.closest(".portfolio-card")?.querySelector(".portfolio-card__name")
+        ?.textContent || "site";
+    const copy = getPortfolioVisitCopy(lang, cardName.trim());
+    const text = link.querySelector(".portfolio-card__visit-text");
+
+    if (text) text.textContent = copy.text;
+    link.setAttribute("aria-label", copy.aria);
+  });
+}
+
 class PortfolioRenderer {
   #container;
   #items = [];
@@ -434,12 +463,17 @@ class PortfolioRenderer {
     for (const item of this.#items) {
       const card = document.createElement("div");
       card.className = "portfolio-card";
+      const visitCopy = getPortfolioVisitCopy(currentLang, item.name);
 
       if (item.embeddable) {
         card.innerHTML = `
-          <div class="portfolio-card__frame-wrap">
-            <iframe src="${item.url}" loading="lazy"
-              sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
+            aria-label="${visitCopy.preview}">
+            <div class="portfolio-card__frame-canvas">
+              <iframe src="${item.url}" loading="lazy"
+                title="${item.name} preview"
+                sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
             <div class="portfolio-card__shield"></div>
           </div>
         `;
@@ -453,8 +487,12 @@ class PortfolioRenderer {
 
       card.innerHTML += `
         <div class="portfolio-card__caption">
-          <span>${item.name}</span>
-          <a href="${item.url}" target="_blank" rel="noopener">↗</a>
+          <span class="portfolio-card__name">${item.name}</span>
+          <a class="portfolio-card__visit" href="${item.url}" target="_blank"
+            rel="noopener" aria-label="${visitCopy.aria}">
+            <span class="portfolio-card__visit-text">${visitCopy.text}</span>
+            <span class="portfolio-card__visit-icon" aria-hidden="true">↗</span>
+          </a>
         </div>
       `;
 
@@ -466,8 +504,109 @@ class PortfolioRenderer {
   }
 }
 
+function initPortfolioPreviewScroll(container) {
+  const previews = Array.from(container.querySelectorAll("[data-preview-scroll]"));
+
+  previews.forEach((preview) => {
+    const iframe = preview.querySelector("iframe");
+    if (!iframe) return;
+
+    let offset = 0;
+    let dragStartY = 0;
+    let dragStartX = 0;
+    let dragStartOffset = 0;
+    let isDragging = false;
+
+    const readNumberVar = (name, fallback) => {
+      const value = parseFloat(getComputedStyle(preview).getPropertyValue(name));
+      return Number.isFinite(value) ? value : fallback;
+    };
+
+    const getScale = () => readNumberVar("--preview-scale", 0.3);
+    const getPreviewHeight = () => readNumberVar("--preview-height", 2400);
+    const getMaxOffset = () =>
+      Math.max(0, getPreviewHeight() - preview.clientHeight / getScale());
+
+    const setOffset = (nextOffset) => {
+      const maxOffset = getMaxOffset();
+      offset = Math.min(Math.max(nextOffset, 0), maxOffset);
+      iframe.style.setProperty("--preview-offset", `${-offset}px`);
+      preview.classList.toggle("is-preview-scrolled", offset > 8);
+    };
+
+    const scrollPreview = (delta) => {
+      setOffset(offset + delta / getScale());
+    };
+
+    preview.addEventListener(
+      "wheel",
+      (event) => {
+        if (!event.deltaY) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        scrollPreview(event.deltaY);
+      },
+      { passive: false }
+    );
+
+    preview.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse") return;
+
+      isDragging = true;
+      dragStartY = event.clientY;
+      dragStartX = event.clientX;
+      dragStartOffset = offset;
+      preview.setPointerCapture?.(event.pointerId);
+    });
+
+    preview.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+
+      const deltaY = dragStartY - event.clientY;
+      const deltaX = dragStartX - event.clientX;
+      if (Math.abs(deltaY) <= Math.abs(deltaX)) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      setOffset(dragStartOffset + deltaY / getScale());
+    });
+
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach((eventName) => {
+      preview.addEventListener(eventName, () => {
+        isDragging = false;
+      });
+    });
+
+    preview.addEventListener("keydown", (event) => {
+      const keyDeltas = {
+        ArrowDown: 120,
+        PageDown: 420,
+        ArrowUp: -120,
+        PageUp: -420,
+        Home: -Infinity,
+        End: Infinity,
+      };
+
+      if (!(event.key in keyDeltas)) return;
+
+      event.preventDefault();
+      const delta = keyDeltas[event.key];
+      if (delta === Infinity) {
+        setOffset(getMaxOffset());
+      } else if (delta === -Infinity) {
+        setOffset(0);
+      } else {
+        scrollPreview(delta);
+      }
+    });
+
+    window.addEventListener("resize", () => setOffset(offset), { passive: true });
+  });
+}
+
 // ============================================================
-// initPortfolio — колесо миші, кнопки, прозорість по центру
+// initPortfolio — колесо миші, кнопки, вертикальна прокрутка прев'ю
 // ============================================================
 function initPortfolio() {
   const track = document.getElementById("portfolioTrack");
@@ -479,6 +618,7 @@ function initPortfolio() {
 
   const cards = Array.from(track.querySelectorAll(".portfolio-card"));
   let currentIndex = 0;
+  initPortfolioPreviewScroll(track);
 
   const scrollToCard = (index, behavior = "smooth") => {
     if (!cards.length) return;
@@ -489,17 +629,6 @@ function initPortfolio() {
       behavior,
       block: "nearest",
       inline: "center",
-    });
-  };
-
-  const updateOpacity = () => {
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    cards.forEach((card) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(trackCenter - cardCenter);
-      const maxDistance = track.clientWidth / 2 + card.offsetWidth / 2;
-      const opacity = Math.max(0.25, 1 - distance / maxDistance);
-      card.style.opacity = opacity.toFixed(2);
     });
   };
 
@@ -519,13 +648,10 @@ function initPortfolio() {
     { passive: false }
   );
 
-  track.addEventListener("scroll", updateOpacity, { passive: true });
-
   prevBtn?.addEventListener("click", handlePrev);
   nextBtn?.addEventListener("click", handleNext);
 
   requestAnimationFrame(() => {
-    updateOpacity();
     scrollToCard(0, "auto");
   });
 }
