@@ -446,13 +446,15 @@ body {
   transition: background 0.3s ease;
 
   &__container {
-    width: min(92%, 1400px);
+    width: 100%;
     margin: 0 auto;
+    overflow: hidden;
   }
 
   &__header {
+    width: min(92%, 1400px);
     text-align: center;
-    margin-bottom: clamp(34px, 5vw, 56px);
+    margin: 0 auto clamp(34px, 5vw, 56px);
   }
 
   &__title {
@@ -472,109 +474,147 @@ body {
   }
 
   &__wrapper {
-    display: flex;
-    align-items: center;
-    gap: 18px;
+    --portfolio-edge-bg: #eef6ff;
+    --portfolio-edge-transparent: rgba(238, 246, 255, 0);
+    --portfolio-gap: clamp(16px, 2vw, 24px);
+    --portfolio-half-gap: clamp(8px, 1vw, 12px);
+
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 8px 0 30px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(34px, 7vw, 130px);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--portfolio-edge-bg) 0%, var(--portfolio-edge-transparent) 100%);
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--portfolio-edge-bg) 0%, var(--portfolio-edge-transparent) 100%);
+    }
+
+    [data-theme="dark"] & {
+      --portfolio-edge-bg: #0d1a2e;
+      --portfolio-edge-transparent: rgba(13, 26, 46, 0);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &__wrapper:hover .portfolio__track {
+      animation-play-state: paused;
+    }
   }
 
   &__track {
-    flex: 1;
-    min-width: 0;
     display: flex;
-    gap: 20px;
+    align-items: stretch;
+    gap: var(--portfolio-gap);
+    width: max-content;
+    min-width: max-content;
+    padding: 10px 0 28px;
+    animation: portfolio-marquee 48s linear infinite;
+    will-change: transform;
+  }
+
+  &__marquee-group {
+    display: flex;
+    align-items: stretch;
+    gap: var(--portfolio-gap);
+    flex: 0 0 auto;
+    min-width: max-content;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: 72px 0;
+
+    &__header {
+      width: min(92%, 640px);
+      margin-bottom: 34px;
+    }
+
+    &__wrapper {
+      --portfolio-gap: 14px;
+      --portfolio-half-gap: 7px;
+      padding: 4px 0 24px;
+    }
+
+    &__track {
+      padding: 6px 0 20px;
+      animation-duration: 42s;
+    }
+  }
+
+  @media (max-width: 500px) {
+    padding: 64px 0;
+
+    &__header {
+      margin-bottom: 28px;
+    }
+
+    &__title {
+      font-size: clamp(26px, 8vw, 32px);
+    }
+
+    &__wrapper {
+      --portfolio-gap: 12px;
+      --portfolio-half-gap: 6px;
+      padding-bottom: 18px;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+
+    &__track {
+      padding: 4px 0 18px;
+      animation-duration: 38s;
+    }
+  }
+}
+
+@keyframes portfolio-marquee {
+  to {
+    transform: translate3d(calc(-50% - var(--portfolio-half-gap)), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio__wrapper {
     overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scroll-behavior: smooth;
-    padding: 10px 8px 28px;
     scrollbar-width: none;
-    -ms-overflow-style: none;
-    overscroll-behavior-x: contain;
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
-  &__nav {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 1px solid rgba(26, 127, 232, 0.18);
-    background: var(--color-card-bg);
-    color: $color-primary;
-    font-size: 24px;
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
-    box-shadow: 0 10px 26px rgba(26, 127, 232, 0.14);
-
-    &:hover {
-      transform: translateY(-2px) scale(1.04);
-      border-color: $color-primary;
-      background: $color-primary;
-      color: #fff;
-      box-shadow: 0 14px 32px rgba(26, 127, 232, 0.24);
-    }
-
-    [data-theme="dark"] & {
-      border-color: rgba(100, 160, 230, 0.24);
-      background: rgba(15, 30, 53, 0.92);
-      color: #b9dcff;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
-    }
+  .portfolio__track {
+    animation: none;
+    transform: none;
   }
 
-  @media (max-width: $breakpoint-mobile) {
-    padding: 72px 0;
-
-    &__container {
-      width: min(92%, 640px);
-    }
-
-    &__header {
-      margin-bottom: 34px;
-    }
-
-    &__wrapper {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    &__track {
-      order: 1;
-      flex: 0 0 100%;
-      width: 100%;
-      gap: 14px;
-      padding: 6px 2px 18px;
-      scroll-snap-type: x mandatory;
-    }
-
-    &__nav {
-      order: 2;
-      width: 48px;
-      height: 48px;
-      margin-top: 2px;
-    }
-
-    &__nav--right {
-      order: 3;
-    }
+  .portfolio__marquee-group:last-child {
+    display: none;
   }
 }
 
 .portfolio-card {
   flex: 0 0 auto;
-  width: clamp(320px, 34vw, 430px);
+  width: clamp(300px, 31vw, 430px);
   max-width: 440px;
-  scroll-snap-align: center;
   opacity: 0.8;
   filter: saturate(0.96);
   transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
@@ -587,7 +627,6 @@ body {
   }
 
   &__frame-wrap {
-    --preview-width: 1400px;
     --preview-height: 2400px;
     --preview-scale: 0.3;
 
@@ -674,7 +713,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: var(--preview-width);
+    width: calc(100% / var(--preview-scale));
     height: var(--preview-height);
     transform: scale(var(--preview-scale));
     transform-origin: top left;
@@ -790,10 +829,9 @@ body {
   }
 
   @media (max-width: $breakpoint-mobile) {
-    width: min(100%, 340px);
+    width: clamp(260px, 82vw, 340px);
 
     &__frame-wrap {
-      --preview-width: 1120px;
       --preview-height: 2200px;
       --preview-scale: 0.31;
 
@@ -817,8 +855,50 @@ body {
     }
   }
 
+  @media (max-width: 500px) {
+    width: clamp(246px, 76vw, 330px);
+
+    &:hover,
+    &:focus-within {
+      transform: none;
+    }
+
+    &__frame-wrap {
+      --preview-height: 2100px;
+      --preview-scale: 0.29;
+
+      aspect-ratio: 4 / 3.15;
+      border-radius: 14px;
+
+      &::before {
+        right: 8px;
+      }
+
+      &::after {
+        right: 8px;
+        width: 6px;
+        height: 30px;
+      }
+    }
+
+    &__caption {
+      gap: 8px;
+      padding-top: 10px;
+    }
+
+    &__name {
+      font-size: 16px;
+      text-align: center;
+    }
+
+    &__visit {
+      min-height: 42px;
+      padding: 0 14px;
+    }
+  }
+
   @media (max-width: 380px) {
-    width: 100%;
+    width: clamp(228px, 74vw, 280px);
 
     &__visit-text {
       font-size: 13px;

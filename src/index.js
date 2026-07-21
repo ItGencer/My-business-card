@@ -325,6 +325,32 @@ function loadEmailJS() {
   });
 }
 
+function getContactEmailTitle() {
+  return currentLang === "en"
+    ? "New message from portfolio website"
+    : "Нове повідомлення з сайту-візитки";
+}
+
+function buildEmailTemplateParams({ name, email, message }) {
+  const trimmedName = name.trim();
+  const trimmedEmail = email.trim();
+  const trimmedMessage = message.trim();
+
+  return {
+    name: trimmedName,
+    email: trimmedEmail,
+    title: getContactEmailTitle(),
+    message: trimmedMessage,
+
+    // Backward-compatible aliases for the previous EmailJS template variables.
+    user_name: trimmedName,
+    user_email: trimmedEmail,
+
+    to_email: EMAILJS_CONFIG.toEmail,
+    reply_to: trimmedEmail,
+  };
+}
+
 async function handleSubmit(e) {
   e.preventDefault();
 
@@ -348,13 +374,11 @@ async function handleSubmit(e) {
     await window.emailjs.send(
       EMAILJS_CONFIG.serviceId,
       EMAILJS_CONFIG.templateId,
-      {
-        user_name: nameEl.value.trim(),
-        user_email: emailEl.value.trim(),
-        message: messageEl.value.trim(),
-        to_email: EMAILJS_CONFIG.toEmail,
-        reply_to: emailEl.value.trim(),
-      },
+      buildEmailTemplateParams({
+        name: nameEl.value,
+        email: emailEl.value,
+        message: messageEl.value,
+      }),
     );
     setStatus(
       "✅ Повідомлення надіслано! Відповім найближчим часом.",
@@ -458,49 +482,55 @@ class PortfolioRenderer {
       return;
     }
 
-    const fragment = document.createDocumentFragment();
+    this.#container.innerHTML = "";
 
-    for (const item of this.#items) {
-      const card = document.createElement("div");
-      card.className = "portfolio-card";
-      const visitCopy = getPortfolioVisitCopy(currentLang, item.name);
+    const renderGroup = () => {
+      const group = document.createElement("div");
+      group.className = "portfolio__marquee-group";
 
-      if (item.embeddable) {
-        card.innerHTML = `
-          <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
-            aria-label="${visitCopy.preview}">
-            <div class="portfolio-card__frame-canvas">
-              <iframe src="${item.url}" loading="lazy"
-                title="${item.name} preview"
-                sandbox="allow-scripts allow-same-origin"></iframe>
+      for (const item of this.#items) {
+        const card = document.createElement("div");
+        card.className = "portfolio-card";
+        const visitCopy = getPortfolioVisitCopy(currentLang, item.name);
+
+        if (item.embeddable) {
+          card.innerHTML = `
+            <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
+              aria-label="${visitCopy.preview}">
+              <div class="portfolio-card__frame-canvas">
+                <iframe src="${item.url}" loading="lazy"
+                  title="${item.name} preview"
+                  sandbox="allow-scripts allow-same-origin"></iframe>
+              </div>
+              <div class="portfolio-card__shield"></div>
             </div>
-            <div class="portfolio-card__shield"></div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="portfolio-card__fallback">
+              <span>${item.name}</span>
+            </div>
+          `;
+        }
+
+        card.innerHTML += `
+          <div class="portfolio-card__caption">
+            <span class="portfolio-card__name">${item.name}</span>
+            <a class="portfolio-card__visit" href="${item.url}" target="_blank"
+              rel="noopener" aria-label="${visitCopy.aria}">
+              <span class="portfolio-card__visit-text">${visitCopy.text}</span>
+              <span class="portfolio-card__visit-icon" aria-hidden="true">↗</span>
+            </a>
           </div>
         `;
-      } else {
-        card.innerHTML = `
-          <div class="portfolio-card__fallback">
-            <span>${item.name}</span>
-          </div>
-        `;
+
+        group.appendChild(card);
       }
 
-      card.innerHTML += `
-        <div class="portfolio-card__caption">
-          <span class="portfolio-card__name">${item.name}</span>
-          <a class="portfolio-card__visit" href="${item.url}" target="_blank"
-            rel="noopener" aria-label="${visitCopy.aria}">
-            <span class="portfolio-card__visit-text">${visitCopy.text}</span>
-            <span class="portfolio-card__visit-icon" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      `;
+      return group;
+    };
 
-      fragment.appendChild(card);
-    }
-
-    this.#container.innerHTML = "";
-    this.#container.appendChild(fragment);
+    this.#container.append(renderGroup(), renderGroup());
   }
 }
 
@@ -605,53 +635,10 @@ function initPortfolioPreviewScroll(container) {
   });
 }
 
-// ============================================================
-// initPortfolio — колесо миші, кнопки, вертикальна прокрутка прев'ю
-// ============================================================
 function initPortfolio() {
   const track = document.getElementById("portfolioTrack");
-  const prevBtn = document.getElementById("portfolioPrev");
-  const nextBtn = document.getElementById("portfolioNext");
   if (!track) return;
 
   new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
-
-  const cards = Array.from(track.querySelectorAll(".portfolio-card"));
-  let currentIndex = 0;
   initPortfolioPreviewScroll(track);
-
-  const scrollToCard = (index, behavior = "smooth") => {
-    if (!cards.length) return;
-
-    const safeIndex = (index + cards.length) % cards.length;
-    currentIndex = safeIndex;
-    cards[safeIndex].scrollIntoView({
-      behavior,
-      block: "nearest",
-      inline: "center",
-    });
-  };
-
-  const handleNext = () => scrollToCard(currentIndex + 1);
-  const handlePrev = () => scrollToCard(currentIndex - 1);
-
-  track.addEventListener(
-    "wheel",
-    (e) => {
-      e.preventDefault();
-      if (e.deltaY > 0) {
-        handleNext();
-      } else {
-        handlePrev();
-      }
-    },
-    { passive: false }
-  );
-
-  prevBtn?.addEventListener("click", handlePrev);
-  nextBtn?.addEventListener("click", handleNext);
-
-  requestAnimationFrame(() => {
-    scrollToCard(0, "auto");
-  });
 }
