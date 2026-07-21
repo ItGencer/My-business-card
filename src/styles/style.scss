@@ -8,6 +8,12 @@
   font-size: 16px;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 img {
   width: 100%;
   display: block;
@@ -15,6 +21,7 @@ img {
 
 body {
   font-family: $font-main;
+  min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
   transition:
@@ -24,7 +31,7 @@ body {
 
 // ── Блок: intro ─────────────────────────────────────────────
 .intro {
-  min-height: 50vh;
+  min-height: clamp(520px, 68vh, 720px);
   background: linear-gradient(
     135deg,
     $color-bg-from 0%,
@@ -44,7 +51,8 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 40px;
+    padding-top: 30px;
+    padding: clamp(48px, 7vw, 84px) clamp(20px, 5vw, 40px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -53,7 +61,8 @@ body {
     @media (max-width: $breakpoint-mobile) {
       flex-direction: column-reverse;
       text-align: center;
-      padding: 40px 20px;
+      gap: 28px;
+      padding: 60px 20px;
     }
   }
 
@@ -72,7 +81,7 @@ body {
   }
 
   &__title {
-    font-size: clamp(48px, 7vw, 80px);
+    font-size: clamp(42px, 7vw, 80px);
     font-weight: 800;
     line-height: 1.1;
     color: $color-primary;
@@ -103,10 +112,16 @@ body {
     @media (max-width: $breakpoint-mobile) {
       justify-content: center;
     }
+
+    @media (max-width: 480px) {
+      gap: 10px;
+    }
   }
 
   &__btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 14px 28px;
     border-radius: 50px;
     font-size: 15px;
@@ -116,6 +131,7 @@ body {
       transform 0.2s,
       box-shadow 0.2s;
     cursor: pointer;
+    text-align: center;
 
     &:hover {
       transform: translateY(-2px);
@@ -133,6 +149,12 @@ body {
       color: var(--color-text);
       border: 2px solid var(--color-border);
     }
+
+    @media (max-width: 480px) {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 18px;
+    }
   }
 
   &__photo-wrap {
@@ -147,6 +169,11 @@ body {
     @media (max-width: $breakpoint-mobile) {
       width: 240px;
       height: 240px;
+    }
+
+    @media (max-width: 420px) {
+      width: 200px;
+      height: 200px;
     }
   }
 
@@ -175,6 +202,11 @@ body {
       width: 220px;
       height: 220px;
     }
+
+    @media (max-width: 420px) {
+      width: 184px;
+      height: 184px;
+    }
   }
 
   &__photo-img {
@@ -196,22 +228,22 @@ body {
       #ddeeff 100%
     )
   );
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 100px) 0;
   transition: background 0.3s ease;
 
   &__container {
-    max-width: 780px;
+    width: min(92%, 780px);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0;
     text-align: center;
   }
 
   &__header {
-    margin-bottom: 48px;
+    margin-bottom: clamp(32px, 5vw, 48px);
   }
 
   &__title {
-    font-size: clamp(32px, 5vw, 48px);
+    font-size: clamp(28px, 5vw, 48px);
     font-weight: 700;
     color: var(--color-text-dark);
     margin-bottom: 16px;
@@ -230,7 +262,7 @@ body {
   &__text {
     display: grid;
     gap: 18px;
-    font-size: clamp(16px, 2vw, 18px);
+    font-size: clamp(15px, 2vw, 18px);
     line-height: 1.8;
     color: var(--color-text);
     max-width: 680px;
@@ -276,25 +308,27 @@ body {
 // ── Блок: skills ────────────────────────────────────────────
 .skills {
   background: var(--skills-bg, linear-gradient(to bottom, #ddeeff 0%, #eef6ff 15%, #eef6ff 85%, #ddeeff 100%));
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 100px) 0;
   transition: background 0.3s ease;
 
   &__container {
-    max-width: 1100px;
+    width: min(92%, 1100px);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0;
   }
 
   &__header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: clamp(32px, 5vw, 56px);
   }
 
   &__title {
-    font-size: clamp(28px, 4vw, 44px);
+    max-width: 680px;
+    margin: 0 auto 14px;
+    font-size: clamp(26px, 5vw, 44px);
     font-weight: 700;
     color: var(--color-text-dark);
-    margin-bottom: 14px;
+    line-height: 1.2;
   }
 
   &__line {
@@ -308,18 +342,36 @@ body {
 
   &__list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
+  @media (max-width: $breakpoint-tablet) {
+    &__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   @media (max-width: $breakpoint-mobile) {
-    padding: 60px 0;
+    padding: 68px 0;
 
     &__list {
       grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    &__container {
+      width: min(90%, 380px);
+    }
+
+    &__list {
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
   }
 }
@@ -328,13 +380,14 @@ body {
 // Живе на <li class="skills__item skill-card">
 .skill-card {
   background: var(--color-card-bg);
-  border-radius: 14px;
-  padding: 16px 20px;           // менший padding — картка компактніша
+  min-height: 72px;
+  border-radius: 10px;
+  padding: 18px 20px;
   border: 1px solid var(--color-border);
   display: flex;
-  flex-direction: row;          // іконка і текст в один рядок
+  flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   transition: box-shadow 0.2s, transform 0.2s, background 0.3s ease;
   box-shadow: 0 4px 16px rgba(26, 127, 232, 0.10);
 
@@ -352,18 +405,31 @@ body {
   }
 
   &__icon {
-    width: 28px;                // менша іконка
-    height: 28px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
-    flex-shrink: 0;             // не стискається при вузькому тексті
-    filter: brightness(0) invert(1); // темна тема — біла іконка
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
   }
 
   &__title {
-    font-size: 14px;
-    font-weight: 600;
+    min-width: 0;
+    font-size: clamp(14px, 1.7vw, 15px);
+    font-weight: 700;
     color: var(--color-text-dark);
     line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 520px) {
+    min-height: 66px;
+    padding: 16px 18px;
+    gap: 12px;
+
+    &__icon {
+      width: 28px;
+      height: 28px;
+    }
   }
 }
 
@@ -373,18 +439,10 @@ body {
   filter: none;
 }
 
-footer {
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  padding: 32px 0;
-  text-align: center;
-  background: var(--color-bg);
-  transition: background 0.3s ease;
-}
 
 .portfolio {
   background: var(--services-bg, linear-gradient(to bottom, #ddeeff 0%, #eef6ff 15%, #eef6ff 85%, #ddeeff 100%));
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 100px) 0;
   transition: background 0.3s ease;
 
   &__container {
@@ -394,11 +452,11 @@ footer {
 
   &__header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: clamp(34px, 5vw, 56px);
   }
 
   &__title {
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(28px, 5vw, 44px);
     font-weight: 700;
     color: var(--color-text-dark);
     margin-bottom: 14px;
@@ -477,7 +535,7 @@ footer {
     padding: 72px 0;
 
     &__container {
-      width: min(94%, 640px);
+      width: min(92%, 640px);
     }
 
     &__header {
@@ -514,7 +572,7 @@ footer {
 
 .portfolio-card {
   flex: 0 0 auto;
-  width: min(88vw, 415px);
+  width: clamp(320px, 34vw, 430px);
   max-width: 440px;
   scroll-snap-align: center;
   opacity: 0.8;
@@ -732,7 +790,7 @@ footer {
   }
 
   @media (max-width: $breakpoint-mobile) {
-    width: min(82vw, 340px);
+    width: min(100%, 340px);
 
     &__frame-wrap {
       --preview-width: 1120px;
@@ -758,4 +816,23 @@ footer {
       min-height: 44px;
     }
   }
+
+  @media (max-width: 380px) {
+    width: 100%;
+
+    &__visit-text {
+      font-size: 13px;
+    }
+  }
+}
+
+footer {
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 32px 16px;
+  text-align: center;
+  background: var(--color-bg);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  transition: background 0.3s ease;
 }
