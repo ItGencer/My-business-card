@@ -228,14 +228,47 @@ body {
   }
 
   &__text {
+    display: grid;
+    gap: 18px;
     font-size: clamp(16px, 2vw, 18px);
     line-height: 1.8;
     color: var(--color-text);
     max-width: 680px;
     margin: 0 auto;
+    text-align: left;
 
-    @media (max-width: $breakpoint-mobile) {
-      text-align: left;
+    p {
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    color: $color-primary;
+    font-size: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(26, 127, 232, 0.28);
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: #0f6ed2;
+      border-color: currentColor;
+      outline: none;
+    }
+
+    [data-theme="dark"] & {
+      color: #74b9ff;
+      border-color: rgba(116, 185, 255, 0.34);
+
+      &:hover,
+      &:focus-visible {
+        color: #9ed0ff;
+        border-color: currentColor;
+      }
     }
   }
 }
