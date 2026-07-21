@@ -30,7 +30,7 @@ export const SERVICES = {
   ua: [
     {
       title: 'Односторінкові сайти (SPA)',
-      description: 'Швидкі та інтерактивні SPA з плавною навігацією та сучасним UX.',
+      description: 'Швидкі, інтерактивні застосунки з плавною навігацією та сучасним UX.',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="16 18 22 12 16 6"></polyline>
         <polyline points="8 6 2 12 8 18"></polyline>
@@ -106,13 +106,16 @@ export const TRANSLATIONS = {
 
     // About
     'about.title': 'Про мене',
-    'about.text':  ' Привіт! Мене звати Артем Грішин. Я front-end розробник, який створює сучасні, швидкі та зручні веб-продукти. Я ціную деталі, чистий код і відповідальне ставлення до кожного проєкту. Моя мета — перетворити вашу ідею на надійний інтерфейс, який працюватиме бездоганно на будь-якому пристрої.',
+    'about.text.1': 'Я — Артем Грішин, front-end розробник. Створюю сайти-візитки та односторінкові сайти (SPA), орієнтовані на швидкість, чистий код і сучасний UX. Працюю зі стеком HTML/CSS/SCSS, JS/TS, Angular.',
+    'about.text.2': 'Кожен проєкт — поєднання технічної якості та уваги до деталей: від адаптивної верстки до плавної навігації. Мета — перетворити вашу ідею на функціональний і візуально продуманий сайт.',
+    'about.github.prefix': 'Приклади реалізованих робіт — на',
 
     // Skills
     'skills.title': 'Навички та технології',
 
     // Services
     'services.title': 'Послуги',
+    'services.note': 'Наразі беру перші проєкти безкоштовно — напрацьовую портфоліо на реальних кейсах.',
 
     // Contact
     'contact.title':    'Зв\'язатися зі мною',
@@ -137,10 +140,13 @@ export const TRANSLATIONS = {
     'intro.btn.contact': 'Get in touch',
 
     'about.title': 'About Me',
-    'about.text':  'Hello! My name is Artem Grishin. I am a front-end developer who creates modern, fast and user-friendly web products. I value details, clean code and a responsible attitude towards each project. My goal is to turn your idea into a reliable interface that will work flawlessly on any device.',
+    'about.text.1': 'I am Artem Grishin, a front-end developer. I create business card sites and single-page applications (SPA) focused on speed, clean code, and modern UX. I work with HTML/CSS/SCSS, JS/TS, and Angular.',
+    'about.text.2': 'Each project combines technical quality and attention to detail: from responsive layout to smooth navigation. The goal is to turn your idea into a functional and visually thoughtful website.',
+    'about.github.prefix': 'Examples of completed work are on',
 
     'skills.title': 'Skills & Technologies',
     'services.title': 'Services',
+    'services.note': 'For now, I am taking the first projects for free as I build my portfolio with real cases.',
 
     'contact.title':    'Contact Me',
     'contact.subtitle': 'Have a project or question? Write — I\'ll reply quickly.',
