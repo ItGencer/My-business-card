@@ -2,22 +2,22 @@
 
 .services {
   background: var(--services-bg, linear-gradient(to bottom, #ddeeff 0%, #f0f6ff 15%, #f0f6ff 85%, #ddeeff 100%));
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 100px) 0;
   transition: background 0.3s ease;
 
   &__container {
-    max-width: 1200px;
+    width: min(92%, 1200px);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0;
   }
 
   &__header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: clamp(34px, 5vw, 60px);
   }
 
   &__title {
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(28px, 5vw, 44px);
     font-weight: 700;
     color: var(--color-text-dark);
     margin-bottom: 14px;
@@ -35,7 +35,7 @@
   &__list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: clamp(16px, 2vw, 24px);
     list-style: none;
     padding: 0;
     margin: 0;
@@ -46,6 +46,8 @@
 
     @media (max-width: $breakpoint-mobile) {
       grid-template-columns: 1fr;
+      max-width: 520px;
+      margin: 0 auto;
     }
   }
 
@@ -94,13 +96,22 @@
       padding: 14px 16px 14px 42px;
       font-size: 14px;
     }
+
+    @media (max-width: 420px) {
+      padding: 14px 14px 14px 38px;
+
+      &::before {
+        left: 16px;
+      }
+    }
   }
 }
 
 .service-card {
   background: var(--color-card-bg);
-  border-radius: 20px;
-  padding: 32px 24px 28px;
+  height: 100%;
+  border-radius: 12px;
+  padding: clamp(22px, 3vw, 32px) clamp(18px, 2.5vw, 24px) clamp(22px, 3vw, 28px);
   border: 1px solid var(--color-border);
   box-shadow: 0 2px 16px rgba(26, 127, 232, 0.06);
   transition: transform 0.25s, box-shadow 0.25s, background 0.3s ease;
@@ -129,7 +140,7 @@
   }
 
   &__title {
-    font-size: 17px;
+    font-size: clamp(16px, 1.8vw, 18px);
     font-weight: 700;
     color: var(--color-text-dark);
     margin-bottom: 10px;
@@ -137,7 +148,7 @@
   }
 
   &__desc {
-    font-size: 14px;
+    font-size: clamp(14px, 1.6vw, 15px);
     line-height: 1.7;
     color: var(--color-text);
   }
