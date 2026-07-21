@@ -115,7 +115,6 @@ export const TRANSLATIONS = {
 
     // Services
     'services.title': 'Послуги',
-    'services.note': 'Наразі беру перші проєкти безкоштовно — напрацьовую портфоліо на реальних кейсах.',
 
     // Contact
     'contact.title':    'Зв\'язатися зі мною',
@@ -146,7 +145,6 @@ export const TRANSLATIONS = {
 
     'skills.title': 'Skills & Technologies',
     'services.title': 'Services',
-    'services.note': 'For now, I am taking the first projects for free as I build my portfolio with real cases.',
 
     'contact.title':    'Contact Me',
     'contact.subtitle': 'Have a project or question? Write — I\'ll reply quickly.',
