@@ -96,20 +96,18 @@
           <div class="intro__photo-wrap">
             <div class="intro__glow"></div>
             <div class="intro__photo">
-              <img
-                src="./assets/Artem-foto-640.jpg"
-                srcset="
-                  ./assets/Artem-foto-360.jpg 360w,
-                  ./assets/Artem-foto-640.jpg 640w
-                "
-                sizes="(max-width: 420px) 184px, (max-width: 768px) 220px, 320px"
-                alt="Артем Грішин"
-                class="intro__photo-img"
-                width="640"
-                height="799"
-                decoding="async"
-                fetchpriority="high"
-              />
+              <picture>
+                <source srcset="./assets/Artem-foto.avif" type="image/avif" />
+                <img
+                  src="./assets/Artem-foto.png"
+                  alt="Артем Грішин"
+                  class="intro__photo-img"
+                  width="640"
+                  height="640"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </picture>
             </div>
           </div>
         </div>
@@ -122,10 +120,20 @@
             <span class="about__line"></span>
           </div>
           <div class="about__text">
-            <p data-i18n="about.text.1"></p>
-            <p data-i18n="about.text.2"></p>
+            <p data-i18n="about.text.1">
+              Я — Артем Грішин, front-end розробник. Створюю сайти-візитки та
+              односторінкові сайти (SPA), орієнтовані на швидкість, чистий код
+              і сучасний UX. Працюю зі стеком HTML/CSS/SCSS, JS/TS, Angular.
+            </p>
+            <p data-i18n="about.text.2">
+              Кожен проєкт — поєднання технічної якості та уваги до деталей:
+              від адаптивної верстки до плавної навігації. Мета — перетворити
+              вашу ідею на функціональний і візуально продуманий сайт.
+            </p>
             <p>
-              <span data-i18n="about.github.prefix"></span>
+              <span data-i18n="about.github.prefix">
+                Приклади реалізованих робіт — на
+              </span>
               <a
                 class="about__link"
                 href="https://github.com/ItGencer"
@@ -146,7 +154,60 @@
             </h2>
             <span class="skills__line"></span>
           </div>
-          <ul class="skills__list" id="skills-list"></ul>
+          <ul class="skills__list" id="skills-list">
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/html5.svg"
+                alt="HTML5 / CSS3"
+              />
+              <span class="skill-card__title">HTML5 / CSS3</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/sass.svg"
+                alt="SASS / SCSS"
+              />
+              <span class="skill-card__title">SASS / SCSS</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/js.svg"
+                alt="JavaScript"
+              />
+              <span class="skill-card__title">JavaScript</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/ts.svg"
+                alt="TypeScript"
+              />
+              <span class="skill-card__title">TypeScript</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/github.svg"
+                alt="GitHUB"
+              />
+              <span class="skill-card__title">GitHUB</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img
+                class="skill-card__icon"
+                src="./assets/angular.svg"
+                alt="Angular"
+              />
+              <span class="skill-card__title">Angular</span>
+            </li>
+            <li class="skills__item skill-card">
+              <img class="skill-card__icon" src="./assets/bem.svg" alt="BEM" />
+              <span class="skill-card__title">BEM</span>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -247,9 +308,6 @@
           <!-- CONTACT INFO — не перекладаємо: номери, нікнейми, email -->
           <div class="contact__info">
             <div class="contact__info-header">
-              <p class="contact__info-kicker" data-i18n="contact.info.kicker">
-                Прямі контакти
-              </p>
               <h3 class="contact__info-title" data-i18n="contact.info.title">
                 Оберіть зручний спосіб зв'язку
               </h3>

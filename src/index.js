@@ -8,12 +8,15 @@ import "./styles/header.scss";
 import "./styles/contact.scss";
 import "./styles/services.scss";
 
-import "./assets/Artem-foto-360.jpg";
-import "./assets/Artem-foto-640.jpg";
+import "./assets/Artem-foto.png";
+import "./assets/Artem-foto.avif";
 import { SKILLS, SERVICES, PORTFOLIO, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
 
 // Поточна мова — зберігається між сесіями через localStorage
 let currentLang = localStorage.getItem("lang") || "ua";
+
+const createEl = (tag, props = {}) =>
+  Object.assign(document.createElement(tag), props);
 
 // ============================================================
 // SkillsRenderer — рендерить картки навичок (іконка + назва)
@@ -44,13 +47,13 @@ class SkillsRenderer {
     const li = document.createElement('li');
     li.className = 'skills__item skill-card'; // skill-card — окремий BEM-блок
 
-    const img = Object.assign(document.createElement('img'), {
+    const img = createEl('img', {
       className: 'skill-card__icon', // блок skill-card, елемент icon
       src:       skill.icon,
       alt:       skill.title,
     });
 
-    const titleEl = Object.assign(document.createElement('span'), {
+    const titleEl = createEl('span', {
       className:   'skill-card__title', // блок skill-card, елемент title
       textContent: skill.title,
     });
@@ -100,12 +103,12 @@ class ServicesRenderer {
       iconWrap.className = "service-card__icon-wrap";
       iconWrap.innerHTML = service.svgIcon; // innerHTML лише для SVG-рядка
 
-      const titleEl = Object.assign(document.createElement("h3"), {
+      const titleEl = createEl("h3", {
         className: "service-card__title",
         textContent: service.title,
       });
 
-      const descEl = Object.assign(document.createElement("p"), {
+      const descEl = createEl("p", {
         className: "service-card__desc",
         textContent: service.description,
       });
@@ -417,13 +420,13 @@ function initLiveValidation() {
 
 // Skills рендеримо одразу — не залежить від DOM (шукає контейнер сам)
 new SkillsRenderer("#skills-list").load(SKILLS).render();
+initTheme();
+initLang();
 
 // Решта — після повного завантаження DOM
 
 document.addEventListener("DOMContentLoaded", () => {
   initBurger();
-  initTheme();
-  initLang();
   initLiveValidation();
   initPortfolio(); 
   

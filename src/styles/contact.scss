@@ -73,33 +73,25 @@ $color-success: #18713a;
 
   &__info {
     display: grid;
-    gap: 14px;
+    gap: 12px;
     text-align: left;
   }
 
   &__info-header {
-    padding: 2px 4px 8px;
-  }
-
-  &__info-kicker {
-    color: $color-primary;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-    text-transform: uppercase;
+    padding: 0 4px 8px;
   }
 
   &__info-title {
     color: var(--color-text-dark);
-    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+    font-size: clamp(1.08rem, 2vw, 1.32rem);
+    font-weight: 700;
     line-height: 1.25;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   &__info-subtitle {
     color: var(--color-text);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.6;
   }
 
@@ -108,15 +100,15 @@ $color-success: #18713a;
     position: relative;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 15px;
     overflow: hidden;
     background:
       linear-gradient(135deg, rgba(9, 105, 218, 0.08), rgba(255, 255, 255, 0)),
       var(--color-card-bg);
     border: 1px solid var(--color-border);
     border-radius: $contact-radius;
-    padding: 18px 20px 18px 22px;
-    box-shadow: 0 14px 32px rgba(9, 105, 218, 0.08);
+    padding: 15px 18px 15px 20px;
+    box-shadow: 0 12px 28px rgba(9, 105, 218, 0.07);
     cursor: pointer;
     text-decoration: none;
     transition:
@@ -135,7 +127,7 @@ $color-success: #18713a;
 
     &:hover,
     &:focus-visible {
-      box-shadow: 0 18px 42px rgba(9, 105, 218, 0.16);
+      box-shadow: 0 16px 36px rgba(9, 105, 218, 0.14);
       border-color: color.change($color-primary, $alpha: 0.42);
       transform: translateY(-2px);
       outline: none;
@@ -143,7 +135,7 @@ $color-success: #18713a;
 
     &:focus-visible {
       box-shadow:
-        0 18px 42px rgba(9, 105, 218, 0.16),
+        0 16px 36px rgba(9, 105, 218, 0.14),
         0 0 0 3px rgba(9, 105, 218, 0.18);
     }
 
@@ -161,19 +153,19 @@ $color-success: #18713a;
 
     &-icon {
       flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
       background:
         linear-gradient(135deg, var(--contact-accent), color.adjust($color-primary, $lightness: -7%));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 12px 24px rgba(9, 105, 218, 0.22);
+      box-shadow: 0 10px 20px rgba(9, 105, 218, 0.18);
 
       svg {
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
         fill: #fff;
       }
     }
@@ -181,21 +173,21 @@ $color-success: #18713a;
     &-text {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       min-width: 0;
     }
 
     &-label {
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       color: var(--color-text-muted);
       text-transform: uppercase;
     }
 
     &-value {
-      font-size: clamp(0.96rem, 1.7vw, 1.06rem);
-      font-weight: 800;
+      font-size: clamp(0.9rem, 1.5vw, 0.98rem);
+      font-weight: 700;
       color: var(--color-text-dark);
       overflow-wrap: anywhere;
     }
@@ -206,8 +198,8 @@ $color-success: #18713a;
       gap: 6px;
       width: fit-content;
       color: var(--contact-accent);
-      font-size: 0.84rem;
-      font-weight: 800;
+      font-size: 0.8rem;
+      font-weight: 700;
       line-height: 1.35;
 
       &::after {
@@ -221,12 +213,12 @@ $color-success: #18713a;
       background:
         linear-gradient(135deg, rgba(74, 163, 255, 0.13), rgba(7, 18, 33, 0)),
         var(--color-card-bg);
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.30);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
 
       &:hover,
       &:focus-visible {
         border-color: rgba(116, 185, 255, 0.40);
-        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.40);
       }
 
       &-action {
@@ -236,17 +228,22 @@ $color-success: #18713a;
 
     @media (max-width: 420px) {
       align-items: flex-start;
-      gap: 14px;
-      padding: 16px 14px 16px 18px;
+      gap: 12px;
+      padding: 14px 13px 14px 17px;
 
       &-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
       }
 
       &-value {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
     }
   }

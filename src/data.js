@@ -119,7 +119,6 @@ export const TRANSLATIONS = {
     // Contact
     'contact.title':    'Зв\'язатися зі мною',
     'contact.subtitle': 'Маєте проєкт або питання? Напишіть — відповім швидко.',
-    'contact.info.kicker': 'Прямі контакти',
     'contact.info.title': 'Оберіть зручний спосіб зв\'язку',
     'contact.info.subtitle': 'Телефон, Telegram або email — усі канали активні.',
     'contact.action.phone': 'Подзвонити',
@@ -154,7 +153,6 @@ export const TRANSLATIONS = {
 
     'contact.title':    'Contact Me',
     'contact.subtitle': 'Have a project or question? Write — I\'ll reply quickly.',
-    'contact.info.kicker': 'Direct Contacts',
     'contact.info.title': 'Choose a convenient way to connect',
     'contact.info.subtitle': 'Phone, Telegram, or email — every channel is active.',
     'contact.action.phone': 'Call',
