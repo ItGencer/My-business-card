@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Сайт-візитка Артема Грішина, front-end розробника. Послуги зі створення сайтів-візиток, SPA та сучасної front-end розробки."
+    />
     <title>Hrishyn Artem Card</title>
     <link
       rel="icon"
@@ -58,7 +62,7 @@
       </div>
     </header>
 
-    <main >
+    <main>
       <section class="intro" id="head">
         <div class="intro__container">
           <div class="intro__content">
@@ -93,9 +97,18 @@
             <div class="intro__glow"></div>
             <div class="intro__photo">
               <img
-                src="./assets/Artem-foto.png"
+                src="./assets/Artem-foto-640.jpg"
+                srcset="
+                  ./assets/Artem-foto-360.jpg 360w,
+                  ./assets/Artem-foto-640.jpg 640w
+                "
+                sizes="(max-width: 420px) 184px, (max-width: 768px) 220px, 320px"
                 alt="Артем Грішин"
                 class="intro__photo-img"
+                width="640"
+                height="799"
+                decoding="async"
+                fetchpriority="high"
               />
             </div>
           </div>
@@ -233,7 +246,25 @@
 
           <!-- CONTACT INFO — не перекладаємо: номери, нікнейми, email -->
           <div class="contact__info">
-            <a href="tel:+380936470424" class="contact__card">
+            <div class="contact__info-header">
+              <p class="contact__info-kicker" data-i18n="contact.info.kicker">
+                Прямі контакти
+              </p>
+              <h3 class="contact__info-title" data-i18n="contact.info.title">
+                Оберіть зручний спосіб зв'язку
+              </h3>
+              <p
+                class="contact__info-subtitle"
+                data-i18n="contact.info.subtitle"
+              >
+                Телефон, Telegram або email — усі канали активні.
+              </p>
+            </div>
+
+            <a
+              href="tel:+380936470424"
+              class="contact__card contact__card--phone"
+            >
               <div class="contact__card-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path
@@ -244,6 +275,11 @@
               <div class="contact__card-text">
                 <span class="contact__card-label">PHONE</span>
                 <span class="contact__card-value">+380 93 647 0424</span>
+                <span
+                  class="contact__card-action"
+                  data-i18n="contact.action.phone"
+                  >Подзвонити</span
+                >
               </div>
             </a>
 
@@ -251,7 +287,7 @@
               href="https://t.me/gencerIT"
               target="_blank"
               rel="noopener"
-              class="contact__card"
+              class="contact__card contact__card--telegram"
             >
               <div class="contact__card-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -263,10 +299,18 @@
               <div class="contact__card-text">
                 <span class="contact__card-label">TELEGRAM</span>
                 <span class="contact__card-value">@gencerIT</span>
+                <span
+                  class="contact__card-action"
+                  data-i18n="contact.action.telegram"
+                  >Написати в Telegram</span
+                >
               </div>
             </a>
 
-            <a href="mailto:gencer.it.1989@gmail.com" class="contact__card">
+            <a
+              href="mailto:gencer.it.1989@gmail.com"
+              class="contact__card contact__card--email"
+            >
               <div class="contact__card-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path
@@ -278,6 +322,11 @@
                 <span class="contact__card-label">EMAIL</span>
                 <span class="contact__card-value"
                   >gencer.it.1989@gmail.com</span
+                >
+                <span
+                  class="contact__card-action"
+                  data-i18n="contact.action.email"
+                  >Написати email</span
                 >
               </div>
             </a>

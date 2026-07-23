@@ -8,7 +8,8 @@ import "./styles/header.scss";
 import "./styles/contact.scss";
 import "./styles/services.scss";
 
-import artemPhoto from "./assets/Artem-foto.png";
+import "./assets/Artem-foto-360.jpg";
+import "./assets/Artem-foto-640.jpg";
 import { SKILLS, SERVICES, PORTFOLIO, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
 
 // Поточна мова — зберігається між сесіями через localStorage
@@ -420,9 +421,6 @@ new SkillsRenderer("#skills-list").load(SKILLS).render();
 // Решта — після повного завантаження DOM
 
 document.addEventListener("DOMContentLoaded", () => {
-  const photo = document.querySelector(".intro__photo-img");
-  if (photo) photo.src = artemPhoto;
-
   initBurger();
   initTheme();
   initLang();
@@ -498,9 +496,10 @@ class PortfolioRenderer {
             <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
               aria-label="${visitCopy.preview}">
               <div class="portfolio-card__frame-canvas">
-                <iframe src="${item.url}" loading="lazy"
+                <iframe data-src="${item.url}" loading="lazy"
                   title="${item.name} preview"
-                  sandbox="allow-scripts allow-same-origin"></iframe>
+                  sandbox="allow-scripts allow-same-origin"
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
               <div class="portfolio-card__shield"></div>
             </div>
@@ -635,10 +634,58 @@ function initPortfolioPreviewScroll(container) {
   });
 }
 
+function initPortfolioPreviewLoading(container) {
+  const previews = Array.from(container.querySelectorAll("[data-preview-scroll]"));
+
+  const loadPreview = (preview) => {
+    const iframe = preview.querySelector("iframe[data-src]");
+    if (!iframe) return;
+
+    preview.classList.add("is-preview-loading");
+    iframe.src = iframe.dataset.src;
+    iframe.removeAttribute("data-src");
+    iframe.addEventListener(
+      "load",
+      () => {
+        preview.classList.add("is-preview-loaded");
+        preview.classList.remove("is-preview-loading");
+      },
+      { once: true },
+    );
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          loadPreview(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "420px 0px" },
+    );
+
+    previews.forEach((preview) => observer.observe(preview));
+  } else {
+    previews.slice(0, PORTFOLIO.length).forEach(loadPreview);
+  }
+
+  previews.forEach((preview) => {
+    preview.addEventListener("pointerenter", () => loadPreview(preview), {
+      once: true,
+    });
+    preview.addEventListener("focusin", () => loadPreview(preview), {
+      once: true,
+    });
+  });
+}
+
 function initPortfolio() {
   const track = document.getElementById("portfolioTrack");
   if (!track) return;
 
   new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
+  initPortfolioPreviewLoading(track);
   initPortfolioPreviewScroll(track);
 }
