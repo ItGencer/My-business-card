@@ -8,11 +8,15 @@ import "./styles/header.scss";
 import "./styles/contact.scss";
 import "./styles/services.scss";
 
-import artemPhoto from "./assets/Artem-foto.png";
+import "./assets/Artem-foto.png";
+import "./assets/Artem-foto.avif";
 import { SKILLS, SERVICES, PORTFOLIO, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
 
 // Поточна мова — зберігається між сесіями через localStorage
 let currentLang = localStorage.getItem("lang") || "ua";
+
+const createEl = (tag, props = {}) =>
+  Object.assign(document.createElement(tag), props);
 
 // ============================================================
 // SkillsRenderer — рендерить картки навичок (іконка + назва)
@@ -43,13 +47,13 @@ class SkillsRenderer {
     const li = document.createElement('li');
     li.className = 'skills__item skill-card'; // skill-card — окремий BEM-блок
 
-    const img = Object.assign(document.createElement('img'), {
+    const img = createEl('img', {
       className: 'skill-card__icon', // блок skill-card, елемент icon
       src:       skill.icon,
       alt:       skill.title,
     });
 
-    const titleEl = Object.assign(document.createElement('span'), {
+    const titleEl = createEl('span', {
       className:   'skill-card__title', // блок skill-card, елемент title
       textContent: skill.title,
     });
@@ -99,12 +103,12 @@ class ServicesRenderer {
       iconWrap.className = "service-card__icon-wrap";
       iconWrap.innerHTML = service.svgIcon; // innerHTML лише для SVG-рядка
 
-      const titleEl = Object.assign(document.createElement("h3"), {
+      const titleEl = createEl("h3", {
         className: "service-card__title",
         textContent: service.title,
       });
 
-      const descEl = Object.assign(document.createElement("p"), {
+      const descEl = createEl("p", {
         className: "service-card__desc",
         textContent: service.description,
       });
@@ -416,16 +420,13 @@ function initLiveValidation() {
 
 // Skills рендеримо одразу — не залежить від DOM (шукає контейнер сам)
 new SkillsRenderer("#skills-list").load(SKILLS).render();
+initTheme();
+initLang();
 
 // Решта — після повного завантаження DOM
 
 document.addEventListener("DOMContentLoaded", () => {
-  const photo = document.querySelector(".intro__photo-img");
-  if (photo) photo.src = artemPhoto;
-
   initBurger();
-  initTheme();
-  initLang();
   initLiveValidation();
   initPortfolio(); 
   
@@ -498,9 +499,10 @@ class PortfolioRenderer {
             <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
               aria-label="${visitCopy.preview}">
               <div class="portfolio-card__frame-canvas">
-                <iframe src="${item.url}" loading="lazy"
+                <iframe data-src="${item.url}" loading="lazy"
                   title="${item.name} preview"
-                  sandbox="allow-scripts allow-same-origin"></iframe>
+                  sandbox="allow-scripts allow-same-origin"
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
               <div class="portfolio-card__shield"></div>
             </div>
@@ -635,10 +637,58 @@ function initPortfolioPreviewScroll(container) {
   });
 }
 
+function initPortfolioPreviewLoading(container) {
+  const previews = Array.from(container.querySelectorAll("[data-preview-scroll]"));
+
+  const loadPreview = (preview) => {
+    const iframe = preview.querySelector("iframe[data-src]");
+    if (!iframe) return;
+
+    preview.classList.add("is-preview-loading");
+    iframe.src = iframe.dataset.src;
+    iframe.removeAttribute("data-src");
+    iframe.addEventListener(
+      "load",
+      () => {
+        preview.classList.add("is-preview-loaded");
+        preview.classList.remove("is-preview-loading");
+      },
+      { once: true },
+    );
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          loadPreview(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "420px 0px" },
+    );
+
+    previews.forEach((preview) => observer.observe(preview));
+  } else {
+    previews.slice(0, PORTFOLIO.length).forEach(loadPreview);
+  }
+
+  previews.forEach((preview) => {
+    preview.addEventListener("pointerenter", () => loadPreview(preview), {
+      once: true,
+    });
+    preview.addEventListener("focusin", () => loadPreview(preview), {
+      once: true,
+    });
+  });
+}
+
 function initPortfolio() {
   const track = document.getElementById("portfolioTrack");
   if (!track) return;
 
   new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
+  initPortfolioPreviewLoading(track);
   initPortfolioPreviewScroll(track);
 }

@@ -3,13 +3,13 @@
 
 $contact-radius: 14px;
 $contact-transition: 0.22s ease;
-$color-error: #e53935;
-$color-success: #2e7d32;
+$color-error: #c62828;
+$color-success: #18713a;
 
 .contact {
-  width: min(92%, 1100px);
+  width: min(92%, 1180px);
   margin: 0 auto;
-  padding: clamp(64px, 8vw, 72px) 0 clamp(72px, 9vw, 80px);
+  padding: clamp(68px, 8vw, 86px) 0 clamp(76px, 9vw, 92px);
   text-align: center;
 
   &__title {
@@ -34,22 +34,23 @@ $color-success: #2e7d32;
   }
 
   &__subtitle {
+    max-width: 620px;
     font-size: 1rem;
     color: var(--color-text-muted);
-    margin-top: 10px;
+    margin: 10px auto 0;
     margin-bottom: clamp(32px, 5vw, 48px);
     line-height: 1.6;
   }
 
   &__wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    gap: clamp(22px, 4vw, 40px);
     align-items: start;
 
     @media (max-width: $breakpoint-mobile) {
       grid-template-columns: 1fr;
-      max-width: 560px;
+      max-width: 620px;
       margin: 0 auto;
     }
   }
@@ -59,28 +60,55 @@ $color-success: #2e7d32;
     border: 1px solid var(--color-border);
     border-radius: $contact-radius;
     padding: clamp(22px, 4vw, 32px) clamp(18px, 4vw, 28px);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 18px 42px rgba(9, 105, 218, 0.10);
     text-align: left;
     transition:
       background 0.3s ease,
       border-color 0.3s ease;
+
+    [data-theme="dark"] & {
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34);
+    }
   }
 
   &__info {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: grid;
+    gap: 12px;
+    text-align: left;
+  }
+
+  &__info-header {
+    padding: 0 4px 8px;
+  }
+
+  &__info-title {
+    color: var(--color-text-dark);
+    font-size: clamp(1.08rem, 2vw, 1.32rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 7px;
+  }
+
+  &__info-subtitle {
+    color: var(--color-text);
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 
   &__card {
+    --contact-accent: #0969da;
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 16px;
-    background: var(--color-card-bg);
+    gap: 15px;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(9, 105, 218, 0.08), rgba(255, 255, 255, 0)),
+      var(--color-card-bg);
     border: 1px solid var(--color-border);
     border-radius: $contact-radius;
-    padding: 20px 22px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    padding: 15px 18px 15px 20px;
+    box-shadow: 0 12px 28px rgba(9, 105, 218, 0.07);
     cursor: pointer;
     text-decoration: none;
     transition:
@@ -89,25 +117,55 @@ $color-success: #2e7d32;
       background 0.3s ease,
       transform $contact-transition;
 
-    &:hover {
-      box-shadow: 0 6px 24px rgba($color-primary, 0.15);
-      border-color: rgba($color-primary, 0.3);
-      transform: translateY(-1px);
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--contact-accent);
+    }
+
+    &:hover,
+    &:focus-visible {
+      box-shadow: 0 16px 36px rgba(9, 105, 218, 0.14);
+      border-color: color.change($color-primary, $alpha: 0.42);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 16px 36px rgba(9, 105, 218, 0.14),
+        0 0 0 3px rgba(9, 105, 218, 0.18);
+    }
+
+    &--phone {
+      --contact-accent: #0969da;
+    }
+
+    &--telegram {
+      --contact-accent: #075eaa;
+    }
+
+    &--email {
+      --contact-accent: #1f4db3;
     }
 
     &-icon {
       flex-shrink: 0;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: $color-primary;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background:
+        linear-gradient(135deg, var(--contact-accent), color.adjust($color-primary, $lightness: -7%));
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 10px 20px rgba(9, 105, 218, 0.18);
 
       svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         fill: #fff;
       }
     }
@@ -115,33 +173,77 @@ $color-success: #2e7d32;
     &-text {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
       min-width: 0;
     }
 
     &-label {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       color: var(--color-text-muted);
       text-transform: uppercase;
     }
 
     &-value {
-      font-size: 0.97rem;
-      font-weight: 600;
+      font-size: clamp(0.9rem, 1.5vw, 0.98rem);
+      font-weight: 700;
       color: var(--color-text-dark);
       overflow-wrap: anywhere;
+    }
+
+    &-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      color: var(--contact-accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.35;
+
+      &::after {
+        content: "→";
+        font-size: 1rem;
+        line-height: 1;
+      }
+    }
+
+    [data-theme="dark"] & {
+      background:
+        linear-gradient(135deg, rgba(74, 163, 255, 0.13), rgba(7, 18, 33, 0)),
+        var(--color-card-bg);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+
+      &:hover,
+      &:focus-visible {
+        border-color: rgba(116, 185, 255, 0.40);
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.40);
+      }
+
+      &-action {
+        color: #8fc8ff;
+      }
     }
 
     @media (max-width: 420px) {
       align-items: flex-start;
       gap: 12px;
-      padding: 18px 16px;
+      padding: 14px 13px 14px 17px;
 
       &-icon {
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      &-value {
+        font-size: 0.9rem;
       }
     }
   }
@@ -178,6 +280,7 @@ $color-success: #2e7d32;
 
       &::placeholder {
         color: var(--color-text-muted);
+        opacity: 1;
       }
 
       &:focus {
@@ -258,6 +361,16 @@ $color-success: #2e7d32;
       }
       &.error {
         color: $color-error;
+      }
+
+      [data-theme="dark"] & {
+        &.success {
+          color: #8fd89b;
+        }
+
+        &.error {
+          color: #ff8a8a;
+        }
       }
     }
   }
