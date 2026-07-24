@@ -1,5 +1,7 @@
 @use 'variables' as *;
 
+// Services module: responsive service grid and reusable service cards.
+// Модуль послуг: адаптивна сітка послуг і багаторазові картки сервісів.
 .services {
   background: var(--services-bg, linear-gradient(to bottom, #ddeeff 0%, #f0f6ff 15%, #f0f6ff 85%, #ddeeff 100%));
   padding: clamp(72px, 9vw, 100px) 0;
@@ -52,6 +54,8 @@
   }
 }
 
+// Service card component: icon, title, description, and hover feedback.
+// Компонент картки послуги: іконка, заголовок, опис і hover-відгук.
 .service-card {
   background: var(--color-card-bg);
   height: 100%;

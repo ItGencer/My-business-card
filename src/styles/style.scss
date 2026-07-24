@@ -1,6 +1,7 @@
 @use "variables" as *;
 
-// ─── Reset ───────────────────────────────────────────────────
+// Global reset and shared base styles.
+// Глобальний reset і спільні базові стилі.
 * {
   margin: 0;
   padding: 0;
@@ -42,7 +43,8 @@ body {
   contain-intrinsic-size: 860px;
 }
 
-// ── Блок: intro ─────────────────────────────────────────────
+// Intro section: first-screen layout, CTA buttons, and optimized portrait frame.
+// Intro-секція: макет першого екрану, CTA-кнопки та оптимізована рамка фото.
 .intro {
   min-height: clamp(520px, 68vh, 720px);
   background: linear-gradient(
@@ -235,7 +237,8 @@ body {
   }
 }
 
-// ── Блок: about ─────────────────────────────────────────────
+// About section: trust-building copy, GitHub CTA, and responsive text layout.
+// Секція "Про мене": текст для довіри, GitHub CTA та адаптивна текстова сітка.
 .about {
   background: var(
     --about-bg,
@@ -324,7 +327,8 @@ body {
   }
 }
 
-// ── Блок: skills ────────────────────────────────────────────
+// Skills section: responsive technology grid rendered from data.js.
+// Секція "Навички": адаптивна сітка технологій, що рендериться з data.js.
 .skills {
   background: var(--skills-bg, linear-gradient(to bottom, #ddeeff 0%, #eef6ff 15%, #eef6ff 85%, #ddeeff 100%));
   padding: clamp(72px, 9vw, 100px) 0;
@@ -395,8 +399,8 @@ body {
   }
 }
 
-// ── Блок: skill-card ────────────────────────────────────────
-// Живе на <li class="skills__item skill-card">
+// Skill card component: used inside <li class="skills__item skill-card">.
+// Компонент картки навички: використовується в <li class="skills__item skill-card">.
 .skill-card {
   background: var(--color-card-bg);
   min-height: 72px;
@@ -452,13 +456,14 @@ body {
   }
 }
 
-// Світла тема — повертаємо оригінальні кольори іконки
-// Селектор на реальний клас з DOM, а не вигаданий skills__list__icon
+// Light theme keeps original brand colors for skill icons.
+// У світлій темі залишаємо оригінальні брендові кольори іконок навичок.
 [data-theme="light"] .skill-card__icon {
   filter: none;
 }
 
-
+// Portfolio section: animated marquee with readable cards and iframe previews.
+// Секція портфоліо: анімований рядок із читабельними картками та iframe-прев'ю.
 .portfolio {
   background: var(--services-bg, linear-gradient(to bottom, #ddeeff 0%, #eef6ff 15%, #eef6ff 85%, #ddeeff 100%));
   padding: clamp(72px, 9vw, 100px) 0;
@@ -604,12 +609,16 @@ body {
   }
 }
 
+// Marquee animation moves exactly one duplicated group for seamless looping.
+// Анімація рядка зсуває рівно одну дубльовану групу для безшовного циклу.
 @keyframes portfolio-marquee {
   to {
     transform: translate3d(calc(-50% - var(--portfolio-half-gap)), 0, 0);
   }
 }
 
+// Respect reduced motion: replace animation with horizontal scrolling.
+// Повага до reduced motion: замінюємо анімацію горизонтальним скролом.
 @media (prefers-reduced-motion: reduce) {
   .portfolio__wrapper {
     overflow-x: auto;
@@ -630,19 +639,23 @@ body {
   }
 }
 
+// Portfolio card component: controls preview frame, caption, and visit CTA.
+// Компонент картки портфоліо: керує рамкою прев'ю, підписом і CTA переходу.
 .portfolio-card {
   flex: 0 0 auto;
   width: clamp(300px, 31vw, 430px);
   max-width: 440px;
-  opacity: 0.8;
   filter: saturate(0.96);
-  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
 
   &:hover,
   &:focus-within {
-    opacity: 1;
     transform: translateY(-6px) scale(1.01);
     filter: saturate(1.06);
+
+    .portfolio-card__frame-wrap {
+      opacity: 1;
+    }
   }
 
   &__frame-wrap {
@@ -665,6 +678,8 @@ body {
     isolation: isolate;
     outline: none;
     touch-action: none;
+    opacity: 0.8;
+    transition: opacity 0.25s ease, box-shadow 0.25s ease;
 
     &::before,
     &::after {
@@ -939,6 +954,8 @@ body {
   }
 }
 
+// Footer: small closing area that follows the active theme.
+// Footer: невелика завершальна зона, що наслідує активну тему.
 footer {
   border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);

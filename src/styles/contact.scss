@@ -1,6 +1,8 @@
 @use "sass:color";
 @use "variables" as *;
 
+// Contact module: form layout, validation states, and direct contact cards.
+// Модуль контактів: макет форми, стани валідації та картки прямих контактів.
 $contact-radius: 14px;
 $contact-transition: 0.22s ease;
 $color-error: #c62828;

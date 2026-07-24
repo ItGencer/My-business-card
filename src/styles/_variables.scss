@@ -1,26 +1,28 @@
-// ── Світла тема (за замовчуванням) ──
+// Theme tokens for the default light mode.
+// Токени теми для світлого режиму за замовчуванням.
 :root {
   --color-bg:        #f0f4f8;
   --color-card-bg:   #ffffff;
   --color-text:      #2c3e50;
   --color-text-dark: #1a2332;
-  --color-text-muted:#52657d;
+  --color-text-muted:#435872;
   --color-border:    rgba(26, 127, 232, 0.12);
   --color-bar-track: #e3eaf5;
   --header-bg:       #ffffff;
-  --header-border:   #0079b1;
+  --header-border:   #075bb8;
   --nav-bg:          #ffffff;
   --input-bg:        #f8f9fc;
   --input-border:    #dde1ed;
 }
 
-// ── Темна тема ──
+// Theme tokens overridden when the user enables dark mode.
+// Токени теми, які перевизначаються при ввімкненні темного режиму.
 [data-theme="dark"] {
   --color-bg:        #0f1624;
   --color-card-bg:   #1a2235;
   --color-text:      #c8d6e5;
   --color-text-dark: #e8f0fa;
-  --color-text-muted:#a8b7cc;
+  --color-text-muted:#b7c6d8;
   --color-border:    rgba(100, 160, 230, 0.15);
   --color-bar-track: #1e2d42;
   --header-bg:       #111827;
@@ -34,8 +36,9 @@
 
 }
 
-// ── Кольори ──────────────────────────────────────────────────
-$color-primary:     #0969da;
+// SCSS color aliases used by static styles and gradients.
+// SCSS-аліаси кольорів для статичних стилів і градієнтів.
+$color-primary:     #075bb8;
 $color-bg-from:     #c8dff5;
 $color-bg-mid:      #ddeeff;
 $color-bg-to:       #eef6ff;
@@ -43,27 +46,30 @@ $color-bg:          #ddeeff;
 
 $color-text:        #3a4a5a;
 $color-text-dark:   #1a2a3a;
-$color-text-muted:  #4a6080;
+$color-text-muted:  #435872;
 
-$color-text-primary:   $color-text-dark;    // аліас
-$color-text-secondary: $color-text-muted;   // аліас
-$color-blue-primary:   $color-primary;      // аліас
+$color-text-primary:   $color-text-dark;
+$color-text-secondary: $color-text-muted;
+$color-blue-primary:   $color-primary;
 
 $color-btn-outline: #ffffff;
 $color-border:      #cbd8e8;
 $color-card-bg:     #ffffff;
 $color-bar-track:   #d0e4f7;
-// ── Шрифти ───────────────────────────────────────────────────
+// Shared font settings.
+// Спільні налаштування шрифтів.
 $font-main:        'Segoe UI', Arial, sans-serif;
 $font-size-base:   16px;
 $font-weight-md:   500;
 $font-weight-semi: 600;
 
-// ── Точки перелому ───────────────────────────────────────────
+// Responsive breakpoints.
+// Точки адаптивності.
 $breakpoint-tablet: 900px;
 $breakpoint-mobile: 768px;
 
-// ── Розміри ──────────────────────────────────────────────────
+// Shared layout sizes.
+// Спільні розміри макета.
 $max-width:      1200px;
 $header-height:  68px;
 $radius-sm:      8px;

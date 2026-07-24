@@ -2,6 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+// Webpack build setup: bundles JS, extracts CSS, and copies static assets.
+// Налаштування Webpack: збирає JS, виносить CSS і копіює статичні ресурси.
 module.exports = {
   entry: "./src/index.js",
 
@@ -12,6 +14,8 @@ module.exports = {
     assetModuleFilename: "assets/[name][ext]",
   },
 
+  // Loaders: compile SCSS and emit images/icons as separate cacheable files.
+  // Loaders: компілюють SCSS і виводять зображення/іконки окремими кешованими файлами.
   module: {
     rules: [
       {
@@ -29,6 +33,8 @@ module.exports = {
     ],
   },
 
+  // Plugins: generate final HTML and hashed CSS for browser caching.
+  // Plugins: генерують фінальний HTML і CSS з hash для кешування браузером.
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
@@ -38,6 +44,8 @@ module.exports = {
     }),
   ],
 
+  // Dev server cache headers mirror production-friendly asset caching during local checks.
+  // Cache headers dev-сервера імітують production-friendly кешування ресурсів під час локальної перевірки.
   devServer: {
     static: "./public",
     port: 3000,

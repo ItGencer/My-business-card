@@ -1,9 +1,8 @@
-// ============================================================
-// data.js — всі дані портфоліо в одному місці
-// Редагуєш тільки цей файл — рендерери не чіпаєш
-// ============================================================
+// Central content store: edit copy, links, and lists here instead of renderers.
+// Центральне сховище контенту: редагуй тексти, посилання та списки тут, а не в рендерах.
 
-// ── Іконки навичок — імпорт тут, а не в index.js ────────────
+// Skill icon imports used by SKILLS.
+// Імпорти іконок навичок, які використовує SKILLS.
 import angularIcon from './assets/icons/angular.svg';
 import bemIcon     from './assets/icons/bem.svg';
 import githubIcon  from './assets/icons/github.svg';
@@ -12,8 +11,10 @@ import jsIcon      from './assets/icons/js.svg';
 import sassIcon    from './assets/icons/sass.svg';
 import tsIcon      from './assets/icons/ts.svg';
 
-// ── Навички ──────────────────────────────────────────────────
-// { title, icon, percent }
+// Skills data rendered into the "Навички" section.
+// Дані навичок, які рендеряться у секцію "Навички".
+// Shape: { title, icon, percent }.
+// Формат: { title, icon, percent }.
 export const SKILLS = [
   { title: 'HTML5 / CSS3', icon: html5Icon,   percent: 95  },
   { title: 'SASS / SCSS',  icon: sassIcon,    percent: 90  },
@@ -24,8 +25,8 @@ export const SKILLS = [
   { title: 'BEM',          icon: bemIcon,     percent: 100 },
 ];
 
-// ── Послуги ───────────────────────────────────────────────────
-// ✅ ТІЛЬКИ ЦЕЙ:
+// Services are separated by language because their cards are fully rerendered on language change.
+// Послуги розділені за мовами, бо картки повністю перерендерюються при зміні мови.
 export const SERVICES = {
   ua: [
     {
@@ -82,8 +83,8 @@ export const SERVICES = {
     }
   ],
 };
-
-// ── EmailJS конфіг ────────────────────────────────────────────
+// EmailJS identifiers used by contact form submission.
+// Ідентифікатори EmailJS, які використовує відправка контактної форми.
 export const EMAILJS_CONFIG = {
   serviceId:  'service_ega4f8t',
   templateId: 'template_fcyzwhf',
@@ -91,32 +92,33 @@ export const EMAILJS_CONFIG = {
   toEmail:    'gencer.it.1989@gmail.com',
 };
 
-// ── Переклади інтерфейсу ──────────────────────────────────────
+// UI translations for static HTML text and placeholders.
+// Переклади інтерфейсу для статичного HTML-тексту та placeholder.
 export const TRANSLATIONS = {
   ua: {
-    // Навігація
+    // Navigation labels.
     'nav.about':    'Про мене',
     'nav.skills':   'Навички',
     'nav.contact':  'Контакти',
 
-    // Hero
+    // Hero section copy.
     'intro.subtitle': 'Відповідальний підхід — якісний результат',
     'intro.btn.works':   'Переглянути роботи',
     'intro.btn.contact': "Зв'язатися",
 
-    // About
+    // About section copy.
     'about.title': 'Про мене',
     'about.text.1': 'Я — Артем Грішин, front-end розробник. Створюю сайти-візитки та односторінкові сайти (SPA), орієнтовані на швидкість, чистий код і сучасний UX. Працюю зі стеком HTML/CSS/SCSS, JS/TS, Angular.',
     'about.text.2': 'Кожен проєкт — поєднання технічної якості та уваги до деталей: від адаптивної верстки до плавної навігації. Мета — перетворити вашу ідею на функціональний і візуально продуманий сайт.',
     'about.github.prefix': 'Приклади реалізованих робіт — на',
 
-    // Skills
+    // Skills section title.
     'skills.title': 'Навички та технології',
 
-    // Services
+    // Services section title.
     'services.title': 'Послуги',
 
-    // Contact
+    // Contact section copy and form labels.
     'contact.title':    'Зв\'язатися зі мною',
     'contact.subtitle': 'Маєте проєкт або питання? Напишіть — відповім швидко.',
     'contact.info.title': 'Оберіть зручний спосіб зв\'язку',
@@ -129,7 +131,8 @@ export const TRANSLATIONS = {
     'form.message': 'Повідомлення',
     'form.submit':  'Надіслати',
 
-    // Services data (рендерер окремо)
+    // Legacy keys kept for compatibility with older markup/renderers.
+    // Legacy-ключі залишені для сумісності зі старою розміткою/рендерами.
     'service.spa.title':  'Односторінкові сайти (SPA)',
     'service.spa.desc':   'Швидкі та інтерактивні SPA...',
     'footer.copyright': '© 2026 Артем Грішин. Всі права захищені.'
@@ -168,10 +171,3 @@ export const TRANSLATIONS = {
     'footer.copyright': '© 2026 Artem Grishin. All rights reserved.'
   },
 };
-
-export const PORTFOLIO = [
-  { name: "Awake Agency",     url: "https://awake-agency-gamma.vercel.app/",         embeddable: true },
-  { name: "Surfing Template", url: "https://surfing-template.vercel.app/",           embeddable: true },
-  { name: "Peak Fit",         url: "https://peak-fit-fitnes-template.vercel.app/",   embeddable: true },
-  { name: "Cocoon Template",  url: "https://cocoontamplate.vercel.app/",             embeddable: true },
-];

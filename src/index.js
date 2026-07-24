@@ -1,7 +1,5 @@
-// ============================================================
-// index.js — точка входу
-// Логіка відокремлена від даних: дані — в data.js
-// ============================================================
+// Entry point: imports assets, renders dynamic sections, and wires UI behavior.
+// Точка входу: підключає ресурси, рендерить динамічні секції та прив'язує поведінку UI.
 
 import "./styles/style.scss";
 import "./styles/header.scss";
@@ -10,17 +8,23 @@ import "./styles/services.scss";
 
 import "./assets/Artem-foto.png";
 import "./assets/Artem-foto.avif";
-import { SKILLS, SERVICES, PORTFOLIO, TRANSLATIONS, EMAILJS_CONFIG } from "./data.js";
+import "./assets/Artem-foto.webp";
+import {
+  SKILLS,
+  SERVICES,
+  TRANSLATIONS,
+  EMAILJS_CONFIG,
+} from "./data.js";
 
-// Поточна мова — зберігається між сесіями через localStorage
-let currentLang = localStorage.getItem("lang") || "ua";
+// Stores the active UI language between sessions.
+// Зберігає активну мову інтерфейсу між сесіями.
+let activeLanguage = localStorage.getItem("lang") || "ua";
 
-const createEl = (tag, props = {}) =>
-  Object.assign(document.createElement(tag), props);
+const createElementWithProps = (tagName, elementProps = {}) =>
+  Object.assign(document.createElement(tagName), elementProps);
 
-// ============================================================
-// SkillsRenderer — рендерить картки навичок (іконка + назва)
-// ============================================================
+// Renders the skills list from data.js into BEM cards.
+// Рендерить список навичок з data.js у BEM-картки.
 class SkillsRenderer {
   #container;
   #skills = [];
@@ -29,47 +33,45 @@ class SkillsRenderer {
     this.#container = document.querySelector(selector);
   }
 
-  // Приймає масив { title, icon, percent } — percent ігнорується
   load(skillsArray) {
     this.#skills = skillsArray;
-    return this; // повертає this для ланцюжка .load().render()
+    return this;
   }
   
   render() {
-  if (!this.#container) {
-    console.warn('SkillsRenderer: контейнер не знайдено');
-    return;
+    if (!this.#container) {
+      console.warn("SkillsRenderer: container not found");
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    for (const skill of this.#skills) {
+      const skillItemElement = document.createElement("li");
+      skillItemElement.className = "skills__item skill-card";
+
+      const skillIconElement = createElementWithProps("img", {
+        className: "skill-card__icon",
+        src: skill.icon,
+        alt: skill.title,
+      });
+
+      const skillTitleElement = createElementWithProps("span", {
+        className: "skill-card__title",
+        textContent: skill.title,
+      });
+
+      skillItemElement.append(skillIconElement, skillTitleElement);
+      fragment.appendChild(skillItemElement);
+    }
+
+    this.#container.innerHTML = "";
+    this.#container.appendChild(fragment);
   }
-
-  const fragment = document.createDocumentFragment();
-
-  for (const skill of this.#skills) {
-    const li = document.createElement('li');
-    li.className = 'skills__item skill-card'; // skill-card — окремий BEM-блок
-
-    const img = createEl('img', {
-      className: 'skill-card__icon', // блок skill-card, елемент icon
-      src:       skill.icon,
-      alt:       skill.title,
-    });
-
-    const titleEl = createEl('span', {
-      className:   'skill-card__title', // блок skill-card, елемент title
-      textContent: skill.title,
-    });
-
-    li.append(img, titleEl);
-    fragment.appendChild(li);
-  }
-
-  this.#container.innerHTML = '';
-  this.#container.appendChild(fragment);
-}
 }
 
-// ============================================================
-// ServicesRenderer — рендерить картки послуг
-// ============================================================
+// Renders service cards and keeps service copy in the active language.
+// Рендерить картки послуг і тримає текст послуг активною мовою.
 class ServicesRenderer {
   #container;
   #services = [];
@@ -78,7 +80,6 @@ class ServicesRenderer {
     this.#container = document.querySelector(selector);
   }
 
-  // Приймає масив { title, description, svgIcon }
   load(servicesArray) {
     this.#services = servicesArray;
     return this;
@@ -86,36 +87,40 @@ class ServicesRenderer {
 
   render() {
     if (!this.#container) {
-      console.warn("ServicesRenderer: контейнер не знайдено");
+      console.warn("ServicesRenderer: container not found");
       return;
     }
 
     const fragment = document.createDocumentFragment();
 
     for (const service of this.#services) {
-      const li = document.createElement("li");
-      li.className = "services__item";
+      const serviceItemElement = document.createElement("li");
+      serviceItemElement.className = "services__item";
 
-      const card = document.createElement("div");
-      card.className = "service-card";
+      const serviceCardElement = document.createElement("div");
+      serviceCardElement.className = "service-card";
 
-      const iconWrap = document.createElement("div");
-      iconWrap.className = "service-card__icon-wrap";
-      iconWrap.innerHTML = service.svgIcon; // innerHTML лише для SVG-рядка
+      const serviceIconWrapperElement = document.createElement("div");
+      serviceIconWrapperElement.className = "service-card__icon-wrap";
+      serviceIconWrapperElement.innerHTML = service.svgIcon;
 
-      const titleEl = createEl("h3", {
+      const serviceTitleElement = createElementWithProps("h3", {
         className: "service-card__title",
         textContent: service.title,
       });
 
-      const descEl = createEl("p", {
+      const serviceDescriptionElement = createElementWithProps("p", {
         className: "service-card__desc",
         textContent: service.description,
       });
 
-      card.append(iconWrap, titleEl, descEl);
-      li.appendChild(card);
-      fragment.appendChild(li);
+      serviceCardElement.append(
+        serviceIconWrapperElement,
+        serviceTitleElement,
+        serviceDescriptionElement,
+      );
+      serviceItemElement.appendChild(serviceCardElement);
+      fragment.appendChild(serviceItemElement);
     }
 
     this.#container.innerHTML = "";
@@ -123,48 +128,48 @@ class ServicesRenderer {
   }
 }
 
-// ============================================================
-// Burger Menu — мобільне меню
-// ============================================================
-function initBurger() {
-  const burger = document.querySelector(".header__burger");
-  const nav = document.querySelector(".header__nav");
-  if (!burger || !nav) return;
+// Controls the mobile navigation menu: open, close, and outside-click behavior.
+// Керує мобільним меню: відкриття, закриття та клік поза меню.
+function initMobileNavigation() {
+  const mobileMenuButton = document.querySelector(".header__burger");
+  const navigationMenu = document.querySelector(".header__nav");
+  if (!mobileMenuButton || !navigationMenu) return;
 
-  burger.addEventListener("click", () => {
-    const isOpen = burger.classList.toggle("is-open");
-    nav.classList.toggle("is-open", isOpen);
-    burger.setAttribute("aria-expanded", isOpen);
+  mobileMenuButton.addEventListener("click", () => {
+    const isMenuOpen = mobileMenuButton.classList.toggle("is-open");
+    navigationMenu.classList.toggle("is-open", isMenuOpen);
+    mobileMenuButton.setAttribute("aria-expanded", isMenuOpen);
   });
 
-  // Закрити при кліку на посилання навігації
-  nav.querySelectorAll(".header__nav-link").forEach((link) => {
+  navigationMenu.querySelectorAll(".header__nav-link").forEach((link) => {
     link.addEventListener("click", () => {
-      burger.classList.remove("is-open");
-      nav.classList.remove("is-open");
-      burger.setAttribute("aria-expanded", "false");
+      mobileMenuButton.classList.remove("is-open");
+      navigationMenu.classList.remove("is-open");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
     });
   });
 
-  // Закрити при кліку поза меню
-  document.addEventListener("click", (e) => {
-    if (!burger.contains(e.target) && !nav.contains(e.target)) {
-      burger.classList.remove("is-open");
-      nav.classList.remove("is-open");
-      burger.setAttribute("aria-expanded", "false");
+  document.addEventListener("click", (event) => {
+    if (
+      !mobileMenuButton.contains(event.target) &&
+      !navigationMenu.contains(event.target)
+    ) {
+      mobileMenuButton.classList.remove("is-open");
+      navigationMenu.classList.remove("is-open");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
     }
   });
 }
 
-// ============================================================
-// Theme Toggle — світла / темна тема
-// ============================================================
-function initTheme() {
-  const btn = document.querySelector(".header__btn--theme");
-  if (!btn) return;
+// Applies and toggles the saved light/dark theme.
+// Застосовує та перемикає збережену світлу/темну тему.
+function initThemeToggle() {
+  const themeButton = document.querySelector(".header__btn--theme");
+  if (!themeButton) return;
 
-  const ICONS = {
-    // Показується коли темна тема активна → клік переключить на світлу
+  const THEME_TOGGLE_ICONS = {
+    // Icon shown in dark mode: click switches to light mode.
+    // Іконка у темній темі: клік перемикає на світлу тему.
     dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="5"/>
@@ -173,83 +178,81 @@ function initTheme() {
       <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
       <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
     </svg>`,
-    // Показується коли світла тема активна → клік переключить на темну
+    // Icon shown in light mode: click switches to dark mode.
+    // Іконка у світлій темі: клік перемикає на темну тему.
     light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>`,
   };
 
-  const applyTheme = (theme) => {
+  const applyThemeMode = (theme) => {
     document.documentElement.setAttribute("data-theme", theme);
-    btn.innerHTML = theme === "dark" ? ICONS.dark : ICONS.light;
+    themeButton.innerHTML =
+      theme === "dark" ? THEME_TOGGLE_ICONS.dark : THEME_TOGGLE_ICONS.light;
   };
 
-  applyTheme(localStorage.getItem("theme") || "light");
+  applyThemeMode(localStorage.getItem("theme") || "light");
 
-  btn.addEventListener("click", () => {
-    const next =
+  themeButton.addEventListener("click", () => {
+    const nextTheme =
       document.documentElement.getAttribute("data-theme") === "dark"
         ? "light"
         : "dark";
-    localStorage.setItem("theme", next);
-    applyTheme(next);
+    localStorage.setItem("theme", nextTheme);
+    applyThemeMode(nextTheme);
   });
 }
 
-// ============================================================
-// i18n — перемикач мови UA ↔ EN
-// ============================================================
-function applyLang(lang) {
-  const t = TRANSLATIONS[lang];
-  if (!t) return;
+// Applies translations, rerenders translated sections, and stores the language.
+// Застосовує переклади, перерендерює перекладені секції та зберігає мову.
+function applyLanguage(languageCode) {
+  const dictionary = TRANSLATIONS[languageCode];
+  if (!dictionary) return;
 
-  // Оновлюємо текстовий контент елементів з data-i18n
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    const key = el.dataset.i18n;
-    if (t[key]) el.textContent = t[key];
+  document.documentElement.lang = languageCode === "ua" ? "uk" : "en";
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+    if (dictionary[key]) element.textContent = dictionary[key];
   });
 
-  // Оновлюємо placeholder у полях форми з data-i18n-placeholder
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-    const key = el.dataset.i18nPlaceholder;
-    if (t[key]) el.placeholder = t[key];
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    const key = element.dataset.i18nPlaceholder;
+    if (dictionary[key]) element.placeholder = dictionary[key];
   });
 
-  // Перерендер послуг мовою що активна
-  new ServicesRenderer("#services-list").load(SERVICES[lang]).render();
-  updatePortfolioVisitLabels(lang);
+  new ServicesRenderer("#services-list").load(SERVICES[languageCode]).render();
+  updateLoadedPortfolioLanguage(languageCode);
 
-  // Кнопка показує наступну мову (яку буде обрано при кліку)
-  const btn = document.querySelector(".header__btn--lang");
-  if (btn) btn.textContent = lang === "ua" ? "🌐 EN" : "🌐 UA";
+  const languageButton = document.querySelector(".header__btn--lang");
+  if (languageButton) {
+    languageButton.textContent = languageCode === "ua" ? "🌐 EN" : "🌐 UA";
+  }
 
-  currentLang = lang;
-  localStorage.setItem("lang", lang);
+  activeLanguage = languageCode;
+  localStorage.setItem("lang", languageCode);
 }
 
-function initLang() {
-  // Застосовуємо збережену або дефолтну мову при завантаженні
-  applyLang(currentLang);
+function initLanguageSwitcher() {
+  applyLanguage(activeLanguage);
 
-  // Перемикання при кліку на кнопку
   document
     .querySelector(".header__btn--lang")
     ?.addEventListener("click", () => {
-      applyLang(currentLang === "ua" ? "en" : "ua");
+      applyLanguage(activeLanguage === "ua" ? "en" : "ua");
     });
 }
 
-// ============================================================
-// Форма зворотного зв'язку — валідація + EmailJS
-// ============================================================
-const FORM_FIELDS = {
+// Contact form: validates fields, lazy-loads EmailJS, and sends messages.
+// Форма контактів: валідує поля, ліниво завантажує EmailJS і надсилає повідомлення.
+const CONTACT_FORM_FIELDS = {
   name: { inputId: "userName", errorId: "nameError" },
   email: { inputId: "userEmail", errorId: "emailError" },
   message: { inputId: "userMessage", errorId: "messageError" },
 };
 
-function validateForm(name, email, message) {
+function validateContactForm(name, email, message) {
   const errors = {};
   if (!name.trim()) errors.name = "Введіть ваше ім'я";
   if (!email.trim()) errors.email = "Введіть email";
@@ -259,58 +262,60 @@ function validateForm(name, email, message) {
   return errors;
 }
 
-function clearErrors() {
-  Object.values(FORM_FIELDS).forEach(({ inputId, errorId }) => {
+function clearContactFormErrors() {
+  Object.values(CONTACT_FORM_FIELDS).forEach(({ inputId, errorId }) => {
     document.getElementById(inputId)?.classList.remove("is-invalid");
-    const err = document.getElementById(errorId);
-    if (err) err.textContent = "";
+    const errorMessageElement = document.getElementById(errorId);
+    if (errorMessageElement) errorMessageElement.textContent = "";
   });
 }
 
-function showErrors(errors) {
-  clearErrors();
-  Object.entries(errors).forEach(([key, msg]) => {
-    const { inputId, errorId } = FORM_FIELDS[key];
+function showContactFormErrors(errors) {
+  clearContactFormErrors();
+  Object.entries(errors).forEach(([fieldName, errorMessage]) => {
+    const { inputId, errorId } = CONTACT_FORM_FIELDS[fieldName];
     document.getElementById(inputId)?.classList.add("is-invalid");
-    const err = document.getElementById(errorId);
-    if (err) err.textContent = msg;
+    const errorMessageElement = document.getElementById(errorId);
+    if (errorMessageElement) errorMessageElement.textContent = errorMessage;
   });
 }
 
-function setStatus(message, type) {
-  const el = document.getElementById("formStatus");
-  if (!el) return;
-  el.textContent = message;
-  el.className = `form__status ${type}`;
+function setContactFormStatus(message, type) {
+  const statusElement = document.getElementById("formStatus");
+  if (!statusElement) return;
+  statusElement.textContent = message;
+  statusElement.className = `form__status ${type}`;
 }
 
-// SVG іконка кнопки "Надіслати" — винесена окремо щоб не дублювати
-const SEND_ICON = `<svg class="form__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+// Reusable send icon for restoring the submit button after loading.
+// Повторно використовувана іконка відправки для відновлення кнопки після loading-стану.
+const SEND_BUTTON_ICON = `<svg class="form__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
   <line x1="22" y1="2" x2="11" y2="13"></line>
   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
 </svg>`;
 
-function setLoading(isLoading) {
-  const btn = document.getElementById("submitBtn");
-  const btnText = btn?.querySelector(".form__btn-text");
-  if (!btn) return;
+function setSubmitButtonLoading(isLoading) {
+  const submitButton = document.getElementById("submitBtn");
+  const submitButtonText = submitButton?.querySelector(".form__btn-text");
+  if (!submitButton) return;
 
-  btn.disabled = isLoading;
+  submitButton.disabled = isLoading;
 
-  const iconSlot = btn.querySelector(".form__btn-icon, .spinner");
+  const buttonIconSlot = submitButton.querySelector(".form__btn-icon, .spinner");
   if (isLoading) {
-    iconSlot?.insertAdjacentHTML("afterend", '<span class="spinner"></span>');
-    iconSlot?.remove();
-    if (btnText) btnText.textContent = "Надсилаємо…";
+    buttonIconSlot?.insertAdjacentHTML("afterend", '<span class="spinner"></span>');
+    buttonIconSlot?.remove();
+    if (submitButtonText) submitButtonText.textContent = "Надсилаємо…";
   } else {
-    iconSlot?.insertAdjacentHTML("afterend", SEND_ICON);
-    iconSlot?.remove();
-    if (btnText) btnText.textContent = "Надіслати";
+    buttonIconSlot?.insertAdjacentHTML("afterend", SEND_BUTTON_ICON);
+    buttonIconSlot?.remove();
+    if (submitButtonText) submitButtonText.textContent = "Надіслати";
   }
 }
 
-// Завантажує EmailJS з CDN лише при першій відправці (lazy load)
-function loadEmailJS() {
+// Loads EmailJS from CDN only when the user submits the form.
+// Завантажує EmailJS з CDN тільки коли користувач відправляє форму.
+function loadEmailJsSdk() {
   return new Promise((resolve, reject) => {
     if (window.emailjs) {
       resolve();
@@ -324,13 +329,14 @@ function loadEmailJS() {
       window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
       resolve();
     };
-    script.onerror = () => reject(new Error("EmailJS не завантажився"));
+    script.onerror = () =>
+      reject(new Error("EmailJS не завантажився"));
     document.head.appendChild(script);
   });
 }
 
-function getContactEmailTitle() {
-  return currentLang === "en"
+function getContactEmailSubject() {
+  return activeLanguage === "en"
     ? "New message from portfolio website"
     : "Нове повідомлення з сайту-візитки";
 }
@@ -343,10 +349,11 @@ function buildEmailTemplateParams({ name, email, message }) {
   return {
     name: trimmedName,
     email: trimmedEmail,
-    title: getContactEmailTitle(),
+    title: getContactEmailSubject(),
     message: trimmedMessage,
 
     // Backward-compatible aliases for the previous EmailJS template variables.
+    // Зворотно сумісні псевдоніми для попередніх змінних EmailJS-шаблону.
     user_name: trimmedName,
     user_email: trimmedEmail,
 
@@ -355,340 +362,154 @@ function buildEmailTemplateParams({ name, email, message }) {
   };
 }
 
-async function handleSubmit(e) {
-  e.preventDefault();
+async function handleContactFormSubmit(event) {
+  event.preventDefault();
 
-  const nameEl = document.getElementById("userName");
-  const emailEl = document.getElementById("userEmail");
-  const messageEl = document.getElementById("userMessage");
-  if (!nameEl || !emailEl || !messageEl) return;
+  const nameInputElement = document.getElementById("userName");
+  const emailInputElement = document.getElementById("userEmail");
+  const messageInputElement = document.getElementById("userMessage");
+  if (!nameInputElement || !emailInputElement || !messageInputElement) return;
 
-  clearErrors();
-  setStatus("", "");
+  clearContactFormErrors();
+  setContactFormStatus("", "");
 
-  const errors = validateForm(nameEl.value, emailEl.value, messageEl.value);
+  const errors = validateContactForm(
+    nameInputElement.value,
+    emailInputElement.value,
+    messageInputElement.value,
+  );
   if (Object.keys(errors).length) {
-    showErrors(errors);
+    showContactFormErrors(errors);
     return;
   }
 
-  setLoading(true);
+  setSubmitButtonLoading(true);
   try {
-    await loadEmailJS();
+    await loadEmailJsSdk();
     await window.emailjs.send(
       EMAILJS_CONFIG.serviceId,
       EMAILJS_CONFIG.templateId,
       buildEmailTemplateParams({
-        name: nameEl.value,
-        email: emailEl.value,
-        message: messageEl.value,
+        name: nameInputElement.value,
+        email: emailInputElement.value,
+        message: messageInputElement.value,
       }),
     );
-    setStatus(
+    setContactFormStatus(
       "✅ Повідомлення надіслано! Відповім найближчим часом.",
       "success",
     );
-    e.target.reset();
-    clearErrors();
-  } catch (err) {
-    console.error("EmailJS error:", err);
-    setStatus(
+    event.target.reset();
+    clearContactFormErrors();
+  } catch (error) {
+    console.error("EmailJS error:", error);
+    setContactFormStatus(
       `❌ Помилка відправки. Напишіть напряму: ${EMAILJS_CONFIG.toEmail}`,
       "error",
     );
   } finally {
-    setLoading(false);
+    setSubmitButtonLoading(false);
   }
 }
 
-// Знімає помилку з поля в реальному часі при введенні
-function initLiveValidation() {
-  Object.values(FORM_FIELDS).forEach(({ inputId, errorId }) => {
-    const input = document.getElementById(inputId);
-    const error = document.getElementById(errorId);
-    if (!input || !error) return;
-    input.addEventListener("input", function () {
+// Clears a field error as soon as the user starts editing it.
+// Прибирає помилку поля одразу, коли користувач починає його редагувати.
+function initContactFormLiveValidation() {
+  Object.values(CONTACT_FORM_FIELDS).forEach(({ inputId, errorId }) => {
+    const inputElement = document.getElementById(inputId);
+    const errorMessageElement = document.getElementById(errorId);
+    if (!inputElement || !errorMessageElement) return;
+    inputElement.addEventListener("input", function () {
       this.classList.remove("is-invalid");
-      error.textContent = "";
+      errorMessageElement.textContent = "";
     });
   });
 }
 
-// ============================================================
-// Init — точка старту застосунку
-// ============================================================
+let portfolioModulePromise = null;
+let loadedPortfolioModule = null;
+let isPortfolioRenderRequested = false;
 
-// Skills рендеримо одразу — не залежить від DOM (шукає контейнер сам)
-new SkillsRenderer("#skills-list").load(SKILLS).render();
-initTheme();
-initLang();
+// Lazy-loads portfolio code only when the portfolio section becomes relevant.
+// Ліниво завантажує код портфоліо тільки тоді, коли секція портфоліо стає потрібною.
+function loadPortfolioModule() {
+  if (!portfolioModulePromise) {
+    portfolioModulePromise = import("./portfolio.js").then((portfolioModule) => {
+      loadedPortfolioModule = portfolioModule;
+      return portfolioModule;
+    });
+  }
 
-// Решта — після повного завантаження DOM
-
-document.addEventListener("DOMContentLoaded", () => {
-  initBurger();
-  initLiveValidation();
-  initPortfolio(); 
-  
-  document.getElementById("contactForm")?.addEventListener("submit", handleSubmit);
-});
-
-// ============================================================
-// PortfolioRenderer — рендерить картки з живими iframe-сайтами
-// ============================================================
-function getPortfolioVisitCopy(lang = currentLang, siteName = "site") {
-  const isEnglish = lang === "en";
-  const safeName = siteName || (isEnglish ? "site" : "сайт");
-
-  return {
-    text: isEnglish ? "Open site" : "Відкрити сайт",
-    aria: isEnglish
-      ? `Open ${safeName} in a new tab`
-      : `Відкрити ${safeName} у новій вкладці`,
-    preview: isEnglish
-      ? `Scroll preview of ${safeName}`
-      : `Прокрутити прев'ю ${safeName}`,
-  };
+  return portfolioModulePromise;
 }
 
-function updatePortfolioVisitLabels(lang = currentLang) {
-  document.querySelectorAll(".portfolio-card__visit").forEach((link) => {
-    const cardName =
-      link.closest(".portfolio-card")?.querySelector(".portfolio-card__name")
-        ?.textContent || "site";
-    const copy = getPortfolioVisitCopy(lang, cardName.trim());
-    const text = link.querySelector(".portfolio-card__visit-text");
+function updateLoadedPortfolioLanguage(languageCode) {
+  loadedPortfolioModule?.updatePortfolioVisitLabels(languageCode);
+}
 
-    if (text) text.textContent = copy.text;
-    link.setAttribute("aria-label", copy.aria);
+function requestPortfolioRender() {
+  if (isPortfolioRenderRequested) return portfolioModulePromise;
+  isPortfolioRenderRequested = true;
+
+  return loadPortfolioModule()
+    .then((portfolioModule) => {
+      portfolioModule.initPortfolioMarquee({ languageCode: activeLanguage });
+    })
+    .catch((error) => {
+      isPortfolioRenderRequested = false;
+      console.error("Portfolio module loading failed:", error);
+    });
+}
+
+function requestPortfolioRenderWhenIdle() {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(requestPortfolioRender, { timeout: 1600 });
+  } else {
+    window.setTimeout(requestPortfolioRender, 900);
+  }
+}
+
+function initLazyPortfolioLoading() {
+  const portfolioSection = document.getElementById("portfolio");
+  if (!portfolioSection) return;
+
+  document.querySelectorAll('a[href="#portfolio"]').forEach((portfolioLink) => {
+    portfolioLink.addEventListener("click", requestPortfolioRender, { once: true });
   });
-}
 
-class PortfolioRenderer {
-  #container;
-  #items = [];
-
-  constructor(selector) {
-    this.#container = document.querySelector(selector);
+  if (window.location.hash === "#portfolio") {
+    requestPortfolioRender();
+    return;
   }
-
-  load(items) {
-    this.#items = items;
-    return this;
-  }
-
-  render() {
-    if (!this.#container) {
-      console.warn("PortfolioRenderer: контейнер не знайдено");
-      return;
-    }
-
-    this.#container.innerHTML = "";
-
-    const renderGroup = () => {
-      const group = document.createElement("div");
-      group.className = "portfolio__marquee-group";
-
-      for (const item of this.#items) {
-        const card = document.createElement("div");
-        card.className = "portfolio-card";
-        const visitCopy = getPortfolioVisitCopy(currentLang, item.name);
-
-        if (item.embeddable) {
-          card.innerHTML = `
-            <div class="portfolio-card__frame-wrap" data-preview-scroll tabindex="0"
-              aria-label="${visitCopy.preview}">
-              <div class="portfolio-card__frame-canvas">
-                <iframe data-src="${item.url}" loading="lazy"
-                  title="${item.name} preview"
-                  sandbox="allow-scripts allow-same-origin"
-                  referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </div>
-              <div class="portfolio-card__shield"></div>
-            </div>
-          `;
-        } else {
-          card.innerHTML = `
-            <div class="portfolio-card__fallback">
-              <span>${item.name}</span>
-            </div>
-          `;
-        }
-
-        card.innerHTML += `
-          <div class="portfolio-card__caption">
-            <span class="portfolio-card__name">${item.name}</span>
-            <a class="portfolio-card__visit" href="${item.url}" target="_blank"
-              rel="noopener" aria-label="${visitCopy.aria}">
-              <span class="portfolio-card__visit-text">${visitCopy.text}</span>
-              <span class="portfolio-card__visit-icon" aria-hidden="true">↗</span>
-            </a>
-          </div>
-        `;
-
-        group.appendChild(card);
-      }
-
-      return group;
-    };
-
-    this.#container.append(renderGroup(), renderGroup());
-  }
-}
-
-function initPortfolioPreviewScroll(container) {
-  const previews = Array.from(container.querySelectorAll("[data-preview-scroll]"));
-
-  previews.forEach((preview) => {
-    const iframe = preview.querySelector("iframe");
-    if (!iframe) return;
-
-    let offset = 0;
-    let dragStartY = 0;
-    let dragStartX = 0;
-    let dragStartOffset = 0;
-    let isDragging = false;
-
-    const readNumberVar = (name, fallback) => {
-      const value = parseFloat(getComputedStyle(preview).getPropertyValue(name));
-      return Number.isFinite(value) ? value : fallback;
-    };
-
-    const getScale = () => readNumberVar("--preview-scale", 0.3);
-    const getPreviewHeight = () => readNumberVar("--preview-height", 2400);
-    const getMaxOffset = () =>
-      Math.max(0, getPreviewHeight() - preview.clientHeight / getScale());
-
-    const setOffset = (nextOffset) => {
-      const maxOffset = getMaxOffset();
-      offset = Math.min(Math.max(nextOffset, 0), maxOffset);
-      iframe.style.setProperty("--preview-offset", `${-offset}px`);
-      preview.classList.toggle("is-preview-scrolled", offset > 8);
-    };
-
-    const scrollPreview = (delta) => {
-      setOffset(offset + delta / getScale());
-    };
-
-    preview.addEventListener(
-      "wheel",
-      (event) => {
-        if (!event.deltaY) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        scrollPreview(event.deltaY);
-      },
-      { passive: false }
-    );
-
-    preview.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse") return;
-
-      isDragging = true;
-      dragStartY = event.clientY;
-      dragStartX = event.clientX;
-      dragStartOffset = offset;
-      preview.setPointerCapture?.(event.pointerId);
-    });
-
-    preview.addEventListener("pointermove", (event) => {
-      if (!isDragging) return;
-
-      const deltaY = dragStartY - event.clientY;
-      const deltaX = dragStartX - event.clientX;
-      if (Math.abs(deltaY) <= Math.abs(deltaX)) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      setOffset(dragStartOffset + deltaY / getScale());
-    });
-
-    ["pointerup", "pointercancel", "lostpointercapture"].forEach((eventName) => {
-      preview.addEventListener(eventName, () => {
-        isDragging = false;
-      });
-    });
-
-    preview.addEventListener("keydown", (event) => {
-      const keyDeltas = {
-        ArrowDown: 120,
-        PageDown: 420,
-        ArrowUp: -120,
-        PageUp: -420,
-        Home: -Infinity,
-        End: Infinity,
-      };
-
-      if (!(event.key in keyDeltas)) return;
-
-      event.preventDefault();
-      const delta = keyDeltas[event.key];
-      if (delta === Infinity) {
-        setOffset(getMaxOffset());
-      } else if (delta === -Infinity) {
-        setOffset(0);
-      } else {
-        scrollPreview(delta);
-      }
-    });
-
-    window.addEventListener("resize", () => setOffset(offset), { passive: true });
-  });
-}
-
-function initPortfolioPreviewLoading(container) {
-  const previews = Array.from(container.querySelectorAll("[data-preview-scroll]"));
-
-  const loadPreview = (preview) => {
-    const iframe = preview.querySelector("iframe[data-src]");
-    if (!iframe) return;
-
-    preview.classList.add("is-preview-loading");
-    iframe.src = iframe.dataset.src;
-    iframe.removeAttribute("data-src");
-    iframe.addEventListener(
-      "load",
-      () => {
-        preview.classList.add("is-preview-loaded");
-        preview.classList.remove("is-preview-loading");
-      },
-      { once: true },
-    );
-  };
 
   if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
+    const portfolioObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          loadPreview(entry.target);
-          observer.unobserve(entry.target);
-        });
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        requestPortfolioRender();
+        portfolioObserver.disconnect();
       },
-      { rootMargin: "420px 0px" },
+      { rootMargin: "700px 0px" },
     );
 
-    previews.forEach((preview) => observer.observe(preview));
+    portfolioObserver.observe(portfolioSection);
   } else {
-    previews.slice(0, PORTFOLIO.length).forEach(loadPreview);
+    window.addEventListener("load", requestPortfolioRenderWhenIdle, { once: true });
   }
-
-  previews.forEach((preview) => {
-    preview.addEventListener("pointerenter", () => loadPreview(preview), {
-      once: true,
-    });
-    preview.addEventListener("focusin", () => loadPreview(preview), {
-      once: true,
-    });
-  });
 }
 
-function initPortfolio() {
-  const track = document.getElementById("portfolioTrack");
-  if (!track) return;
+// App bootstrap: early render reduces layout shifts; DOM-only listeners wait for DOMContentLoaded.
+// Старт застосунку: ранній рендер зменшує layout shift; DOM-слухачі чекають DOMContentLoaded.
+new SkillsRenderer("#skills-list").load(SKILLS).render();
+initThemeToggle();
+initLanguageSwitcher();
 
-  new PortfolioRenderer("#portfolioTrack").load(PORTFOLIO).render();
-  initPortfolioPreviewLoading(track);
-  initPortfolioPreviewScroll(track);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  initMobileNavigation();
+  initContactFormLiveValidation();
+  initLazyPortfolioLoading();
+
+  document
+    .getElementById("contactForm")
+    ?.addEventListener("submit", handleContactFormSubmit);
+});
