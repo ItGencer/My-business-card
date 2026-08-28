@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Сайт-візитка Артема Грішина, front-end розробника. Послуги зі створення сайтів-візиток, SPA та сучасної front-end розробки."
+      content="Артем Грішин створює сайти-візитки, лендінги та односторінкові SPA для малого бізнесу й фахівців: чиста верстка, адаптивність і допомога з хостингом."
     />
     <title>Hrishyn Artem Card</title>
     <link
@@ -143,27 +143,59 @@
             <span class="about__line"></span>
           </div>
           <div class="about__text">
-            <p data-i18n="about.text.1">
-              Я — Артем Грішин, front-end розробник. Створюю сайти-візитки та
-              односторінкові сайти (SPA), орієнтовані на швидкість, чистий код
-              і сучасний UX. Працюю зі стеком HTML/CSS/SCSS, JS/TS, Angular.
+            <p class="about__lead" data-i18n="about.lead">
+              Вітаю! Роблю сайти-візитки та односторінкові сайти (SPA) для
+              малого бізнесу та фахівців 🚀
             </p>
-            <p data-i18n="about.text.2">
-              Кожен проєкт — поєднання технічної якості та уваги до деталей:
-              від адаптивної верстки до плавної навігації. Мета — перетворити
-              вашу ідею на функціональний і візуально продуманий сайт.
-            </p>
-            <p>
-              <span data-i18n="about.github.prefix">
-                Приклади реалізованих робіт — на
-              </span>
-              <a
-                class="about__link"
-                href="https://github.com/ItGencer"
-                target="_blank"
-                rel="noopener"
-                >GitHub</a
-              >.
+            <div class="about__group">
+              <h3 class="about__group-title" data-i18n="about.what.title">
+                Що роблю:
+              </h3>
+              <ul class="about__list">
+                <li class="about__item" data-i18n="about.what.1">
+                  Сайт-візитка / лендінг під ваші послуги
+                </li>
+                <li class="about__item" data-i18n="about.what.2">
+                  Чиста верстка: HTML5, CSS3, SCSS, JS/TypeScript — без важких
+                  CMS, сайт швидкий і надійний
+                </li>
+                <li class="about__item" data-i18n="about.what.3">
+                  Адаптивність під телефон і ПК
+                </li>
+                <li class="about__item" data-i18n="about.what.4">
+                  Допоможу завантажити готовий сайт на хостинг, якщо ви ще його
+                  не маєте
+                </li>
+              </ul>
+            </div>
+            <div class="about__group">
+              <h3 class="about__group-title" data-i18n="about.process.title">
+                Як працюю:
+              </h3>
+              <ol class="about__list about__list--steps">
+                <li class="about__item" data-i18n="about.process.1">
+                  Обговорюємо задачу, роблю попередній макет. Якщо у вас ще
+                  немає свого макету сайту — згенерую його через ШІ або
+                  lovable.dev, щоб одразу було наочно видно, як виглядатиме
+                  сайт.
+                </li>
+                <li class="about__item" data-i18n="about.process.2">
+                  Узгоджуємо деталі та ціну
+                </li>
+                <li class="about__item" data-i18n="about.process.3">
+                  Верстаю сайт з нуля, без шаблонних конструкторів
+                </li>
+                <li class="about__item" data-i18n="about.process.4">
+                  Вносимо правки за потреби
+                </li>
+                <li class="about__item" data-i18n="about.process.5">
+                  Допомагаю з розміщенням на хостингу і здаю готовий результат
+                </li>
+              </ol>
+            </div>
+            <p class="about__price" data-i18n="about.price">
+              💰 Ціна від 500 грн — працюю на портфоліо та відгуки, тому
+              по-чесному дешево. Можна домовитись під ваш бюджет.
             </p>
           </div>
         </div>
@@ -344,7 +376,7 @@
                 class="contact__info-subtitle"
                 data-i18n="contact.info.subtitle"
               >
-                Телефон, Telegram або email — усі канали активні.
+                Телефон, Telegram, email або LinkedIn — усі канали активні.
               </p>
             </div>
 
@@ -414,6 +446,30 @@
                   class="contact__card-action"
                   data-i18n="contact.action.email"
                   >Написати email</span
+                >
+              </div>
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/artem-hrishin-486204421/"
+              target="_blank"
+              rel="noopener"
+              class="contact__card contact__card--linkedin"
+            >
+              <div class="contact__card-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"
+                  />
+                </svg>
+              </div>
+              <div class="contact__card-text">
+                <span class="contact__card-label">LINKEDIN</span>
+                <span class="contact__card-value">Artem Hrishin</span>
+                <span
+                  class="contact__card-action"
+                  data-i18n="contact.action.linkedin"
+                  >Відкрити LinkedIn</span
                 >
               </div>
             </a>

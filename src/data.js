@@ -97,35 +97,54 @@ export const EMAILJS_CONFIG = {
 export const TRANSLATIONS = {
   ua: {
     // Navigation labels.
+    // Підписи навігації.
     'nav.about':    'Про мене',
     'nav.skills':   'Навички',
+    'nav.services': 'Послуги',
+    'nav.portfolio': 'Портфоліо',
     'nav.contact':  'Контакти',
 
     // Hero section copy.
+    // Тексти hero-секції.
     'intro.subtitle': 'Відповідальний підхід — якісний результат',
     'intro.btn.works':   'Переглянути роботи',
     'intro.btn.contact': "Зв'язатися",
 
     // About section copy.
+    // Тексти секції "Про мене".
     'about.title': 'Про мене',
-    'about.text.1': 'Я — Артем Грішин, front-end розробник. Створюю сайти-візитки та односторінкові сайти (SPA), орієнтовані на швидкість, чистий код і сучасний UX. Працюю зі стеком HTML/CSS/SCSS, JS/TS, Angular.',
-    'about.text.2': 'Кожен проєкт — поєднання технічної якості та уваги до деталей: від адаптивної верстки до плавної навігації. Мета — перетворити вашу ідею на функціональний і візуально продуманий сайт.',
-    'about.github.prefix': 'Приклади реалізованих робіт — на',
+    'about.lead': 'Вітаю! Роблю сайти-візитки та односторінкові сайти (SPA) для малого бізнесу та фахівців 🚀',
+    'about.what.title': 'Що роблю:',
+    'about.what.1': 'Сайт-візитка / лендінг під ваші послуги',
+    'about.what.2': 'Чиста верстка: HTML5, CSS3, SCSS, JS/TypeScript — без важких CMS, сайт швидкий і надійний',
+    'about.what.3': 'Адаптивність під телефон і ПК',
+    'about.what.4': 'Допоможу завантажити готовий сайт на хостинг, якщо ви ще його не маєте',
+    'about.process.title': 'Як працюю:',
+    'about.process.1': 'Обговорюємо задачу, роблю попередній макет. Якщо у вас ще немає свого макету сайту — згенерую його через ШІ або lovable.dev, щоб одразу було наочно видно, як виглядатиме сайт.',
+    'about.process.2': 'Узгоджуємо деталі та ціну',
+    'about.process.3': 'Верстаю сайт з нуля, без шаблонних конструкторів',
+    'about.process.4': 'Вносимо правки за потреби',
+    'about.process.5': 'Допомагаю з розміщенням на хостингу і здаю готовий результат',
+    'about.price': '💰 Ціна від 500 грн — працюю на портфоліо та відгуки, тому по-чесному дешево. Можна домовитись під ваш бюджет.',
 
     // Skills section title.
+    // Заголовок секції навичок.
     'skills.title': 'Навички та технології',
 
     // Services section title.
+    // Заголовок секції послуг.
     'services.title': 'Послуги',
 
     // Contact section copy and form labels.
+    // Тексти секції контактів і підписи форми.
     'contact.title':    'Зв\'язатися зі мною',
     'contact.subtitle': 'Маєте проєкт або питання? Напишіть — відповім швидко.',
     'contact.info.title': 'Оберіть зручний спосіб зв\'язку',
-    'contact.info.subtitle': 'Телефон, Telegram або email — усі канали активні.',
+    'contact.info.subtitle': 'Телефон, Telegram, email або LinkedIn — усі канали активні.',
     'contact.action.phone': 'Подзвонити',
     'contact.action.telegram': 'Написати в Telegram',
     'contact.action.email': 'Написати email',
+    'contact.action.linkedin': 'Відкрити LinkedIn',
     'form.name':    "Ваше ім'я",
     'form.email':   'Email',
     'form.message': 'Повідомлення',
@@ -140,6 +159,8 @@ export const TRANSLATIONS = {
   en: {
     'nav.about':    'About',
     'nav.skills':   'Skills',
+    'nav.services': 'Services',
+    'nav.portfolio': 'Portfolio',
     'nav.contact':  'Contact',
 
     'intro.subtitle': 'Responsible approach — quality result',
@@ -147,9 +168,19 @@ export const TRANSLATIONS = {
     'intro.btn.contact': 'Get in touch',
 
     'about.title': 'About Me',
-    'about.text.1': 'I am Artem Grishin, a front-end developer. I create business card sites and single-page applications (SPA) focused on speed, clean code, and modern UX. I work with HTML/CSS/SCSS, JS/TS, and Angular.',
-    'about.text.2': 'Each project combines technical quality and attention to detail: from responsive layout to smooth navigation. The goal is to turn your idea into a functional and visually thoughtful website.',
-    'about.github.prefix': 'Examples of completed work are on',
+    'about.lead': 'Hi! I build business card websites and single-page sites (SPA) for small businesses and independent professionals 🚀',
+    'about.what.title': 'What I do:',
+    'about.what.1': 'Business card website / landing page for your services',
+    'about.what.2': 'Clean layout: HTML5, CSS3, SCSS, JS/TypeScript — no heavy CMS, so the site stays fast and reliable',
+    'about.what.3': 'Responsive layout for phones and desktops',
+    'about.what.4': 'I can help publish the finished site to hosting if you do not have hosting yet',
+    'about.process.title': 'How I work:',
+    'about.process.1': 'We discuss the task and I prepare an initial mockup. If you do not have your own site design yet, I can generate one with AI or lovable.dev so you can clearly see how the site will look.',
+    'about.process.2': 'We agree on the details and price',
+    'about.process.3': 'I code the site from scratch, without template builders',
+    'about.process.4': 'We make edits if needed',
+    'about.process.5': 'I help with hosting setup and deliver the finished result',
+    'about.price': '💰 Price from 500 UAH — I am building my portfolio and reviews, so the price is honestly affordable. We can agree on a budget that works for you.',
 
     'skills.title': 'Skills & Technologies',
     'services.title': 'Services',
@@ -157,10 +188,11 @@ export const TRANSLATIONS = {
     'contact.title':    'Contact Me',
     'contact.subtitle': 'Have a project or question? Write — I\'ll reply quickly.',
     'contact.info.title': 'Choose a convenient way to connect',
-    'contact.info.subtitle': 'Phone, Telegram, or email — every channel is active.',
+    'contact.info.subtitle': 'Phone, Telegram, email, or LinkedIn — every channel is active.',
     'contact.action.phone': 'Call',
     'contact.action.telegram': 'Message on Telegram',
     'contact.action.email': 'Send an email',
+    'contact.action.linkedin': 'Open LinkedIn',
     'form.name':    'Your name',
     'form.email':   'Email',
     'form.message': 'Message',

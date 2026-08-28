@@ -153,6 +153,10 @@ $color-success: #18713a;
       --contact-accent: #1f4db3;
     }
 
+    &--linkedin {
+      --contact-accent: #0a66c2;
+    }
+
     &-icon {
       flex-shrink: 0;
       width: 42px;

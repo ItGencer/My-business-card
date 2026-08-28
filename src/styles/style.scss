@@ -237,8 +237,8 @@ body {
   }
 }
 
-// About section: trust-building copy, GitHub CTA, and responsive text layout.
-// Секція "Про мене": текст для довіри, GitHub CTA та адаптивна текстова сітка.
+// About section: structured offer, workflow, and price note for clients.
+// Секція "Про мене": структурована пропозиція, процес роботи та ціновий акцент для клієнтів.
 .about {
   background: var(
     --about-bg,
@@ -283,46 +283,121 @@ body {
 
   &__text {
     display: grid;
-    gap: 18px;
-    font-size: clamp(15px, 2vw, 18px);
-    line-height: 1.8;
+    gap: clamp(18px, 3vw, 24px);
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.75;
     color: var(--color-text);
-    max-width: 680px;
+    max-width: 800px;
     margin: 0 auto;
     text-align: left;
 
-    p {
+    p,
+    li {
       font-size: inherit;
       line-height: inherit;
     }
   }
 
-  &__link {
-    display: inline-flex;
-    align-items: center;
-    color: $color-primary;
-    font-size: inherit;
+  &__lead {
+    color: var(--color-text-dark);
+    font-size: clamp(17px, 2.2vw, 20px);
     font-weight: 700;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(26, 127, 232, 0.28);
-    transition: color 0.2s ease, border-color 0.2s ease;
+    line-height: 1.6;
+  }
 
-    &:hover,
-    &:focus-visible {
-      color: #0f6ed2;
-      border-color: currentColor;
-      outline: none;
+  &__group {
+    display: grid;
+    gap: 10px;
+  }
+
+  &__group-title {
+    color: var(--color-text-dark);
+    font-size: clamp(17px, 2vw, 19px);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  &__list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    position: relative;
+    padding-left: 24px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.72em;
+      left: 4px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: $color-primary;
+      box-shadow: 0 0 0 4px rgba($color-primary, 0.12);
     }
+  }
+
+  &__list--steps {
+    counter-reset: about-step;
+
+    .about__item {
+      min-height: 32px;
+      padding-left: 44px;
+      counter-increment: about-step;
+
+      &::before {
+        content: counter(about-step);
+        top: 0.28em;
+        left: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1;
+        box-shadow: 0 8px 18px rgba($color-primary, 0.2);
+      }
+    }
+  }
+
+  &__price {
+    border: 1px solid rgba($color-primary, 0.18);
+    border-radius: 12px;
+    padding: clamp(14px, 3vw, 18px);
+    background:
+      linear-gradient(135deg, rgba($color-primary, 0.10), rgba(255, 255, 255, 0.72)),
+      var(--color-card-bg);
+    color: var(--color-text-dark);
+    font-weight: 700;
+    box-shadow: 0 14px 34px rgba($color-primary, 0.08);
 
     [data-theme="dark"] & {
-      color: #74b9ff;
-      border-color: rgba(116, 185, 255, 0.34);
+      background:
+        linear-gradient(135deg, rgba(116, 185, 255, 0.14), rgba(10, 22, 40, 0.42)),
+        var(--color-card-bg);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    }
+  }
 
-      &:hover,
-      &:focus-visible {
-        color: #9ed0ff;
-        border-color: currentColor;
-      }
+  @media (max-width: 520px) {
+    &__text {
+      gap: 18px;
+    }
+
+    &__item {
+      padding-left: 22px;
+    }
+
+    &__list--steps .about__item {
+      padding-left: 40px;
     }
   }
 }
