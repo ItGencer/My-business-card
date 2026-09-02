@@ -32,6 +32,9 @@ export const SERVICES = {
     {
       title: 'Односторінкові сайти (SPA)',
       description: 'Швидкі, інтерактивні застосунки з плавною навігацією та сучасним UX.',
+      price: 'від 500 грн',
+      actionLabel: 'Замовити',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="16 18 22 12 16 6"></polyline>
         <polyline points="8 6 2 12 8 18"></polyline>
@@ -40,6 +43,10 @@ export const SERVICES = {
     {
       title: 'Сайти-візитки',
       description: 'Лаконічні сайти-візитки, що підкреслюють вашу професійну ідентичність.',
+      price: 'від 500 грн',
+      badgeLabel: 'Популярний вибір',
+      actionLabel: 'Замовити',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -47,8 +54,11 @@ export const SERVICES = {
       </svg>`,
     },
     {
-      title: 'Front-end розробка',
-      description: 'Верстка та front-end розробка під стек: HTML/CSS/SCSS, JS/TS, Angular.',
+      title: 'Індивідуальний проєкт',
+      description: 'Нестандартний запит або складніший функціонал? Обговоримо й розробимо рішення під ваші задачі.',
+      price: 'від 500 грн',
+      actionLabel: 'Замовити',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>
@@ -59,6 +69,9 @@ export const SERVICES = {
     {
       title: 'Single Page Applications (SPA)',
       description: 'Fast and interactive SPAs with smooth navigation and modern UX.',
+      price: 'from 500 UAH',
+      actionLabel: 'Order',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="16 18 22 12 16 6"></polyline>
         <polyline points="8 6 2 12 8 18"></polyline>
@@ -67,6 +80,10 @@ export const SERVICES = {
     {
       title: 'Business Card Sites',
       description: 'Concise business card sites that highlight your professional identity.',
+      price: 'from 500 UAH',
+      badgeLabel: 'Popular choice',
+      actionLabel: 'Order',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -74,8 +91,11 @@ export const SERVICES = {
       </svg>`,
     },
     {
-      title: 'Front-end Development',
-      description: 'Markup and front-end development: HTML/CSS/SCSS, JS/TS, Angular.',
+      title: 'Custom Project',
+      description: 'Have a non-standard request or more complex functionality? We will discuss it and build a solution for your tasks.',
+      price: 'from 500 UAH',
+      actionLabel: 'Order',
+      actionHref: '#contact',
       svgIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>

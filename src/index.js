@@ -70,8 +70,8 @@ class SkillsRenderer {
   }
 }
 
-// Renders service cards and keeps service copy in the active language.
-// Рендерить картки послуг і тримає текст послуг активною мовою.
+// Renders service cards with localized copy, prices, badges, and CTA links.
+// Рендерить картки послуг з локалізованими текстами, цінами, бейджами та CTA-посиланнями.
 class ServicesRenderer {
   #container;
   #services = [];
@@ -98,7 +98,18 @@ class ServicesRenderer {
       serviceItemElement.className = "services__item";
 
       const serviceCardElement = document.createElement("div");
-      serviceCardElement.className = "service-card";
+      serviceCardElement.className = service.badgeLabel
+        ? "service-card service-card--featured"
+        : "service-card";
+
+      if (service.badgeLabel) {
+        const serviceBadgeElement = createElementWithProps("span", {
+          className: "service-card__badge",
+          textContent: service.badgeLabel,
+        });
+
+        serviceCardElement.appendChild(serviceBadgeElement);
+      }
 
       const serviceIconWrapperElement = document.createElement("div");
       serviceIconWrapperElement.className = "service-card__icon-wrap";
@@ -114,10 +125,23 @@ class ServicesRenderer {
         textContent: service.description,
       });
 
+      const servicePriceElement = createElementWithProps("p", {
+        className: "service-card__price",
+        textContent: service.price,
+      });
+
+      const serviceActionElement = createElementWithProps("a", {
+        className: "service-card__action",
+        href: service.actionHref,
+        textContent: service.actionLabel,
+      });
+
       serviceCardElement.append(
         serviceIconWrapperElement,
         serviceTitleElement,
         serviceDescriptionElement,
+        servicePriceElement,
+        serviceActionElement,
       );
       serviceItemElement.appendChild(serviceCardElement);
       fragment.appendChild(serviceItemElement);
