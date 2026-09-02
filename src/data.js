@@ -120,12 +120,12 @@ export const TRANSLATIONS = {
     'about.what.3': 'Адаптивність під телефон і ПК',
     'about.what.4': 'Допоможу завантажити готовий сайт на хостинг, якщо ви ще його не маєте',
     'about.process.title': 'Як працюю:',
-    'about.process.1': 'Обговорюємо задачу, роблю попередній макет. Якщо у вас ще немає свого макету сайту — згенерую його через ШІ або lovable.dev, щоб одразу було наочно видно, як виглядатиме сайт.',
+    'about.process.1': 'Обговорюємо задачу та ваші побажання. Якщо власного макету ще немає — швидко створю візуальний прототип за допомогою AI-інструментів, щоб ви одразу побачили, як виглядатиме майбутній сайт.',
     'about.process.2': 'Узгоджуємо деталі та ціну',
     'about.process.3': 'Верстаю сайт з нуля, без шаблонних конструкторів',
     'about.process.4': 'Вносимо правки за потреби',
     'about.process.5': 'Допомагаю з розміщенням на хостингу і здаю готовий результат',
-    'about.price': '💰 Ціна від 500 грн — працюю на портфоліо та відгуки, тому по-чесному дешево. Можна домовитись під ваш бюджет.',
+    'about.price': '💰 Ціна від 500 грн — працюю на портфоліо та відгуки, тому по-чесному дешево. Включено: макет, верстка, адаптив під девайси. Можна домовитись під ваш бюджет',
 
     // Skills section title.
     // Заголовок секції навичок.
@@ -180,7 +180,7 @@ export const TRANSLATIONS = {
     'about.process.3': 'I code the site from scratch, without template builders',
     'about.process.4': 'We make edits if needed',
     'about.process.5': 'I help with hosting setup and deliver the finished result',
-    'about.price': '💰 Price from 500 UAH — I am building my portfolio and reviews, so the price is honestly affordable. We can agree on a budget that works for you.',
+    'about.price': '💰 Prices start at 500 UAH — I’m building my portfolio and gathering reviews, so my rates are genuinely low. Includes: design, coding, and responsive layout. I’m open to discussing a price that fits your budget.',
 
     'skills.title': 'Skills & Technologies',
     'services.title': 'Services',
